@@ -1,0 +1,79 @@
+name = "rhel83"
+description = "testing"
+version = "0.0.2"
+modules = []
+groups = []
+distro = ""
+
+[[packages]]
+name = "bash-completion"
+version = "*"
+
+[[packages]]
+name = "bzip2"
+version = "*"
+
+[[packages]]
+name = "chrony"
+version = "*"
+
+[[packages]]
+name = "firewalld"
+version = "*"
+
+[[packages]]
+name = "virt-what"
+version = "*"
+
+[[packages]]
+name = "tuned"
+version = "*"
+
+[[packages]]
+name = "cockpit-pcp"
+version = "*"
+
+[[packages]]
+name = "pcp"
+version = "*"
+
+[[packages]]
+name = "pcp-conf"
+version = "*"
+
+[[packages]]
+name = "pcp-pmda-activemq"
+version = "*"
+
+[[packages]]
+name = "pcp-pmda-apache"
+version = "*"
+
+[[packages]]
+name = "pcp-pmda-bash"
+version = "*"
+
+[[packages]]
+name = "pcp-pmda-bind2"
+version = "*"
+
+[[packages]]
+name = "pcp-pmda-cifs"
+version = "*"
+
+[[packages]]
+name = "pcp-pmda-dbping"
+version = "*"
+
+[[packages]]
+name = "pcp-pmda-libvirt"
+version = "*"
+
+[customizations]
+
+[[customizations.user]]
+name = "mglantz"
+description = "Magnus Glantz"
+password = "$6$kA0nTi1rSvPIHdG1$mRBh9eJqCc0WsphwI4het.w4Ny2w.khJQ6t7QcjruqOowj9hj.ielzClvXH1h.rfuMId26zT8JVr.4ClJR8pF0"
+key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCiVpjd30fnTEleLbz37gFykixaQg29LbtG5YSYy6pRxGyFbPPfyTYB+qx3r8+adPOiaBWrOjcU4WKNXZfznQffrH3M1pG7zMsKlmyE5GZw0HYHev3fBh7RkWc2m2Q/gIa9paUa0lce1he/fYCi+7mttA82jNvU78C5MpXts+ZLSBmlKR0T9lWGukXWiprfAeyPXr+WOgQHdEIcQXuUPwV/3MF5eapJcuONxuMCYOfSMKW/921CZVMM2NvA1CO4S3K/GYAYrw1VaVUNu0sl3nCrrBwrxFEWssjacy2MS4SVxeQ6KwNHn0pXpeVPgrxXcQngmichVuJVZZ7hApitURhV"
+groups = ["wheel"]
