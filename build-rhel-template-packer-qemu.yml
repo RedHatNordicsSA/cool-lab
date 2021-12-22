@@ -1,0 +1,28 @@
+---
+
+- name: Build RHEL image with Packer
+  hosts: all
+  become: true
+  tasks:
+
+    - debug:
+        var: cloud_user_password
+
+    - name: build rhel template for qemu
+      vars:
+        packer_builder: qemu
+        packer_target: rhel_8_5
+        boot_password: "{{ cloud_user_password }}"
+        root_password: "{{ cloud_user_password }}"
+        partitioning: auto
+        disable_ipv6: true
+        # security_profile: cis_server_l1
+        image_name: rhel_8_5_image
+        root_ssh_key: >-
+          ssh-ed25519
+          AAAAC3NzaC1lZDI1NTE5AAAAIHV4O/qEctm+YmAY/o0aKk+sgxbFhLMsNN1m4j8FNKSF
+          admin@coollab
+        output_directory: /VirtualMachines/templates
+        disk_size: 4096
+      include_role:
+        name: ansible-packer
