@@ -1,0 +1,6 @@
+---
+
+vcenter_datacenter: KISTA-DC
+vcenter_cluster: ARROWLAB
+vcenter_folder: KISTA-DC/Redhat
+vcenter_datastore: SVC-LUN-1

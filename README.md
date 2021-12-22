@@ -47,4 +47,28 @@ it this way. For other purposes the image builder is good.
 The newly found image will be stored in storage defined in the playbook,
 check the vars.
 
+## Ensuring the bastion host
+
+We create the bastion host using the playbook
+[ensure-bastion.yml](ensure-bastion.yml). It creates it from the rhel
+template. The same playbook also removes it, or let's you control the power
+state.
+
+Create:
+
+```
+ansible-playbook -i localhost, -c local ensure-bastion.yml
+```
+
+Shutdown:
+
+```
+ansible-playbook -i localhost, -c local -e state=poweredoff ensure-bastion.yml
+```
+
+Delete (can be done only after poweredoff):
+
+```
+ansible-playbook -i localhost, -c local -e state=absent ensure-bastion.yml
+```
 
