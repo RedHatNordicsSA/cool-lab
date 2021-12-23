@@ -3,7 +3,7 @@
 roles:
   - src: https://github.com/ikke-t/ansible-packer.git
     type: git
-    version: packer
+    version: role
   - src: https://github.com/ikke-t/rhel-image.git
     type: git
     version: onerole
