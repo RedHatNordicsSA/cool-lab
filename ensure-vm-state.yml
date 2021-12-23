@@ -1,0 +1,57 @@
+---
+
+- name: Ensure VM state
+  hosts: localhost
+  gather_facts: false
+  vars:
+    name: delete_this_machine_anytime
+    state: poweredon
+    memory_mb: 2048
+    num_cpus: 2
+    num_cpu_cores_per_socket: 1
+    net_name: RH-seg-2991
+    template: rhel_8_5_image
+
+  tasks:
+    - name: Clone the template
+      vmware_guest:
+        name: "{{ name }}"
+        state: "{{ state }}"
+        hostname: "{{ vcenter_credentials.hostname }}"
+        username: "{{ vcenter_credentials.username }}"
+        password: "{{ vcenter_credentials.password }}"
+        validate_certs: false
+        template: "{{ template }}"
+        datacenter: "{{ vcenter_datacenter }}"
+        folder: "{{ vcenter_folder }}"
+        cluster: "{{ vcenter_cluster }}"
+        wait_for_ip_address: true
+        hardware:
+          memory_mb: "{{ memory_mb }}"
+          num_cpus: "{{ num_cpus }}"
+          num_cpu_cores_per_socket: "{{ num_cpu_cores_per_socket }}"
+        networks:
+          - name: "{{ net_name }}"
+            type: dhcp
+            # type: static
+            # ip: 10.128.1.3
+            # netmask: 255.255.255.0
+            # gateway: 10.128.1.1
+            wait_for_ip_address_timeout: 60
+            connected: true
+            start_connected: true
+      when: state != 'absent'
+
+    - name: Delete the VM
+      vmware_guest:
+        name: "{{ name }}"
+        hostname: "{{ vcenter_credentials.hostname }}"
+        username: "{{ vcenter_credentials.username }}"
+        password: "{{ vcenter_credentials.password }}"
+        validate_certs: false
+        datacenter: "{{ vcenter_datacenter }}"
+        folder: "{{ vcenter_folder }}"
+        state: "{{ state }}"
+        cluster: "{{ vcenter_cluster }}"
+        force: true
+      when: state == 'absent'
