@@ -72,3 +72,25 @@ Delete (can be done only after poweredoff):
 ansible-playbook -i localhost, -c local -e state=absent ensure-bastion.yml
 ```
 
+## Create / Delete / power off / power on VM
+
+There is [generic playbook](ensure-vm-state.yml) to create VMs from given
+template. If you want RHEL you run this:
+
+```
+ansible-playbook -i localhost, -c local -e name=rh-test-net ensure-vm-state.yml
+```
+
+For power state commands:
+
+```
+ansible-playbook -i localhost, -c local -e state=poweredoff -e name=rh-test-net ensure-vm-state.yml
+```
+
+And to delete it:
+
+```
+ansible-playbook -i localhost, -c local -e state=absent -e name=rh-test-net ensure-vm-state.yml
+```
+
+There are different values in vars, check them out. Like mem, cpu, network etc tunings.
