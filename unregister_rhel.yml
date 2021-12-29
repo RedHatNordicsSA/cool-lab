@@ -1,0 +1,17 @@
+---
+- hosts: all
+  become: true
+  vars:
+    register_insights: true
+  tasks:
+
+    - name: Unregister insights
+      command: insights-client --unregister
+      args:
+        creates: /etc/insights-client/.unregistered
+      tags: insights
+
+    - name: Unsubscribe to Red Hat
+      redhat_subscription:
+        state: absent
+      tags: subs
