@@ -5,6 +5,7 @@
   gather_facts: false
   vars:
     state: poweredon
+    name: rh-bastion-01.coollab
   tasks:
     - name: Clone the template
       vmware_guest:
@@ -12,7 +13,7 @@
         username: "{{ vcenter_credentials.username }}"
         password: "{{ vcenter_credentials.password }}"
         validate_certs: false
-        name: bastion.coollab
+        name: "{{ name }}"
         template: rhel_8_5_image
         datacenter: "{{ vcenter_datacenter }}"
         folder: "{{ vcenter_folder }}"
