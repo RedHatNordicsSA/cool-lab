@@ -1,0 +1,46 @@
+---
+- hosts: all
+  become: true
+  vars:
+    force_register: false
+    install_pkgs_list:
+      - tmux
+      - vim
+      - insights-client
+    register_insights: true
+  tasks:
+
+    - name: Subscribe to Red Hat
+      redhat_subscription:
+        state: present
+        username: "{{ subs_username }}"
+        password: "{{ subs_pw }}"
+        autosubscribe: false
+        pool: "{{ subs_pool }}"
+        force_register: "{{ force_register }}"
+      tags: subs
+
+    - name: Enable required repositories
+      rhsm_repository:
+        name: "{{ enabled_repos_rhel8 }}"
+        state: enabled
+      tags: regs
+
+    - name: install stuff
+      yum:
+        name: "{{ install_pkgs_list }}"
+        state: present
+      tags: packages
+
+    - name: register insights
+      command: insights-client --register
+      args:
+        removes: /etc/insights-client/.unregistered
+      tags: insights
+
+    - name: enable insights
+      systemd:
+        name: insights-client
+        state: started
+        enabled: true
+      tags: insights

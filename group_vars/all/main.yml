@@ -4,3 +4,13 @@ vcenter_datacenter: KISTA-DC
 vcenter_cluster: ARROWLAB
 vcenter_folder: KISTA-DC/Redhat
 vcenter_datastore: SVC-LUN-1
+
+# RHEL subscriptions
+
+subs_username: foobar
+subs_pw: foobar
+subs_pool: Employee SKU
+enabled_repos_rhel8:
+  - rhel-8-for-x86_64-appstream-rpms
+  - rhel-8-for-x86_64-baseos-rpms
+  - ansible-2-for-rhel-8-x86_64-rpms
