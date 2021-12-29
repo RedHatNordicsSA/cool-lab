@@ -2,6 +2,7 @@
 
 - name: Create bastion host VM from the template
   hosts: localhost
+  connection: local
   gather_facts: false
   vars:
     state: poweredon

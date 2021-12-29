@@ -1,21 +1,20 @@
 ---
 
-# - import_playbook: ensure-bastion.yml
-#   vars:
-#     state: poweredon
-#     name: rh-bastion-01.coollab
+- import_playbook: ensure-bastion.yml
+  vars:
+    state: poweredon
+    name: rh-bastion-01.coollab
 
-# - name: debuggaa
-#   hosts: localhost
-#   connection: local
-#   tasks:
-#     - name: debsku
-#       debug:
-#         var: host_ip
-#     - name: fix inventory with bastion
-#       copy:
-#         dest: /tmp/ansible_temp_hosts
-#         content: "{{ host_ip }}"
+- name: debuggaa
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: debug host ip
+      debug:
+        var: host_ip
+    - name: fix inventory with bastion
+      add_host:
+        name: "{{ host_ip }}"
 
 
 - import_playbook: prepare-rhel8.yml
