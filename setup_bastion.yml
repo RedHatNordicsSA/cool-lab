@@ -1,0 +1,46 @@
+---
+
+# - import_playbook: ensure-bastion.yml
+#   vars:
+#     state: poweredon
+#     name: rh-bastion-01.coollab
+
+# - name: debuggaa
+#   hosts: localhost
+#   connection: local
+#   tasks:
+#     - name: debsku
+#       debug:
+#         var: host_ip
+#     - name: fix inventory with bastion
+#       copy:
+#         dest: /tmp/ansible_temp_hosts
+#         content: "{{ host_ip }}"
+
+
+- import_playbook: prepare-rhel8.yml
+  vars:
+    install_pkgs_list:
+      - tmux
+      - vim
+      - insights-client
+      - bind-utils
+      - ansible
+      - git
+
+- name: setup stuff at bastion
+  hosts: all
+  tasks:
+
+    - name: create source dir
+      file:
+        path: /root/src
+        state: directory
+      tags: git
+
+    - name: clone cool lab repo
+      git:
+        repo: https://github.com/RedHatNordicsSA/cool-lab.git
+        dest: /root/src/cool-lab
+        update: false
+      tags: git

@@ -32,5 +32,15 @@
             # netmask: 255.255.255.0
             # gateway: 10.128.1.1
             wait_for_ip_address_timeout: 60
-            connected: yes
-            start_connected: yes
+            connected: true
+            start_connected: true
+      register: vm
+
+    - name: store vm ip
+      set_fact:
+        host_ip: "{{ vm.instance.ipv4 }}"
+
+    - name: Print VM details
+      debug:
+        msg: "VM {{ name }} at ip {{ host_ip }}"
+      when: vm is succeeded
