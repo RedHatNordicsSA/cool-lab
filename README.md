@@ -50,14 +50,14 @@ check the vars.
 ## Ensuring the bastion host
 
 We create the bastion host using the playbook
-[setup-bastion.yml](ensure-bastion.yml). It creates it from the rhel template,
+[setup-bastion.yml](setup-bastion.yml). It creates it from the rhel template,
 and does basic configs. The other playbook removes it, or let's you control the
 power state.
 
 Create:
 
 ```
-ansible-playbook  -u root -e "subs_username=$subs_username subs_pw=$subs_pw" setup_bastion.yml
+ansible-playbook  -u root -e "subs_username=$subs_username subs_pw=$subs_pw" setup-bastion.yml
 ```
 
 Shutdown:
