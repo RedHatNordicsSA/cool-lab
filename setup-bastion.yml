@@ -5,9 +5,10 @@
     state: poweredon
     name: rh-bastion-01.coollab
 
-- name: debuggaa
+- name: fix inventory
   hosts: localhost
   connection: local
+  gather_facts: false
   tasks:
     - name: debug host ip
       debug:
