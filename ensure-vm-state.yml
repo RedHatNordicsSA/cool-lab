@@ -40,6 +40,7 @@
             wait_for_ip_address_timeout: 60
             connected: true
             start_connected: true
+      register: vm
       when: state != 'absent'
 
     - name: Delete the VM
@@ -55,3 +56,8 @@
         cluster: "{{ vcenter_cluster }}"
         force: true
       when: state == 'absent'
+
+    - name: vm info
+      debug:
+        var: vm
+      when: state != 'absent'
