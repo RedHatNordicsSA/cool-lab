@@ -12,6 +12,23 @@ Ask an admin for the vault key.
 
 ## Ansible preparations
 
+Many of the playbooks here create stuff from the scratch. So we ansible will
+ask for host key verification. We don't want to stop there, so you can
+either change the config file, or just set the environment variable for
+time of first time creation of host:
+
+```
+[defaults]
+host_key_checking = False
+```
+
+or
+
+```
+export ANSIBLE_HOST_KEY_CHECKING=False
+```
+
+
 We use ansible roles and collections. When starting work from scratch you
 need to download dependencies. To get collections and roles to your
 workstation, do:
