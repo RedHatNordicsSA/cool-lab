@@ -14,3 +14,9 @@ enabled_repos_rhel8:
   - rhel-8-for-x86_64-appstream-rpms
   - rhel-8-for-x86_64-baseos-rpms
   - ansible-2-for-rhel-8-x86_64-rpms
+
+# see guide here: https://galaxy.ansible.com/freeipa/ansible_freeipa
+ipaserver_domain: idm.cool-lab.tech
+ipaserver_realm: IDM.COOL-LAB.TECH
+ipaserver_setup_dns: true
+ipaserver_auto_forwarders: true

@@ -1,0 +1,165 @@
+---
+
+- import_playbook: ensure-vm-state.yml
+  vars:
+    memory_mb: 4096
+    num_cpus: 2
+    state: poweredon
+    net_name: RH-seg-2991
+    net_type: static
+    ip: 10.128.1.10
+    netmask: 255.255.255.0
+    gateway: 10.128.1.1
+    name: rh-idm-01.coollab
+    # net_name: vlan1010
+
+- name: update inventory
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: debug host ip
+      debug:
+        var: host_ip
+    - name: fix inventory with IdM
+      add_host:
+        name: "{{ host_ip }}"
+        groups:
+          - ipaserver
+          - idmcluster
+
+- import_playbook: ensure-vm-state.yml
+  vars:
+    memory_mb: 4096
+    num_cpus: 2
+    state: poweredon
+    net_name: RH-seg-2991
+    net_type: static
+    ip: 10.128.1.11
+    netmask: 255.255.255.0
+    gateway: 10.128.1.1
+    name: rh-idm-02.coollab
+    # net_name: vlan1010
+
+- name: update inventory
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: debug host ip
+      debug:
+        var: host_ip
+    - name: fix inventory with ipaserver
+      add_host:
+        name: "{{ host_ip }}"
+        groups:
+          - ipareplicas
+          - idmcluster
+
+- name: setup stuff at IdMs
+  hosts: idmcluster
+  tasks:
+    - name: setup dns
+      copy:
+        dest: /etc/resolv.conf
+        content: |
+          nameserver 10.1.102.5
+          nameserver 10.1.102.10
+
+
+- import_playbook: prepare-rhel8.yml
+  vars:
+    install_pkgs_list:
+      - tmux
+      - vim
+      - insights-client
+  tags: prep
+
+- name: setup stuff at IdMs
+  hosts: idmcluster
+  tasks:
+
+    - name: set yum module
+      command:
+        cmd: yum module enable -y idm:DL1
+        warn: false
+      tags: yum
+
+    - name: sync new yum stream
+      command:
+        cmd: yum distro-sync -y
+        warn: false
+      tags: yum
+
+    - name: check ipv6 is enabled
+      replace:
+        path: /etc/default/grub
+        regexp: 'ipv6.disable=1'
+      register: ipv6
+
+    - name: re-generate grub
+      command: grub2-mkconfig -o /boot/grub2/grub.cfg
+      when: ipv6 is changed
+
+    - name: re-generate initramd
+      command: dracut -f
+      when: ipv6 is changed
+
+    - name: create hosts entry for ipv6
+      lineinfile:
+        path: /etc/hosts
+        regexp: '^::1.*'
+        line: >-
+          ::1         localhost localhost.localdomain
+          localhost6 localhost6.localdomain6
+
+    - name: reboot to get ipv6
+      reboot:
+        reboot_timeout: 120
+      when: ipv6 is changed
+
+- name: setup IdM server
+  hosts: ipaserver
+  tasks:
+
+    - name: create hosts entry for ipv4
+      lineinfile:
+        path: /etc/hosts
+        regexp: '.*rh-idm-01.*'
+        line: 10.128.1.10   rh-idm-01.cool-lab.tech rh-idm-01
+
+    - name: ensure fqdn hostname
+      hostname:
+        name: rh-idm-01.cool-lab.tech
+        use: systemd
+
+    - name: apply freeipa role
+      include_role:
+        name: freeipa.ansible_freeipa.ipaserver
+        # name: ipaserver
+      vars:
+        state: present
+  tags: server
+
+- name: setup IdM replica
+  hosts: ipareplicas
+  tasks:
+
+    - name: create hosts entry for ipv4
+      lineinfile:
+        path: /etc/hosts
+        regexp: '.*rh-idm-02.*'
+        line: 10.128.1.11   rh-idm-02.cool-lab.tech rh-idm-02
+
+    - name: ensure fqdn hostname
+      hostname:
+        name: rh-idm-02.cool-lab.tech
+        use: systemd
+
+    - name: apply freeipa role
+      include_role:
+        name: freeipa.ansible_freeipa.ipareplica
+        # name: ipareplica
+      vars:
+        state: present
+  tags: replica

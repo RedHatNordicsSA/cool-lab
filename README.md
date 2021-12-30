@@ -125,3 +125,14 @@ ansible-playbook -i localhost, -c local -e state=absent -e name=rh-test-net ensu
 ```
 
 There are different values in vars, check them out. Like mem, cpu, network etc tunings.
+
+## Setup IdM hosts
+
+We create one IdM server and a replica. They will be name rh-idm-01.coollab and
+rh-idm-02.coollab.
+
+```
+ansible-playbook  -u root -e "subs_username=$subs_username subs_pw=$subs_pw" setup-idm.yml
+```
+
+XXX There are still problems with DNS config of IdM. 
