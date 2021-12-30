@@ -44,3 +44,21 @@
         dest: /root/src/cool-lab
         update: false
       tags: git
+
+    - name: pull ansible roles
+      command:
+        cmd: >-
+          ansible-galaxy role install
+          -r roles/requirements.yml
+          -p roles
+        args:
+          chdir: /root/src/cool-lab
+
+    - name: pull ansible collections
+      command:
+        cmd: >-
+          ansible-galaxy collection install
+          -r collections/requirements.yml
+          -p collections
+        args:
+          chdir: /root/src/cool-lab
