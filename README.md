@@ -10,6 +10,20 @@ Secrets like keys, passwords etc. sensitive stuff get's stored into the
 [private repo](https://github.com/RedHatNordicsSA/private-lab/).
 Ask an admin for the vault key.
 
+## Ansible preparations
+
+We use ansible roles and collections. When starting work from scratch you
+need to download dependencies. To get collections and roles to your
+workstation, do:
+
+```
+ansible-galaxy role install -r roles/requirements.yml -p roles
+ansible-galaxy collection install -r collections/requirements.txt -p collections
+```
+
+This will download you the requirements.
+
+
 ## Building of RHEL base image with Packer
 
 We start with chicken and egg problem. We can't start a RHEL VM in VMware
