@@ -1,9 +1,13 @@
 ---
 
-- import_playbook: ensure-bastion.yml
+- import_playbook: ensure-vm-state.yml
   vars:
     state: poweredon
     name: rh-bastion-01.coollab
+    memory_mb: 2048
+    num_cpus: 2
+    net_name: RH-seg-2991
+    net_type: dhcp
 
 - name: fix inventory
   hosts: localhost
@@ -51,8 +55,8 @@
           ansible-galaxy role install
           -r roles/requirements.yml
           -p roles
-        args:
-          chdir: /root/src/cool-lab
+      args:
+        chdir: /root/src/cool-lab
 
     - name: pull ansible collections
       command:
@@ -60,5 +64,5 @@
           ansible-galaxy collection install
           -r collections/requirements.yml
           -p collections
-        args:
-          chdir: /root/src/cool-lab
+      args:
+        chdir: /root/src/cool-lab
