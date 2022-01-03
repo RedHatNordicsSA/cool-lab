@@ -12,9 +12,9 @@
     template: rhel_8_5_image
     net_name: RH-seg-2991
     net_type: dhcp       # dhcp vs. static. If static, fix below values
-    ip: 10.128.1.256
-    netmask: 255.255.255.0
-    gateway: 10.128.1.1
+    # ip: 10.128.1.256
+    # netmask: 255.255.255.0
+    # gateway: 10.128.1.1
 
   tasks:
     - name: Clone the template
@@ -37,9 +37,9 @@
         networks:
           - name: "{{ net_name }}"
             type: "{{ net_type}}"
-            ip: "{{ ip }}"
-            netmask: "{{ netmask }}"
-            gateway: "{{ gateway }}"
+            ip: "{{ ip | default(omit) }}"
+            netmask: "{{ netmask | default(omit) }}"
+            gateway: "{{ gateway | default(omit) }}"
             wait_for_ip_address_timeout: 60
             connected: true
             start_connected: true
