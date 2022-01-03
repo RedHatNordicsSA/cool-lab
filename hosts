@@ -1,0 +1,8 @@
+
+[ipaservers]
+rh-idm-01.cool-lab.tech ansible_ssh_host=10.128.1.10
+
+[ipareplicas]
+rh-idm-02.cool-lab.tech ansible_ssh_host=10.128.1.11
+
+

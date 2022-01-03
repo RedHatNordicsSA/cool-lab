@@ -3,3 +3,5 @@
 collections:
   - name: freeipa.ansible_freeipa
     version: 1.5.3
+  - name: ansible.posix
+    version: 1.3.0

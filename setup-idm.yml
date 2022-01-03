@@ -12,21 +12,23 @@
     gateway: 10.128.1.1
     name: rh-idm-01.coollab
     # net_name: vlan1010
+  tags: server
 
-- name: update inventory
-  hosts: localhost
-  connection: local
-  gather_facts: false
-  tasks:
-    - name: debug host ip
-      debug:
-        var: host_ip
-    - name: fix inventory with IdM
-      add_host:
-        name: "{{ host_ip }}"
-        groups:
-          - ipaserver
-          - idmcluster
+# - name: update inventory
+#   hosts: localhost
+#   connection: local
+#   gather_facts: false
+#   tasks:
+#     - name: debug host ip
+#       debug:
+#         var: host_ip
+#     - name: fix inventory with IdM
+#       add_host:
+#         name: "{{ host_ip }}"
+#         groups:
+#           - ipaservers
+#           - idmcluster
+#   tags: server
 
 - import_playbook: ensure-vm-state.yml
   vars:
@@ -40,29 +42,34 @@
     gateway: 10.128.1.1
     name: rh-idm-02.coollab
     # net_name: vlan1010
+  tags: replica
 
-- name: update inventory
-  hosts: localhost
-  connection: local
-  gather_facts: false
-  tasks:
-    - name: debug host ip
-      debug:
-        var: host_ip
-    - name: fix inventory with ipaserver
-      add_host:
-        name: "{{ host_ip }}"
-        groups:
-          - ipareplicas
-          - idmcluster
+# - name: update inventory
+#   hosts: localhost
+#   connection: local
+#   gather_facts: false
+#   tasks:
+#     - name: debug host ip
+#       debug:
+#         var: host_ip
+#     - name: fix inventory with ipaserver
+#       add_host:
+#         name: "{{ host_ip }}"
+#         groups:
+#           - ipareplicas
+#           - idmcluster
+#   tags: replica
 
 - name: setup stuff at IdMs
-  hosts: idmcluster
+  hosts:
+    - ipaservers
+    - ipareplicas
   tasks:
     - name: setup dns
       copy:
         dest: /etc/resolv.conf
         content: |
+          search cool-lab.tech
           nameserver 10.1.102.5
           nameserver 10.1.102.10
 
@@ -76,7 +83,9 @@
   tags: prep
 
 - name: setup stuff at IdMs
-  hosts: idmcluster
+  hosts:
+    - ipaservers
+    - ipareplicas
   tasks:
 
     - name: set yum module
@@ -119,7 +128,8 @@
       when: ipv6 is changed
 
 - name: setup IdM server
-  hosts: ipaserver
+  hosts:
+    - ipaservers
   tasks:
 
     - name: create hosts entry for ipv4
@@ -133,13 +143,25 @@
         name: rh-idm-01.cool-lab.tech
         use: systemd
 
+
     - name: apply freeipa role
       include_role:
         name: freeipa.ansible_freeipa.ipaserver
-        # name: ipaserver
       vars:
         state: present
+
+    - name: permit IdM traffic
+      ansible.posix.firewalld:
+        service: "{{ item }}"
+        permanent: true
+        state: enabled
+      loop:
+        - freeipa-ldap
+        - freeipa-ldaps
+        - dns
+      tags: firewall
   tags: server
+
 
 - name: setup IdM replica
   hosts: ipareplicas
@@ -159,7 +181,17 @@
     - name: apply freeipa role
       include_role:
         name: freeipa.ansible_freeipa.ipareplica
-        # name: ipareplica
       vars:
         state: present
+
+    - name: permit IdM traffic
+      ansible.posix.firewalld:
+        service: "{{ item }}"
+        permanent: true
+        state: enabled
+      loop:
+        - freeipa-ldap
+        - freeipa-ldaps
+        - dns
+      tags: firewall
   tags: replica
