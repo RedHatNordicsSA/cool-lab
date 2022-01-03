@@ -16,9 +16,16 @@ enabled_repos_rhel8:
   - ansible-2-for-rhel-8-x86_64-rpms
 
 # see guide here: https://galaxy.ansible.com/freeipa/ansible_freeipa
+dns_forwarder1_ip: 10.1.102.5
+dns_forwarder2_ip: 10.1.102.10
+ipaserver_master_ip: 10.128.1.10
+ipaserver_master_name: rh-idm-01
+ipaserver_replica_ip: 10.128.1.11
+ipaserver_replica_name: rh-idm-02
 ipaserver_domain: cool.lab
 ipaserver_realm: COOL.LAB
 ipaserver_setup_dns: true
 ipaserver_forwarders:
-  - 10.1.102.5
-  - 10.1.102.10
+  - "{{ dns_forwarder1_ip }}"
+  - "{{ dns_forwarder2_ip }}"
+ipaserver_gw: 10.128.1.1

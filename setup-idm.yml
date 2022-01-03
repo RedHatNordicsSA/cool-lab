@@ -7,28 +7,12 @@
     state: poweredon
     net_name: RH-seg-2991
     net_type: static
-    ip: 10.128.1.10
+    ip: "{{ ipaserver_master_ip }}"
     netmask: 255.255.255.0
-    gateway: 10.128.1.1
-    name: rh-idm-01.coollab
+    gateway: "{{ ipaserver_gw }}"
+    name: "{{ ipaserver_master_name }}.{{ ipaserver_domain }}"
     # net_name: vlan1010
   tags: server
-
-# - name: update inventory
-#   hosts: localhost
-#   connection: local
-#   gather_facts: false
-#   tasks:
-#     - name: debug host ip
-#       debug:
-#         var: host_ip
-#     - name: fix inventory with IdM
-#       add_host:
-#         name: "{{ host_ip }}"
-#         groups:
-#           - ipaservers
-#           - idmcluster
-#   tags: server
 
 - import_playbook: ensure-vm-state.yml
   vars:
@@ -37,28 +21,12 @@
     state: poweredon
     net_name: RH-seg-2991
     net_type: static
-    ip: 10.128.1.11
+    ip: "{{ ipaserver_replica_ip }}"
     netmask: 255.255.255.0
-    gateway: 10.128.1.1
-    name: rh-idm-02.coollab
+    gateway: "{{ ipaserver_gw }}"
+    name: "{{ ipaserver_replica_name }}.{{ ipaserver_domain }}"
     # net_name: vlan1010
   tags: replica
-
-# - name: update inventory
-#   hosts: localhost
-#   connection: local
-#   gather_facts: false
-#   tasks:
-#     - name: debug host ip
-#       debug:
-#         var: host_ip
-#     - name: fix inventory with ipaserver
-#       add_host:
-#         name: "{{ host_ip }}"
-#         groups:
-#           - ipareplicas
-#           - idmcluster
-#   tags: replica
 
 - name: setup stuff at IdMs
   hosts:
@@ -69,10 +37,9 @@
       copy:
         dest: /etc/resolv.conf
         content: |
-          search cool-lab.tech
-          nameserver 10.1.102.5
-          nameserver 10.1.102.10
-
+          search cool.lab
+          nameserver {{ dns_forwarder1_ip }}
+          nameserver {{ dns_forwarder2_ip }}
 
 - import_playbook: prepare-rhel8.yml
   vars:
@@ -122,6 +89,24 @@
           ::1         localhost localhost.localdomain
           localhost6 localhost6.localdomain6
 
+    - name: create hosts entry for idm master
+      lineinfile:
+        path: /etc/hosts
+        regexp: ".*{{ ipaserver_master_name }}.*"
+        line: >-
+          {{ ipaserver_master_ip }}
+          {{ ipaserver_master_name }}.{{ ipaserver_domain }}
+          {{ ipaserver_master_name }}
+
+    - name: create hosts entry for idm replica
+      lineinfile:
+        path: /etc/hosts
+        regexp: ".*{{ ipaserver_replica_name }}.*"
+        line: >-
+          {{ ipaserver_replica_ip }}
+          {{ ipaserver_replica_name }}.{{ ipaserver_domain }}
+          {{ ipaserver_replica_name }}
+
     - name: reboot to get ipv6
       reboot:
         reboot_timeout: 120
@@ -132,17 +117,10 @@
     - ipaservers
   tasks:
 
-    - name: create hosts entry for ipv4
-      lineinfile:
-        path: /etc/hosts
-        regexp: '.*rh-idm-01.*'
-        line: 10.128.1.10   rh-idm-01.cool-lab.tech rh-idm-01
-
     - name: ensure fqdn hostname
       hostname:
-        name: rh-idm-01.cool-lab.tech
+        name: "{{ ipaserver_master_name }}.{{ ipaserver_domain }}"
         use: systemd
-
 
     - name: apply freeipa role
       include_role:
@@ -167,15 +145,9 @@
   hosts: ipareplicas
   tasks:
 
-    - name: create hosts entry for ipv4
-      lineinfile:
-        path: /etc/hosts
-        regexp: '.*rh-idm-02.*'
-        line: 10.128.1.11   rh-idm-02.cool-lab.tech rh-idm-02
-
     - name: ensure fqdn hostname
       hostname:
-        name: rh-idm-02.cool-lab.tech
+        name: "{{ ipaserver_replica_name }}.{{ ipaserver_domain }}"
         use: systemd
 
     - name: apply freeipa role
