@@ -8,6 +8,7 @@
       - vim
       - insights-client
     register_insights: true
+    epel: false
   tasks:
 
     - name: Subscribe to Red Hat
@@ -24,6 +25,21 @@
       rhsm_repository:
         name: "{{ enabled_repos_rhel8 }}"
         state: enabled
+      tags: regs
+
+    - name: Add codeready builder for epel
+      rhsm_repository:
+        name: codeready-builder-for-rhel-8-x86_64-rpms
+        state: enabled
+      when: epel | bool
+      tags: regs
+
+    - name: Install Epel repos
+      yum:
+        name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+        state: present
+        disable_gpg_check: true
+      when: epel | bool
       tags: regs
 
     - name: install stuff
