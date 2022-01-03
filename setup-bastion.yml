@@ -32,6 +32,7 @@
       - ansible
       - git
       - python3-pyvmomi
+    epel: true
 
 - name: setup stuff at bastion
   hosts: all
