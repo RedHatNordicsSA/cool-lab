@@ -1,0 +1,61 @@
+---
+
+- import_playbook: ensure-vm-state.yml
+  vars:
+    memory_mb: 4096
+    num_cpus: 2
+    state: poweredon
+    net_name: RH-seg-2991
+    net_type: dhcp
+    name: rh-ansible-controller-01.coollab
+    # net_name: vlan1010
+
+- name: update inventory
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: debug host ip
+      debug:
+        var: host_ip
+    - name: fix inventory with Ansible Controller
+      add_host:
+        name: "{{ host_ip }}"
+        groups:
+          - aapcontroller
+          - ansibleautomationplatform
+
+- import_playbook: ensure-vm-state.yml
+  vars:
+    memory_mb: 2048
+    num_cpus: 2
+    state: poweredon
+    net_name: RH-seg-2991
+    net_type: dhcp
+    name: rh-exnode-01.coollab
+    # net_name: vlan1010
+
+- name: update inventory
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: debug host ip
+      debug:
+        var: host_ip
+    - name: fix inventory with ipaserver
+      add_host:
+        name: "{{ host_ip }}"
+        groups:
+          - aapnodes
+          - ansibleautomationplatform
+
+- name: setup stuff at all aap servers
+  hosts: ansibleautomationplatform
+  tasks:
+    - name: setup dns
+      copy:
+        dest: /etc/resolv.conf
+        content: |
+          nameserver 10.1.102.5
+          nameserver 10.1.102.10
