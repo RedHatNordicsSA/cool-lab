@@ -15,6 +15,10 @@
     # ip: 10.128.1.256
     # netmask: 255.255.255.0
     # gateway: 10.128.1.1
+    # domain: cool.lab
+    # dns_servers:
+    #   - 10.128.1.10
+    #   - 10.128.1.11
 
   tasks:
     - name: Clone the template
@@ -43,6 +47,10 @@
             wait_for_ip_address_timeout: 60
             connected: true
             start_connected: true
+        customization:
+          # hostname: "{{ name }}.{{ domain | default('localdomain')}}"
+          domain: "{{ domain | default(omit) }}"
+          dns_servers: "{{ dns_servers | default(omit) }}"
       register: vm
       when: state != 'absent'
 

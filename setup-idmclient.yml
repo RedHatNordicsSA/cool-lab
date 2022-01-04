@@ -12,6 +12,11 @@
 
   tasks:
 
+    - name: setup hostname
+      hostname:
+        name: "{{ short_name | mandatory }}.{{ ipaserver_domain }}"
+        use: systemd
+
     - name: create hosts entry for idm master
       lineinfile:
         path: /etc/hosts
@@ -33,5 +38,14 @@
     - name: add to IdM
       vars:
         state: present
+        ipasssd_enable_dns_updates: true
+        # ipaclient_force: true
       include_role:
         name: freeipa.ansible_freeipa.ipaclient
+
+    # - name: add to dns
+    #   freeipa.ansible_freeipa.ipahost:
+    #     action: member
+    #     state: present
+    #     name: "{{ ansible_fqdn }}.{{ ipaserver_domain }}"
+    #     ipa
