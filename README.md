@@ -134,4 +134,13 @@ rh-idm-02.coollab.
 ansible-playbook  -u root -e "subs_username=$subs_username subs_pw=$subs_pw" setup-idm.yml
 ```
 
-XXX There are still problems with DNS config of IdM. 
+## Setup IdM clients
+
+To sign a host into IdM, one needs to add the client to [inventory](hosts) into group called
+ipaclients. After inventory is ok, run:
+
+```
+ansible-playbook -i hosts -u root setup-ipaclient.yml
+```
+
+This will ensure the VM hosts are all in IdM.
