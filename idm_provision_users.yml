@@ -1,0 +1,40 @@
+---
+
+- name: Playbook to add users
+  hosts: rh-idm-01.cool.lab
+  tasks:
+
+    - name: Create user ikke
+      freeipa.ansible_freeipa.ipauser:
+        name: ikke
+        first: Ilkka
+        last: Tengvall
+        uid: 10001
+        gid: 10001
+        # passwordexpiration: "2025-01-19 23:59:59"
+        password: "coolpw"
+        update_password: on_create
+        sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC577GzJaVha0u0byNEFLDbGQhMkPSyXeT9gqIfZMKIxgh9PhOjpHl739lcdbsbgiUVAjZYI7M3PwuGghYTZpk2amJEZXUrul2MQudEc5tUX9wbpdKx9PEhzCywynRN+ZWGK15R5uVyc8mhqbvE0xQnkX0d+/eh+K8reFw451rPJuXrbbk13x/KBs/WqjEGCe6Yto/BotRRadpxTP5gPTxs/MIZ9LZC5EjmuOxDVt1xNROUNdD7gdK8DdpAHK72OoaT5ooc3Zq9uum4sYhCc611IGMNy2yjaYsJWWiVpDFy+APs5u9oK7wdtYFZwhf6B1O3U1X21CoaU8nJsFxJmI1g32IaAfh18sGiTBKKu8vYfF1y2eHa0I/App5WI+H5BS9WV7QyW5s7FQQ9R0okZ3kWbiGj8tVcVdTviwKmNm/7FtED6vPDe9ji+ou56YyzX7sd8ZFZjCX4rG9ZfpCzwsCCRdYHcKEyTIM5is9aggSUVWIkhdD9IKKsJEuW2ZCo8zpVMqSKm4G05tieIAGGr546m1OiTVBFVzuhYuTmwGuVfR0szoDCV6nOc1vcZMLyWYM5zWZRMuCw6NMzMuL+ot0JXyVKtgfFt4q5Q+Ha87jYXsiLOezsTiycgG1c/HmF4NxfWHt8nkDP/hQI0ESb1AKqxqp3++mCciHd1PlE/Y1CaQ==
+
+    - name: list ipa admins
+      freeipa.ansible_freeipa.ipagroup:
+        name: admin
+        user:
+          - ikke
+
+    - name: Create group rhops with gid 1100
+      freeipa.ansible_freeipa.ipagroup:
+        name: rhops
+        gidnumber: 1100
+        user:
+          - ikke
+
+    - name: Create group arrops
+      freeipa.ansible_freeipa.ipagroup:
+        name: sysops
+        user:
+        gidnumber: 1200
+
+    - name: Create group appops
+      freeipa.ansible_freeipa.ipagroup:
+        name: appops

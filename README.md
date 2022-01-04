@@ -150,3 +150,13 @@ ansible-playbook -i hosts -u root -l rh-test-01.cool.lab -e short_name=rh-test-0
 ```
 
 This will ensure the VM hosts are all in IdM.
+
+## Populate Users and Groups to IdM
+
+To add/remove users, update the file
+[idm_provision_users.yml](idm_provision_users.yml)
+and run:
+
+```
+ ansible-playbook -i hosts -u root idm_provision_users.yml
+```
