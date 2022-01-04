@@ -1,0 +1,18 @@
+---
+- name: install aap21
+  hosts: automationcontroller
+  
+  roles:
+    - role: aap2-installation
+      ansible_install_file: "/root/ansible-automation-platform-setup-bundle-2.1.1-2.tar.gz"
+      aap_setup_base_dir: "~/aap21install"
+      aap_exnode_server: "{{ groups['execution_nodes'][0] }}"
+      aap_controller_server: "{{ groups['automationcontroller'][0] }}"
+      aap_database_server: "{{ groups['database'][0] }}"
+      aap_admin_password: "{{ aap_admin_password }}"
+      aap_database_name: "awx"
+      aap_database_username: "awx"
+      aap_database_password: "{{ aap_database_password }}"
+      aap_registry_username: "{{ subs_username }}"
+      aap_registry_password: "{{ subs_pw }}"
+

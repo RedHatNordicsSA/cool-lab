@@ -1,0 +1,7 @@
+---
+
+ipareplica_setup_ca: true
+ipareplica_setup_dns: true
+ipareplica_forwarders:
+  - 10.1.102.5
+  - 10.1.102.10

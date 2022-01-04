@@ -1,61 +1,165 @@
 ---
-
-- import_playbook: ensure-vm-state.yml
-  vars:
-    memory_mb: 4096
-    num_cpus: 2
-    state: poweredon
-    net_name: RH-seg-2991
-    net_type: dhcp
-    name: rh-ansible-controller-01.coollab
-    # net_name: vlan1010
-
-- name: update inventory
+- name: setup-ansible
   hosts: localhost
   connection: local
-  gather_facts: false
-  tasks:
-    - name: debug host ip
-      debug:
-        var: host_ip
-    - name: fix inventory with Ansible Controller
-      add_host:
-        name: "{{ host_ip }}"
-        groups:
-          - aapcontroller
-          - ansibleautomationplatform
 
-- import_playbook: ensure-vm-state.yml
   vars:
-    memory_mb: 2048
-    num_cpus: 2
-    state: poweredon
-    net_name: RH-seg-2991
-    net_type: dhcp
-    name: rh-exnode-01.coollab
-    # net_name: vlan1010
+    rh_aap_controller: rh-ansiblecontroller-01.cool.lab
+    rh_aap_exnode: rh-exnode-01.cool.lab
+    rh_aap_database: rh-ansibledatabase-01.cool.lab
 
-- name: update inventory
-  hosts: localhost
-  connection: local
-  gather_facts: false
-  tasks:
-    - name: debug host ip
-      debug:
-        var: host_ip
-    - name: fix inventory with ipaserver
-      add_host:
-        name: "{{ host_ip }}"
-        groups:
-          - aapnodes
-          - ansibleautomationplatform
+  roles:
+    - role: vm-machine-coollab
+      # The ansible-controller-01
+      memory_mb: 16384 
+      num_cpus: 2
+      state: poweredon
+      net_name: RH-seg-2991
+      net_type: static
+      ip: "{{ hostvars[ rh_aap_controller ].ansible_host }}"
+      netmask: 255.255.255.0
+      gateway: "{{ ipaserver_gw }}"
+      vm_name: rh-ansiblecontroller-01
+      domain: "{{ ipaserver_domain }}"
+      dns_servers:
+        - "{{ dns_forwarder1_ip }}"
+        - "{{ dns_forwarder2_ip }}"
+      update_inventory: false
+      inventory_groups:
+        - aapcontroller
+        - ansibleautomationplatform
+      # net_name: vlan1010  
+
+    - role: vm-machine-coollab
+      # The ansible-controller-01
+      memory_mb: 16384
+      num_cpus: 2
+      state: poweredon
+      net_name: RH-seg-2991
+      net_type: static
+      ip: "{{ hostvars[ rh_aap_database ].ansible_host }}"
+      netmask: 255.255.255.0
+      gateway: "{{ ipaserver_gw }}"
+      vm_name: rh-ansibledatabase-01
+      domain: "{{ ipaserver_domain }}"
+      dns_servers:
+        - "{{ dns_forwarder1_ip }}"
+        - "{{ dns_forwarder2_ip }}"
+      update_inventory: false
+      inventory_groups:
+        - ansibleautomationplatform
+      # net_name: vlan1010  
+
+
+    - role: vm-machine-coollab
+      # The exnode-01
+      memory_mb: 16384
+      num_cpus: 2
+      state: poweredon
+      net_name: RH-seg-2991
+      net_type: static
+      ip: "{{ hostvars[ rh_aap_exnode ].ansible_host }}"
+      netmask: 255.255.255.0
+      gateway: "{{ ipaserver_gw }}"
+      vm_name: rh-exnode-01
+      domain: "{{ ipaserver_domain }}"
+      dns_servers:
+        - "{{ dns_forwarder1_ip }}"
+        - "{{ dns_forwarder2_ip }}"
+      update_inventory: false
+      inventory_groups:
+        - aapnodes
+        - ansibleautomationplatform
+      # net_name: vlan1010  
+
+
+# - import_playbook: ensure-vm-state.yml
+#   vars:
+#     memory_mb: 4096
+#     num_cpus: 2
+#     state: poweredon
+#     net_name: RH-seg-2991
+#     net_type: dhcp
+#     name: rh-ansible-controller-01.coollab
+#     # net_name: vlan1010
+
+# - name: update inventory
+#   hosts: localhost
+#   connection: local
+#   gather_facts: false
+#   tasks:
+#     - name: debug host ip
+#       debug:
+#         var: host_ip
+#     - name: fix inventory with Ansible Controller
+#       add_host:
+#         name: "{{ host_ip }}"
+#         groups:
+#           - aapcontroller
+#           - ansibleautomationplatform
+
+# - import_playbook: ensure-vm-state.yml
+#   vars:
+#     memory_mb: 2048
+#     num_cpus: 2
+#     state: poweredon
+#     net_name: RH-seg-2991
+#     net_type: dhcp
+#     name: rh-exnode-01.coollab
+#     # net_name: vlan1010
+
+# - name: update inventory
+#   hosts: localhost
+#   connection: local
+#   gather_facts: false
+#   tasks:
+#     - name: debug host ip
+#       debug:
+#         var: host_ip
+#     - name: fix inventory with ipaserver
+#       add_host:
+#         name: "{{ host_ip }}"
+#         groups:
+#           - aapnodes
+#           - ansibleautomationplatform
 
 - name: setup stuff at all aap servers
-  hosts: ansibleautomationplatform
+  import_playbook: prepare-rhel8.yml
+  vars:
+    install_pkgs_list:
+      - tmux
+      - vim
+      - insights-client
+  tags: prep
+
+- name: setup idmclient at all aap servers
+  import_playbook: setup-idmclient.yml
+  tags: prep
+
+- name: add aap servers to local hosts file on servers
+  import_playbook: aap_add_to_hosts.yml
+
+- name: create a temporary private key file from vault
+  hosts:
+    automationcontroller
+
   tasks:
-    - name: setup dns
-      copy:
-        dest: /etc/resolv.conf
-        content: |
-          nameserver 10.1.102.5
-          nameserver 10.1.102.10
+  - name: create a temporary private key file from vault
+    copy:
+      owner: root
+      mode: 0600
+      content: "{{ admin_ssh_private_key }}"
+      dest: ~/.ssh/aaptempid
+
+- name: setup ansible at all app servers
+  import_playbook: install-aap21.yml
+
+- name: create a temporary private key file from vault
+  hosts:
+    automationcontroller
+    
+  tasks:
+  - name: delete temporary private key
+    ansible.builtin.file:
+      path: ~/.ssh/aaptempid
+      state: absent 

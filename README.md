@@ -144,3 +144,60 @@ ansible-playbook -i hosts -u root setup-ipaclient.yml
 ```
 
 This will ensure the VM hosts are all in IdM.
+
+## Populate Users and Groups to IdM
+
+To add/remove users, update the file
+[idm_provision_users.yml](idm_provision_users.yml)
+and run:
+
+```
+ ansible-playbook -i hosts -u root idm_provision_users.yml
+```
+
+## Manage host groups
+
+Make sure your VM ends up into one of the groups in hostgroups variable in
+[group_vars/all/main.yml](group_vars/all/main.yml). E.g:
+
+```
+hostgroups:
+  - name: infra
+    hosts:
+      - rh-idm-01.cool.lab
+      - rh-idm-02.cool.lab
+      - rh-bastion-01.cool.lab
+```
+
+and run:
+
+```
+ansible-playbook -i hosts -u root  idm_ensure_host_groups.yml
+```
+
+For future, we want this to be in add/remove host functionality
+
+## Install Ansible Automation Platform 2.1
+
+You need to have an inventory file with information on the machines you would like to run AAP on.
+You need to have:
+
+[ansibleautomationplatform:children]
+automationcontroller
+database
+execution_nodes
+
+[automationcontroller]
+rh-ansiblecontroller-01.cool.lab ansible_host=10.128.1.12 short_name=rh-ansiblecontroller-01
+
+[database]
+rh-ansibledatabase-01.cool.lab ansible_host=10.128.1.13 short_name=rh-ansibledatabase-01
+
+[execution_nodes]
+rh-exnode-01.cool.lab ansible_host=10.128.1.14 short_name=rh-exnode-01
+
+and run:
+
+```
+ansible-playbook -i hosts setup-ansible.yml -e @../private-lab/secrets.yml -e "subs_username=$subs_username subs_pw=$subs_pw" -l "ansibleautomationplatform, localhost" -u root --ask-pass
+```

@@ -1,0 +1,70 @@
+---
+# tasks file for vm-machine-coollab
+
+- name: Clone the template
+  vmware_guest:
+    name: "{{ vm_name }}"
+    state: "{{ state }}"
+    hostname: "{{ vcenter_credentials.hostname }}"
+    username: "{{ vcenter_credentials.username }}"
+    password: "{{ vcenter_credentials.password }}"
+    validate_certs: false
+    template: "{{ template }}"
+    datacenter: "{{ vcenter_datacenter }}"
+    folder: "{{ vcenter_folder }}"
+    cluster: "{{ vcenter_cluster }}"
+    wait_for_ip_address: true
+    hardware:
+      memory_mb: "{{ memory_mb }}"
+      num_cpus: "{{ num_cpus }}"
+      num_cpu_cores_per_socket: "{{ num_cpu_cores_per_socket }}"
+    networks:
+      - name: "{{ net_name }}"
+        type: "{{ net_type}}"
+        ip: "{{ ip | default(omit) }}"
+        netmask: "{{ netmask | default(omit) }}"
+        gateway: "{{ gateway | default(omit) }}"
+        wait_for_ip_address_timeout: 60
+        connected: true
+        start_connected: true
+    customization:
+      # hostname: "{{ name }}.{{ domain | default('localdomain')}}"
+      domain: "{{ domain | default(omit) }}"
+      dns_servers: "{{ dns_servers | default(omit) }}"
+  register: vm
+  when: state != 'absent'
+
+- name: Delete the VM
+  vmware_guest:
+    name: "{{ vm_name }}"
+    hostname: "{{ vcenter_credentials.hostname }}"
+    username: "{{ vcenter_credentials.username }}"
+    password: "{{ vcenter_credentials.password }}"
+    validate_certs: false
+    datacenter: "{{ vcenter_datacenter }}"
+    folder: "{{ vcenter_folder }}"
+    state: "{{ state }}"
+    cluster: "{{ vcenter_cluster }}"
+    force: true
+  when: state == 'absent'
+
+- name: vm info
+  debug:
+    var: vm
+  when: state != 'absent'
+
+- name: store vm ip
+  set_fact:
+    host_ip: "{{ vm.instance.ipv4 }}"
+  when: state != 'absent'
+
+- name: debug host ip
+  delegate_to: localhost
+  debug:
+    var: host_ip
+- name: fix inventory with Ansible Controller
+  delegate_to: localhost
+  add_host:
+    name: "{{ host_ip }}"
+    groups: "{{ inventory_groups }}"          
+  when: update_inventory == true

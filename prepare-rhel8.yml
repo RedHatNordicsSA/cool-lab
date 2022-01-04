@@ -23,7 +23,7 @@
 
     - name: Enable required repositories
       rhsm_repository:
-        name: "{{ enabled_repos_rhel8 }}"
+        name: "{{ enabled_repos_rhel8 }}"
         state: enabled
       tags: regs
 

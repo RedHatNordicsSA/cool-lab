@@ -1,0 +1,21 @@
+---
+
+- name: Install OS updates
+  yum:
+    name: "*"
+    state: latest
+
+- name: Check if reboot is required
+  shell: "needs-restarting -r"
+  failed_when: false
+  register: reboot_required
+  changed_when: false
+
+- name: Reboot the server if needs-restarting recommends it
+  reboot:
+  when: reboot_required.rc != 0
+
+- name: wait for server to come back after reboot
+  wait_for_connection:
+    timeout: 600
+    delay: 20

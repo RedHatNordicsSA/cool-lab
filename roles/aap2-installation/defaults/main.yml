@@ -1,0 +1,13 @@
+---
+# defaults file for aap2-installation
+ansible_install_file: /tmp/ansible-automation-platform-setup-bundle-2.1.1-2.tar.gz
+aap_setup_base_dir: /tmp/aap2-setup
+aap_exnode_server: exnode-01
+aap_controller_server: controller-01
+aap_database_server: database-01
+aap_admin_password: password
+aap_database_name: awx
+aap_database_username: awx
+aap_database_password: password
+aap_registry_username: username
+aap_registry_password: password
