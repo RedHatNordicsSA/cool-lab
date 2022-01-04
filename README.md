@@ -4,6 +4,17 @@ Documentation to Red Hat Nordics Lab
 ## Communication
 See: https://github.com/mglantz/cool-lab/blob/main/communication.md
 
+## Development
+
+It is agreed we don't manually do anything. Of course you can play around
+freely with demos and such, but anything persistent should be written
+as code. We use
+[github kan-ban table](https://github.com/orgs/RedHatNordicsSA/projects/1)
+to track issues. Definiton of done is that:
+
+* Implementation is automated
+* Anyone can run automation based on instructions here.
+
 ## Private matters
 
 Secrets like keys, passwords etc. sensitive stuff get's stored into the
@@ -89,18 +100,6 @@ Create:
 
 ```
 ansible-playbook  -u root -e "subs_username=$subs_username subs_pw=$subs_pw" setup-bastion.yml
-```
-
-Shutdown:
-
-```
-ansible-playbook -i localhost, -c local -e state=poweredoff ensure-bastion.yml
-```
-
-Delete (can be done only after poweredoff):
-
-```
-ansible-playbook -i localhost, -c local -e state=absent ensure-bastion.yml
 ```
 
 ## Create / Delete / power off / power on VM
