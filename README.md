@@ -131,6 +131,17 @@ ansible-playbook -i localhost, -c local -e state=absent -e name=rh-test-net ensu
 
 There are different values in vars, check them out. Like mem, cpu, network etc tunings.
 
+# IdM - Identity Management
+
+We control identity by using Red Hat Identity Manager. We have it in
+replication mode. It manages the following
+
+* Users and Groups
+* Sudo rules
+* Host groups and RBAC
+* SSH key management
+* Certificate management
+
 ## Setup IdM hosts
 
 We create one IdM server and a replica. They will be name rh-idm-01.coollab and
@@ -160,3 +171,25 @@ and run:
 ```
  ansible-playbook -i hosts -u root idm_provision_users.yml
 ```
+
+## Manage host groups
+
+Make sure your VM ends up into one of the groups in hostgroups variable in
+[group_vars/all/main.yml](group_vars/all/main.yml). E.g:
+
+```
+hostgroups:
+  - name: infra
+    hosts:
+      - rh-idm-01.cool.lab
+      - rh-idm-02.cool.lab
+      - rh-bastion-01.cool.lab
+```
+
+and run:
+
+```
+ansible-playbook -i hosts -u root  idm_ensure_host_groups.yml
+```
+
+For future, we want this to be in add/remove host functionality
