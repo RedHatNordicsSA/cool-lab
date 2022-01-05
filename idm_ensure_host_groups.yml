@@ -9,6 +9,7 @@
     - name: ensure hostgroup exists
       freeipa.ansible_freeipa.ipahostgroup:
         name: "{{ item.name }}"
+        description: "{{ item.description }}"
       loop: "{{ hostgroups }}"
 
     - name: ensure hosts in hostgroups
