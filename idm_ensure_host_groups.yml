@@ -1,0 +1,20 @@
+---
+
+- name: Playbook to manage host groups
+  hosts: rh-idm-01.cool.lab
+  vars:
+    state: present
+  tasks:
+
+    - name: ensure hostgroup exists
+      freeipa.ansible_freeipa.ipahostgroup:
+        name: "{{ item.name }}"
+      loop: "{{ hostgroups }}"
+
+    - name: ensure hosts in hostgroups
+      freeipa.ansible_freeipa.ipahostgroup:
+        name: "{{ item.name }}"
+        host: "{{ item.hosts }}"
+        action: member
+        state: "{{ state }}"
+      loop: "{{ hostgroups }}"
