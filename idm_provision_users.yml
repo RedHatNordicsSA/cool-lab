@@ -60,3 +60,16 @@
           - title
           - initials
       tags: selfservice
+
+    - name: Ensure sudo rule for gods
+      freeipa.ansible_freeipa.ipasudorule:
+        name: rhops_sudo_all_nopasswd
+        cmdcategory: all
+        description: Red Hat ops allow to ruin everything anywhere freely
+        hostcategory: all
+        runasuser: any
+        sudooption:
+          - '!authenticate'
+        group:
+          - rhops
+      tags: sudo
