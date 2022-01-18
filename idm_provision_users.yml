@@ -4,77 +4,51 @@
   hosts: rh-idm-01.cool.lab
   tasks:
 
+    - name: Ensure admin keytab is valid
+      shell: "echo {{ ipaadmin_password }} | kinit admin"
+
     - name: Create users
       freeipa.ansible_freeipa.ipauser:
         # update_password: on_create
         state: present
         update_password: on_create
-        users:
-          - name: ikke
-            first: Ilkka
-            last: Tengvall
-            uid: 10001
-            gid: 10001
-            password: "coolpw-changeme123"
-            # passwordexpiration: "2025-12-31 23:59:59"
-            # yamllint disable-line rule:line-length
-            sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC577GzJaVha0u0byNEFLDbGQhMkPSyXeT9gqIfZMKIxgh9PhOjpHl739lcdbsbgiUVAjZYI7M3PwuGghYTZpk2amJEZXUrul2MQudEc5tUX9wbpdKx9PEhzCywynRN+ZWGK15R5uVyc8mhqbvE0xQnkX0d+/eh+K8reFw451rPJuXrbbk13x/KBs/WqjEGCe6Yto/BotRRadpxTP5gPTxs/MIZ9LZC5EjmuOxDVt1xNROUNdD7gdK8DdpAHK72OoaT5ooc3Zq9uum4sYhCc611IGMNy2yjaYsJWWiVpDFy+APs5u9oK7wdtYFZwhf6B1O3U1X21CoaU8nJsFxJmI1g32IaAfh18sGiTBKKu8vYfF1y2eHa0I/App5WI+H5BS9WV7QyW5s7FQQ9R0okZ3kWbiGj8tVcVdTviwKmNm/7FtED6vPDe9ji+ou56YyzX7sd8ZFZjCX4rG9ZfpCzwsCCRdYHcKEyTIM5is9aggSUVWIkhdD9IKKsJEuW2ZCo8zpVMqSKm4G05tieIAGGr546m1OiTVBFVzuhYuTmwGuVfR0szoDCV6nOc1vcZMLyWYM5zWZRMuCw6NMzMuL+ot0JXyVKtgfFt4q5Q+Ha87jYXsiLOezsTiycgG1c/HmF4NxfWHt8nkDP/hQI0ESb1AKqxqp3++mCciHd1PlE/Y1CaQ==
-          - name: mbang
-            first: Michael
-            last: Bang
-            password: "coolpw"
-            # yamllint disable-line rule:line-length
-            sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCkt8oUTzef27LLrMG9ESOJ0qAaheVkoo/nAUG4K2qmE16znvZybBU1ThxGeJwlyeN4/CK0lUcbL01LHONac5di4xIg9lxZGO031mPo/m9GLn+R8PQ6rDUa4T6IfOYYYeupGc2bfPLxHMnqXjUUXaw4B2lY5AEzjMJtvAEeF8rjnJe9Qdukv0SMqbR4nogse450EKyQC9/yfHHHxEkClEFjAtMqqKt1b5GbUodotD/QEcxAna8ewxr0+dyZSWAwoGeDu7J4Gc/yHgXLmVRBorU+nLSWLVXUTQsOcda7UySbr3SAjcmHcxyXMAdhvrZptYhyohDuUpdL/BdFW4Ctb6XU8GZizAgOn07Cs7NPXdO5Dq+ILuoyP4uoNXsZ1lqI9XQxFY3FkOW/L2SDIS89xRDjWCk6YYKJGZOGEMBiQqBPfKdOCpaXWu18Z3s2vIuhn/LiZrlb5/3l/nWXcAMlpCulx7TjgfhWlr2UoZY++7Fku+x5a7aXSM5gE5zU3k9HOgrB+S+QbcjH6op1OVi6u/4VVN7bCpMq5X0gPSw3ngWTAeS+xEehNnD8EnGvkl0GNjPSiD99ZiPhZh8FFc8CKZDFBgxBgFMJ4kBpV17dFjVEo2kFVA/nTVWa+r8qsmteVJJgxkn1zUI536hAVHBlN3BrCdww9fasXGeB+ZOHmZHZCw==
-          - name: jboivie
-            first: Jens
-            last: Boivie
-            password: "coolpw"
-            # yamllint disable-line rule:line-length
-            sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDGPBFF8MOdt1lbZKRDzJLNIkFBAiGwfiCUDSm2O2vyG6Q/ytgIe7Vl/VZRYP38H87b3yHC11wQE0COG5BMg3pQ1nrieurkmtmopL9uXtuBnuErPdWDBKfmys0gCwY31XD29zqo0O/1ZLFV44OXFOPcOXqepDJHEoVLyFp4Yirhqi4qImWIlFHcFf/+9klUHVx4TWJsyRA/pg0cCV++xGDE64bX7WkHx5u3yBWPJXLvIVOA1QU6MsA24rblr0i9Njr2DeBEH4emaPvXvgxHK2aKxeagmJW/Y22AD3suR2o1Rw8qcwuen7pw5XirxTIBfOEJitNvM0vywxPNZ0QGRuQ8adRSZduLNJyJ7533/b9NTB8uye88QJ9IC1YbL5Hdyyn26qMSlrw4S/swBRYTJhDTQDw4QluPTMRtbHTyCugwpjfU2T3FvGVFxbt6GLRDWaEEOlzUdgOsCzszVIoRHVkdYt7+knc7sNKAaKCyGT4tPp973H5pfP5aWJp3cLq28bavlNls0r07nS+RtZv4/+Hrsj0VHQjkKS2gBAGDjKNH0NiK1/4TJ5SIp2ah0RjWOtYqMV4bXhrGK/KpceAh790AkYxFpGQf1xtwPfWWFDEGel38m8ZpxwfMnetcmZMZ1VWchFy+GbHTjZjF75kvWMRqYq3PexFKRLKVOYj7D5OCCQ==
+        users: "{{ enabled_users }}"
       tags: users
 
-    - name: Add ipa admins
+    - name: Ensure ipa admins
       freeipa.ansible_freeipa.ipagroup:
         name: admins
         action: member
         state: present
-        user:
-          - ikke
-          - mbang
-          - jboivie
+        user: "{{ idm_admins }}"
       tags: groups
 
 
-    - name: Create group Red Hat Ops (rhops) with gid 1100
+    - name: Ensure group Red Hat Ops (rhops) with gid 1100
       freeipa.ansible_freeipa.ipagroup:
         name: rhops
         gidnumber: 1100
       tags: groups
 
-    - name: Add members to group Red Hat Ops (rhops)
+    - name: Ensure members in group Red Hat Ops (rhops)
       freeipa.ansible_freeipa.ipagroup:
         name: rhops
         action: member
         state: present
-        user:
-          - ikke
-          - mbang
-          - jboivie
+        user: "{{ rh_ops }}"
       tags: groups
 
+    # - name: Ensure group Arrow Ops (arrops)
+    #   freeipa.ansible_freeipa.ipagroup:
+    #     name: sysops
+    #     user:
+    #     gidnumber: 1200
+    #   tags: groups
 
-    - name: Create group Arrow Ops (arrops)
-      freeipa.ansible_freeipa.ipagroup:
-        name: sysops
-        user:
-        gidnumber: 1200
-      tags: groups
-
-
-    - name: Create group Application Developers (appops)
-      freeipa.ansible_freeipa.ipagroup:
-        name: appops
-      tags: groups
+    # - name: Create group Application Developers (appops)
+    #   freeipa.ansible_freeipa.ipagroup:
+    #     name: appops
+    #   tags: groups
 
 
     - name: Ensure self-service rule is present
@@ -96,7 +70,6 @@
         cmdcategory: all
         description: Red Hat ops allow to ruin everything anywhere freely
         hostcategory: all
-        runasuser: any
         sudooption:
           - '!authenticate'
         group:
