@@ -164,8 +164,8 @@ This will ensure the VM hosts are all in IdM.
 
 ## Populate Users and Groups to IdM
 
-To add/remove users, update the file
-[idm_provision_users.yml](idm_provision_users.yml)
+To add/remove users, update the user list in file
+[group_vars/ipaservers/users.yml](group_vars/ipaservers/users.yml)
 and run:
 
 ```
