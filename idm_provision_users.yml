@@ -4,12 +4,9 @@
   hosts: rh-idm-01.cool.lab
   tasks:
 
-    - name: Ensure admin keytab is valid
-      shell: "echo {{ ipaadmin_password }} | kinit admin"
-
     - name: Create users
       freeipa.ansible_freeipa.ipauser:
-        # update_password: on_create
+        ipaadmin_password: "{{ ipaadmin_password }}"
         state: present
         update_password: on_create
         users: "{{ enabled_users }}"
@@ -17,6 +14,7 @@
 
     - name: Ensure ipa admins
       freeipa.ansible_freeipa.ipagroup:
+        ipaadmin_password: "{{ ipaadmin_password }}"
         name: admins
         action: member
         state: present
@@ -26,12 +24,14 @@
 
     - name: Ensure group Red Hat Ops (rhops) with gid 1100
       freeipa.ansible_freeipa.ipagroup:
+        ipaadmin_password: "{{ ipaadmin_password }}"
         name: rhops
         gidnumber: 1100
       tags: groups
 
     - name: Ensure members in group Red Hat Ops (rhops)
       freeipa.ansible_freeipa.ipagroup:
+        ipaadmin_password: "{{ ipaadmin_password }}"
         name: rhops
         action: member
         state: present
@@ -53,6 +53,7 @@
 
     - name: Ensure self-service rule is present
       freeipa.ansible_freeipa.ipaselfservice:
+        ipaadmin_password: "{{ ipaadmin_password }}"
         name: "Users can manage their own name details"
         permission:
           - read
@@ -66,6 +67,7 @@
 
     - name: Ensure sudo rule for gods
       freeipa.ansible_freeipa.ipasudorule:
+        ipaadmin_password: "{{ ipaadmin_password }}"
         name: rhops_sudo_all_nopasswd
         cmdcategory: all
         description: Red Hat ops allow to ruin everything anywhere freely
