@@ -12,15 +12,20 @@
         users: "{{ enabled_users }}"
       tags: users
 
-    - name: Ensure ipa admins
+    - name: Ensure ipa admins group
+      freeipa.ansible_freeipa.ipagroup:
+        ipaadmin_password: "{{ ipaadmin_password }}"
+        name: admins
+        state: present
+      tags: groups
+
+    - name: Ensure members in ipa admins group
       freeipa.ansible_freeipa.ipagroup:
         ipaadmin_password: "{{ ipaadmin_password }}"
         name: admins
         action: member
-        state: present
         user: "{{ idm_admins }}"
       tags: groups
-
 
     - name: Ensure group Red Hat Ops (rhops) with gid 1100
       freeipa.ansible_freeipa.ipagroup:
@@ -34,7 +39,6 @@
         ipaadmin_password: "{{ ipaadmin_password }}"
         name: rhops
         action: member
-        state: present
         user: "{{ rh_ops }}"
       tags: groups
 
