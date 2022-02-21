@@ -26,15 +26,25 @@ enabled_users:
     gid: 10003
     # yamllint disable-line rule:line-length
     sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDGPBFF8MOdt1lbZKRDzJLNIkFBAiGwfiCUDSm2O2vyG6Q/ytgIe7Vl/VZRYP38H87b3yHC11wQE0COG5BMg3pQ1nrieurkmtmopL9uXtuBnuErPdWDBKfmys0gCwY31XD29zqo0O/1ZLFV44OXFOPcOXqepDJHEoVLyFp4Yirhqi4qImWIlFHcFf/+9klUHVx4TWJsyRA/pg0cCV++xGDE64bX7WkHx5u3yBWPJXLvIVOA1QU6MsA24rblr0i9Njr2DeBEH4emaPvXvgxHK2aKxeagmJW/Y22AD3suR2o1Rw8qcwuen7pw5XirxTIBfOEJitNvM0vywxPNZ0QGRuQ8adRSZduLNJyJ7533/b9NTB8uye88QJ9IC1YbL5Hdyyn26qMSlrw4S/swBRYTJhDTQDw4QluPTMRtbHTyCugwpjfU2T3FvGVFxbt6GLRDWaEEOlzUdgOsCzszVIoRHVkdYt7+knc7sNKAaKCyGT4tPp973H5pfP5aWJp3cLq28bavlNls0r07nS+RtZv4/+Hrsj0VHQjkKS2gBAGDjKNH0NiK1/4TJ5SIp2ah0RjWOtYqMV4bXhrGK/KpceAh790AkYxFpGQf1xtwPfWWFDEGel38m8ZpxwfMnetcmZMZ1VWchFy+GbHTjZjF75kvWMRqYq3PexFKRLKVOYj7D5OCCQ==
+  - name: mglantz
+    first: Magnus
+    last: Glantz
+    password: "coolpw"
+    uid: 10004
+    gid: 10004
+    # yamllint disable-line rule:line-length
+    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCiVpjd30fnTEleLbz37gFykixaQg29LbtG5YSYy6pRxGyFbPPfyTYB+qx3r8+adPOiaBWrOjcU4WKNXZfznQffrH3M1pG7zMsKlmyE5GZw0HYHev3fBh7RkWc2m2Q/gIa9paUa0lce1he/fYCi+7mttA82jNvU78C5MpXts+ZLSBmlKR0T9lWGukXWiprfAeyPXr+WOgQHdEIcQXuUPwV/3MF5eapJcuONxuMCYOfSMKW/921CZVMM2NvA1CO4S3K/GYAYrw1VaVUNu0sl3nCrrBwrxFEWssjacy2MS4SVxeQ6KwNHn0pXpeVPgrxXcQngmichVuJVZZ7hApitURhV
 
 
 idm_admins:
   - ikke
   - mbang
   - jboivie
+  - mglantz
 
 rh_ops:
   - ikke
   - mbang
   - jboivie
+  - mglantz
 
