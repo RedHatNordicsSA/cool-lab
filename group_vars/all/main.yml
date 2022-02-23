@@ -25,3 +25,17 @@ ipaserver_replica_name: rh-idm-02
 ipaserver_domain: cool.lab
 ipaserver_realm: COOL.LAB
 ipaserver_gw: 10.128.1.1
+
+# define the idm host groups
+hostgroups:
+  - name: infra
+    description: Infrastructure Hosts
+    hosts:
+      - rh-idm-01.cool.lab
+      - rh-idm-02.cool.lab
+      - rh-bastion-01.cool.lab
+  - name: ipaservers
+    description: IdM cluster hosts
+    hosts:
+      - rh-idm-01.cool.lab
+      - rh-idm-02.cool.lab

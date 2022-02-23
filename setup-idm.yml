@@ -10,8 +10,11 @@
     ip: "{{ ipaserver_master_ip }}"
     netmask: 255.255.255.0
     gateway: "{{ ipaserver_gw }}"
-    name: "{{ ipaserver_master_name }}.{{ ipaserver_domain }}"
-    # net_name: vlan1010
+    name: "{{ ipaserver_master_name }}"
+    domain: "{{ ipaserver_domain }}"
+    dns_servers:
+      - "{{ dns_forwarder1_ip }}"
+      - "{{ dns_forwarder2_ip }}"
   tags: server
 
 - import_playbook: ensure-vm-state.yml
@@ -24,22 +27,12 @@
     ip: "{{ ipaserver_replica_ip }}"
     netmask: 255.255.255.0
     gateway: "{{ ipaserver_gw }}"
-    name: "{{ ipaserver_replica_name }}.{{ ipaserver_domain }}"
-    # net_name: vlan1010
+    name: "{{ ipaserver_replica_name }}"
+    domain: "{{ ipaserver_domain }}"
+    dns_servers:
+      - "{{ dns_forwarder1_ip }}"
+      - "{{ dns_forwarder2_ip }}"
   tags: replica
-
-- name: setup stuff at IdMs
-  hosts:
-    - ipaservers
-    - ipareplicas
-  tasks:
-    - name: setup dns
-      copy:
-        dest: /etc/resolv.conf
-        content: |
-          search cool.lab
-          nameserver {{ dns_forwarder1_ip }}
-          nameserver {{ dns_forwarder2_ip }}
 
 - import_playbook: prepare-rhel8.yml
   vars:

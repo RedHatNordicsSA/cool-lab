@@ -1,0 +1,83 @@
+---
+
+- name: Playbook to add users
+  hosts: rh-idm-01.cool.lab
+  tasks:
+
+    - name: Create users
+      freeipa.ansible_freeipa.ipauser:
+        ipaadmin_password: "{{ ipaadmin_password }}"
+        state: present
+        update_password: on_create
+        users: "{{ enabled_users }}"
+      tags: users
+
+    - name: Ensure ipa admins group
+      freeipa.ansible_freeipa.ipagroup:
+        ipaadmin_password: "{{ ipaadmin_password }}"
+        name: admins
+        state: present
+      tags: groups
+
+    - name: Ensure members in ipa admins group
+      freeipa.ansible_freeipa.ipagroup:
+        ipaadmin_password: "{{ ipaadmin_password }}"
+        name: admins
+        action: member
+        user: "{{ idm_admins }}"
+      tags: groups
+
+    - name: Ensure group Red Hat Ops (rhops) with gid 1100
+      freeipa.ansible_freeipa.ipagroup:
+        ipaadmin_password: "{{ ipaadmin_password }}"
+        name: rhops
+        gidnumber: 1100
+      tags: groups
+
+    - name: Ensure members in group Red Hat Ops (rhops)
+      freeipa.ansible_freeipa.ipagroup:
+        ipaadmin_password: "{{ ipaadmin_password }}"
+        name: rhops
+        action: member
+        user: "{{ rh_ops }}"
+      tags: groups
+
+    # - name: Ensure group Arrow Ops (arrops)
+    #   freeipa.ansible_freeipa.ipagroup:
+    #     name: sysops
+    #     user:
+    #     gidnumber: 1200
+    #   tags: groups
+
+    # - name: Create group Application Developers (appops)
+    #   freeipa.ansible_freeipa.ipagroup:
+    #     name: appops
+    #   tags: groups
+
+
+    - name: Ensure self-service rule is present
+      freeipa.ansible_freeipa.ipaselfservice:
+        ipaadmin_password: "{{ ipaadmin_password }}"
+        name: "Users can manage their own name details"
+        permission:
+          - read
+          - write
+        attribute:
+          - givenname
+          - displayname
+          - title
+          - initials
+      tags: selfservice
+
+    - name: Ensure sudo rule for gods
+      freeipa.ansible_freeipa.ipasudorule:
+        ipaadmin_password: "{{ ipaadmin_password }}"
+        name: rhops_sudo_all_nopasswd
+        cmdcategory: all
+        description: Red Hat ops allow to ruin everything anywhere freely
+        hostcategory: all
+        sudooption:
+          - '!authenticate'
+        group:
+          - rhops
+      tags: sudo

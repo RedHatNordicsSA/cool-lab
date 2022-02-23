@@ -117,13 +117,30 @@ For power state commands:
 ansible-playbook -i localhost, -c local -e state=poweredoff -e name=rh-test-net ensure-vm-state.yml
 ```
 
-And to delete it:
+And to delete it nicely, unregistering from all places like subs and idm:
+
+```
+ansible-playbook  -u root -e "short_name=rh-test-01" -l rh-idm-01.cool.lab  nuke-vm.yml 
+```
+
+And bluntly just delete VM, leave subscriptions, insights and idm think it still exists:
 
 ```
 ansible-playbook -i localhost, -c local -e state=absent -e name=rh-test-net ensure-vm-state.yml
 ```
 
 There are different values in vars, check them out. Like mem, cpu, network etc tunings.
+
+# IdM - Identity Management
+
+We control identity by using Red Hat Identity Manager. We have it in
+replication mode. It manages the following
+
+* Users and Groups
+* Sudo rules
+* Host groups and RBAC
+* SSH key management
+* Certificate management
 
 ## Setup IdM hosts
 
@@ -140,15 +157,15 @@ To sign a host into IdM, one needs to add the client to [inventory](hosts) into 
 ipaclients. After inventory is ok, run:
 
 ```
-ansible-playbook -i hosts -u root setup-ipaclient.yml
+ansible-playbook -i hosts -u root -l rh-test-01.cool.lab -e short_name=rh-test-01 setup-idmclient.yml
 ```
 
 This will ensure the VM hosts are all in IdM.
 
 ## Populate Users and Groups to IdM
 
-To add/remove users, update the file
-[idm_provision_users.yml](idm_provision_users.yml)
+To add/remove users, update the user list in file
+[group_vars/ipaservers/users.yml](group_vars/ipaservers/users.yml)
 and run:
 
 ```
