@@ -1,0 +1,64 @@
+---
+- name: Subscribe to Red Hat
+  become: true
+  delegate_to: "{{ host_ip }}"
+  redhat_subscription:
+    state: present
+    username: "{{ subs_username }}"
+    password: "{{ subs_pw }}"
+    autosubscribe: false
+    pool: "{{ subs_pool }}"
+    force_register: "{{ force_register }}"
+  tags: subs
+
+- name: Enable required repositories
+  become: true
+  delegate_to: "{{ host_ip }}"
+  rhsm_repository:
+    name: "{{ enabled_repos_rhel8 }}"
+    state: enabled
+  tags: regs
+
+- name: Add codeready builder for epel
+  become: true
+  delegate_to: "{{ host_ip }}"
+  rhsm_repository:
+    name: codeready-builder-for-rhel-8-x86_64-rpms
+    state: enabled
+  when: epel | bool
+  tags: regs
+
+- name: Install Epel repos
+  become: true
+  delegate_to: "{{ host_ip }}"
+  yum:
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+    state: present
+    disable_gpg_check: true
+  when: epel | bool
+  tags: regs
+
+- name: install stuff
+  become: true
+  delegate_to: "{{ host_ip }}"
+  yum:
+    name: "{{ install_pkgs_list }}"
+    state: present
+  tags: packages
+
+- name: register insights
+  become: true
+  delegate_to: "{{ host_ip }}"
+  command: insights-client --register
+  args:
+    removes: /etc/insights-client/.unregistered
+  tags: insights
+
+- name: enable insights
+  become: true
+  delegate_to: "{{ host_ip }}"
+  systemd:
+    name: insights-client
+    state: started
+    enabled: true
+  tags: insights

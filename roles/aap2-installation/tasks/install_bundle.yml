@@ -1,0 +1,27 @@
+---
+- name: Upload the ansible.cfg
+  template:
+    backup: true
+    src: ansible.cfg
+    dest: "{{ aap_setup_working_dir }}/ansible.cfg"
+
+- name: Upload the inventory template
+  template:
+    backup: true
+    src: inventory.j2
+    dest: "{{ aap_setup_working_dir }}/inventory"
+  register: original_inventory
+
+- name: Ensures /etc/nginx dir exists
+  file: path=/etc/nginx state=directory
+
+- name: Copy default nginx config
+  copy:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+
+- name: Setup Ansible Automation Platform
+  command: ./setup.sh -e required_ram=1000 -e ansible_user=root -e ansible_ssh_private_key_file="~/.ssh/aaptempid"
+  args:
+    chdir: "{{ aap_setup_working_dir }}"
+  become: true

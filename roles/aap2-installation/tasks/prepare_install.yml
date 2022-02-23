@@ -1,0 +1,30 @@
+---
+
+- name: Create Install Directory
+  file:
+    path: "{{ aap_setup_base_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0700
+
+- name: Extract the bundle
+  unarchive:
+    src: "{{ ansible_install_file }}"
+    dest: "{{ aap_setup_base_dir }}"
+
+- block:
+  - name: Find the working directory
+    find:
+      contains: 'ansible-automation-platform-setup-bundle-'
+      file_type: directory
+      paths: "{{ aap_setup_base_dir }}/"
+      depth: 2
+    register: dirnames
+
+  - name: Find the working directory
+    set_fact:
+      aap_setup_working_dir: "{{ dirnames.files[0].path }}"
+    when: dirnames.files | length > 0
+    failed_when: dirnames.files| length == 0
+  when: aap_setup_working_dir is not defined

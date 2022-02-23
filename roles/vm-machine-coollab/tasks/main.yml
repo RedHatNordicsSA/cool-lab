@@ -1,0 +1,4 @@
+---
+- include_tasks: create-vm.yml
+# - include_tasks: prepare-rhel8.yml
+# - include_tasks: setup-idmclient.yml

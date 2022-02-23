@@ -1,0 +1,22 @@
+---
+# defaults file for vm-machine-coollab
+vm_name: delete_this_machine_anytime
+state: poweredon
+memory_mb: 2048
+num_cpus: 2
+num_cpu_cores_per_socket: 1
+template: rhel_8_5_image
+net_name: RH-seg-2991
+net_type: dhcp       # dhcp vs. static. If static, fix below values
+# ip: 10.128.1.256
+# netmask: 255.255.255.0
+# gateway: 10.128.1.1
+
+# prepare-rhel8.yml defaults
+force_register: false
+install_pkgs_list:
+  - tmux
+  - vim
+  - insights-client
+register_insights: true
+epel: false

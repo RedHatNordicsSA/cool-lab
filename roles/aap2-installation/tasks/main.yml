@@ -1,0 +1,8 @@
+---
+
+- import_tasks: pre_flight.yml
+#- import_tasks: upgrade_rhel.yml
+- import_tasks: prepare_install.yml
+- import_tasks: install_bundle.yml
+#- import_tasks: http_certificates.yml
+#- import_tasks: post_install.yml
