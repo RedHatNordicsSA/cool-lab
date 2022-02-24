@@ -218,3 +218,19 @@ and run:
 ```
 ansible-playbook -i hosts setup-ansible.yml -e @../private-lab/secrets.yml -e "subs_username=$subs_username subs_pw=$subs_pw" -l "ansibleautomationplatform, localhost" -u root --ask-pass
 ```
+
+### Configuring AAP platofrm post intsall
+
+There is playbook
+[aap_configure_controller.yml](./aap_configure_controller.yml) which
+configures all settings into controller. It is utilizing the role
+[tower configuration](https://github.com/redhat-cop/tower_configuration)
+that reads config files from [aap_configs](./aap_configs/) directory.
+To add configuration files, see examples from
+[examples](https://github.com/redhat-cop/tower_configuration/tree/devel/examples/configs)
+
+Once you create or change the configs, do run the following playbook:
+```
+ansible-playbook aap_configure_controller.yml
+```
+

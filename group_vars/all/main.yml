@@ -39,3 +39,6 @@ hostgroups:
     hosts:
       - rh-idm-01.cool.lab
       - rh-idm-02.cool.lab
+
+aap_ldap_username: aap_ldap
+aap_controller: rh-ansiblecontroller-01.cool.lab
