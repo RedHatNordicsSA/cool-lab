@@ -42,6 +42,45 @@
         user: "{{ rh_ops }}"
       tags: groups
 
+    - name: Create LDAP bind user for AAP
+      community.general.ldap_entry:
+        server_uri: ldaps://rh-idm-01.cool.lab
+        bind_dn: cn=Directory Manager
+        bind_pw: "{{ ipadm_password }}"
+        dn: "uid={{ aap_ldap_username }},cn=sysaccounts,cn=etc,dc=cool,dc=lab"
+        validate_certs: false
+        objectClass:
+          - account
+          - simpleSecurityObject
+        attributes:
+          description: AAP LDAP bind account
+          userPassword: "{{ aap_ldap_password }}"
+          uid: "{{ aap_ldap_username }}"
+          passwordExpirationTime: 20320101000000Z
+          nsIdleTimeout: 0
+      tags:
+        - users
+        - aap
+
+    - name: Ensure group AAP admins
+      freeipa.ansible_freeipa.ipagroup:
+        ipaadmin_password: "{{ ipaadmin_password }}"
+        description: Ansible Automation Platform admins
+        name: aap_admins
+      tags:
+        - groups
+        - aap
+
+    - name: Ensure members in group AAP admins
+      freeipa.ansible_freeipa.ipagroup:
+        ipaadmin_password: "{{ ipaadmin_password }}"
+        name: aap_admins
+        action: member
+        user: "{{ aap_admins }}"
+      tags:
+        - groups
+        - aap
+
     # - name: Ensure group Arrow Ops (arrops)
     #   freeipa.ansible_freeipa.ipagroup:
     #     name: sysops

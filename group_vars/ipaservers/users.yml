@@ -1,6 +1,5 @@
 ---
 
-
 enabled_users:
   - name: ikke
     first: Ilkka
@@ -35,8 +34,13 @@ enabled_users:
     # yamllint disable-line rule:line-length
     sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCiVpjd30fnTEleLbz37gFykixaQg29LbtG5YSYy6pRxGyFbPPfyTYB+qx3r8+adPOiaBWrOjcU4WKNXZfznQffrH3M1pG7zMsKlmyE5GZw0HYHev3fBh7RkWc2m2Q/gIa9paUa0lce1he/fYCi+7mttA82jNvU78C5MpXts+ZLSBmlKR0T9lWGukXWiprfAeyPXr+WOgQHdEIcQXuUPwV/3MF5eapJcuONxuMCYOfSMKW/921CZVMM2NvA1CO4S3K/GYAYrw1VaVUNu0sl3nCrrBwrxFEWssjacy2MS4SVxeQ6KwNHn0pXpeVPgrxXcQngmichVuJVZZ7hApitURhV
 
-
 idm_admins:
+  - ikke
+  - mbang
+  - jboivie
+  - mglantz
+
+aap_admins:
   - ikke
   - mbang
   - jboivie
@@ -46,5 +50,3 @@ rh_ops:
   - ikke
   - mbang
   - jboivie
-  - mglantz
-
