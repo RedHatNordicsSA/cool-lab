@@ -160,3 +160,15 @@
         - dns
       tags: firewall
   tags: replica
+
+- name: setup IdM DNS configs
+  hosts:
+    - ipaservers
+  tasks:
+
+    - name: setup reverse zone
+      freeipa.ansible_freeipa.ipadnszone:
+        ipaadmin_password: "{{ ipaadmin_password }}"
+        name: "{{ dns_reverse_zone }}"
+        state: present
+  tags: reversedns

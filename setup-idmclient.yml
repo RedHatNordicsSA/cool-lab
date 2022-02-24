@@ -39,13 +39,25 @@
       vars:
         state: present
         ipasssd_enable_dns_updates: true
+        ipaclient_domain: "{{ ipaserver_domain }}"
         # ipaclient_force: true
       include_role:
         name: freeipa.ansible_freeipa.ipaclient
 
-    # - name: add to dns
-    #   freeipa.ansible_freeipa.ipahost:
-    #     action: member
-    #     state: present
-    #     name: "{{ ansible_fqdn }}.{{ ipaserver_domain }}"
-    #     ipa
+    - name: Add to DNS
+      freeipa.ansible_freeipa.ipadnsrecord:
+        ipaadmin_password: "{{ ipaadmin_password }}"
+        name: "{{ short_name | mandatory }}"
+        zone_name: "{{ ipaserver_domain }}"
+        record_type: 'A'
+        record_value: "{{ansible_default_ipv4.address }}"
+      tags: dns
+
+    - name: Add to reverse DNS
+      freeipa.ansible_freeipa.ipadnsrecord:
+        ipaadmin_password: "{{ ipaadmin_password }}"
+        zone_name: "{{ dns_reverse_zone }}"
+        record_type: 'PTR'
+        name: "{{ ansible_default_ipv4.address.split('.')[3] }}"
+        ptr_hostname: "{{ short_name | mandatory }}.{{ ipaserver_domain }}."
+      tags: dns

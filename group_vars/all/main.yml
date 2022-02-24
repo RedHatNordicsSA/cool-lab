@@ -18,6 +18,7 @@ enabled_repos_rhel8:
 # see guide here: https://galaxy.ansible.com/freeipa/ansible_freeipa
 dns_forwarder1_ip: 10.1.102.5
 dns_forwarder2_ip: 10.1.102.10
+dns_reverse_zone: 1.128.10.in-addr.arpa.
 ipaserver_master_ip: 10.128.1.10
 ipaserver_master_name: rh-idm-01
 ipaserver_replica_ip: 10.128.1.11
