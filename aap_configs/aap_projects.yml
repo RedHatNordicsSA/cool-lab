@@ -1,0 +1,13 @@
+---
+
+controller_projects:
+  - name: Cool-Lab
+    scm_type: git
+    scm_url: https://github.com/RedHatNordicsSA/cool-lab.git
+    scm_branch: main
+    scm_clean: true
+    description: Red Hat Nordics SA Cool Lab project
+    organization: rhops
+    wait: true
+    update: true
+
