@@ -1,0 +1,6 @@
+---
+
+controller_organizations:
+  - name: Red Hat
+  - name: Demo
+  - name: rhops
