@@ -1,0 +1,26 @@
+---
+
+controller_inventory_sources:
+  # - name: RH-IdM
+  #   source: scm
+  #   source_project: Cool-Lab
+  #   source_path: aap_ldap.py
+  #   inventory: RH-IdM
+  #   organization: rhops
+  #   credential: aap-idm-ldap
+  #   overwrite: true
+  #   update_on_launch: true
+  #   update_cache_timeout: 0
+  #   wait: true
+
+  - name: VMware-RH
+    description: Pull all rh- vms from VMware
+    source: vmware
+    inventory: vmware-rh
+    organization: rhops
+    credential: vcenter-21
+    host_filter: ^rh-
+    overwrite: true
+    update_on_launch: true
+    update_cache_timeout: 0
+    wait: true
