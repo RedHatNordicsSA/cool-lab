@@ -23,6 +23,12 @@ Ask an admin for the vault key.
 
 ## Ansible preparations
 
+First, fix the local ansible config:
+
+```
+cp example-ansible.cfg ansible.cfg
+```
+
 Many of the playbooks here create stuff from the scratch. So we ansible will
 ask for host key verification. We don't want to stop there, so you can
 either change the config file, or just set the environment variable for
