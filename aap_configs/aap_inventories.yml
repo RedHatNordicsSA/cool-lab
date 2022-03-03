@@ -1,0 +1,6 @@
+---
+
+controller_inventories:
+  - name: RH-IdM
+    organization: rhops
+    description: Sourced from IdM

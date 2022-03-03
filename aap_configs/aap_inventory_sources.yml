@@ -1,0 +1,14 @@
+---
+
+controller_inventory_sources:
+  - name: RH-IdM
+    source: scm
+    source_project: Cool-Lab
+    source_path: aap_ldap-idm.py
+    inventory: RH-IdM
+    organization: rhops
+    credential: aap-idm-ldap
+    overwrite: true
+    update_on_launch: true
+    update_cache_timeout: 0
+    wait: true
