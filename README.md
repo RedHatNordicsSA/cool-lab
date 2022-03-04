@@ -239,4 +239,21 @@ Once you create or change the configs, do run the following playbook:
 ```
 ansible-playbook aap_configure_controller.yml
 ```
+### Adding community execution environment for AAP
+
+I had to add some community modules and python libraries to my env. So I
+created an EE for AAP. To rebuild it, get token from 
+[https://console.redhat.com/ansible/automation-hub/token](automation hub)
+and add it to [./aap_ee_community/ansible.cfg](EE ansible config).
+
+Make sure you have podman, and then build image:
+```
+pip install ansible-builder
+podman login registry.redhat.io
+cd aap_ee_community
+ansible-builder build -t community -f execution-enviroment.yml
+podman save localhost/community -o community.img
+```
+
+Better to upload it to some registry, now I manually loaded it into AAP.
 

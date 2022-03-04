@@ -1,0 +1,10 @@
+---
+
+controller_execution_environments:
+  - name: "Dirty Stuff"
+    image: docker.io/tomoliveri/ansible_aoi_ee:latest
+    pull: always
+
+  - name: cool-lab-community
+    image: localhost/community:latest
+    pull: missing

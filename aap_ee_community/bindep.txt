@@ -1,0 +1,3 @@
+gcc [platform:rpm]
+python38-devel [platform:rpm]
+openldap-devel [platform:rpm]
