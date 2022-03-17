@@ -34,13 +34,24 @@ enabled_users:
     # yamllint disable-line rule:line-length
     sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCiVpjd30fnTEleLbz37gFykixaQg29LbtG5YSYy6pRxGyFbPPfyTYB+qx3r8+adPOiaBWrOjcU4WKNXZfznQffrH3M1pG7zMsKlmyE5GZw0HYHev3fBh7RkWc2m2Q/gIa9paUa0lce1he/fYCi+7mttA82jNvU78C5MpXts+ZLSBmlKR0T9lWGukXWiprfAeyPXr+WOgQHdEIcQXuUPwV/3MF5eapJcuONxuMCYOfSMKW/921CZVMM2NvA1CO4S3K/GYAYrw1VaVUNu0sl3nCrrBwrxFEWssjacy2MS4SVxeQ6KwNHn0pXpeVPgrxXcQngmichVuJVZZ7hApitURhV
 
+  - name: jwesterl
+    first: Johnny
+    last: Westerlund
+    password: "coolpw"
+    uid: 10005
+    gid: 10005
+    # yamllint disable-line rule:line-length
+    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCuuPjXB3E60BZJNagUbsmMKiQSGfTfigf0z+52sKJq4IUwYw2lKLCta8CGMMhwKM/t0W4GuO5axBKYgky/pVsgh+iyW8Qu6xnpiEkJ40nmI1WiNd+XbzNoP/aSaEDQDCHXpIWQyOPdLO58wPMQtEiAG4VutHEPVquRnu7bNhXayrXE1MNf4a4hX0QMsgIP1aMvgWIPIB6NOK0gFPLkRLMiPct3rpL6iBCJgXLv3MzT3UAL8219AiZmS5chqHjMQymzk+d7IVF/gn4KgHMmU03QSmNgmh79VIHH6ehWDB/QeHWr+ZkP2m4oaZ2B8bU+qdCxrwF87CGowQOV2JmBAh5N jwesterl@jwesterl.csb
+
 idm_admins:
+  - jwesterl
   - ikke
   - mbang
   - jboivie
   - mglantz
 
 aap_admins:
+  - jwesterl
   - ikke
   - mbang
   - jboivie
