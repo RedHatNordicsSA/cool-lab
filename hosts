@@ -12,6 +12,7 @@ rh-bastion-01.cool.lab ansible_ssh_host=10.128.1.130
 rh-ansiblecontroller-01.cool.lab ansible_host=10.128.1.12 short_name=rh-ansiblecontroller-01
 rh-ansibledatabase-01.cool.lab ansible_host=10.128.1.13 short_name=rh-ansibledatabase-01
 rh-exnode-01.cool.lab ansible_host=10.128.1.14 short_name=rh-exnode-01
+rh-nfs-01.cool.lab ansible_host=10.128.1.186 short_name=rh-nfs-01
 
 # [ipaclients:children]
 # ansibleautomationplatform
