@@ -43,12 +43,22 @@ enabled_users:
     # yamllint disable-line rule:line-length
     sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCuuPjXB3E60BZJNagUbsmMKiQSGfTfigf0z+52sKJq4IUwYw2lKLCta8CGMMhwKM/t0W4GuO5axBKYgky/pVsgh+iyW8Qu6xnpiEkJ40nmI1WiNd+XbzNoP/aSaEDQDCHXpIWQyOPdLO58wPMQtEiAG4VutHEPVquRnu7bNhXayrXE1MNf4a4hX0QMsgIP1aMvgWIPIB6NOK0gFPLkRLMiPct3rpL6iBCJgXLv3MzT3UAL8219AiZmS5chqHjMQymzk+d7IVF/gn4KgHMmU03QSmNgmh79VIHH6ehWDB/QeHWr+ZkP2m4oaZ2B8bU+qdCxrwF87CGowQOV2JmBAh5N jwesterl@jwesterl.csb
 
+  - name: jwennerb
+    first: Johan
+    last: Wennerberg
+    password: "coolpw"
+    uid: 10006
+    gid: 10006
+    # yamllint disable-line rule:line-length
+    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDaET2eh1qcTG8iWfnhcOKdwdcL8kMRfVsZMIiIHwu0rs50CuTaoxenjbuTsP0kWZxvJHswvyZjOXaS3X+rQ/ul4e0L0IF06ONQpDVvP7fqoxDOgouJXbXomhdBFW22+oYdMu6WEtqUr7xhG8W3jPAEa5cHuyf62U7OoLL2fyjxJc1173JeDQGkMN3MhcAz4TSYuDH4N3iPxD13Vg3DJ2CfToUnGsgPqJSHcI6Xc9+IWu4GZ69QWKq2H4YjAGQzO0WAUcQVBMIsu2M8Zhwd3x+ioJLIWpH/CQH/fTR/undL6rn4UmtzgrmXCIEJWfYaVlI8LAzuccX6O9Pu/tZijNG4yvCkQdnLnxLfrSm2DelvCyVWFTcuPskf+RXSTQDkvYsRA3pfBJENkY4jAZ/JFmi9dLRMIclMAetAogLBTWqVRXMJ7s0mjsxMvV/Jh53vZjuyejwjjdFzw7V1Bi7BfIFJKWmHvyjYcnJk7Fd3t7EU1LbLW1/XhDLaf2lhbovxaDefA73ZUa72hrMsx7sC35/ZiiPDWgqlxLSEDjihQqCgVbb3W0N4vzjLkorOaXiZNY3z5V/n0/+ucQT86DiNGVNkpEXFERFNDkr+qfQOTyH8UmJOX95mYKacZJjZtSJdLUoI/7EUGefSPMdE1md6f7i7MkBbQwwLlSH0vFEsCGhoEQ==
+
 idm_admins:
   - jwesterl
   - ikke
   - mbang
   - jboivie
   - mglantz
+  - jwennerb
 
 aap_admins:
   - jwesterl
@@ -56,6 +66,7 @@ aap_admins:
   - mbang
   - jboivie
   - mglantz
+  - jwennerb
 
 rh_ops:
   - ikke
