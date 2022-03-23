@@ -1,0 +1,11 @@
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ca-config-map
+  namespace: openshift-config
+  labels:
+    {{- include "ldap.labels" . | nindent 4 }}
+data:
+  ca.crt: | {{ .Values.secrets.ldap.ca_crt | nindent 4}}

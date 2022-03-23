@@ -1,0 +1,39 @@
+---
+
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: ldap-group-syncer
+  namespace: ldap-sync
+  labels:
+    {{- include "ldap.labels" . | nindent 4 }}
+data:
+  sync.yaml: |
+    kind: LDAPSyncConfig
+    apiVersion: v1
+    url: '{{ .Values.secrets.ldap.url }}'
+    insecure: false
+    bindDN: '{{ .Values.secrets.ldap.bindDN }}'
+    bindPassword:
+      file: "/etc/secrets/bindPassword"
+    ca: /etc/ldap-ca/ca.crt
+    rfc2307:
+        groupsQuery:
+            baseDN: '{{ .Values.secrets.ldap.groupsBaseDN }}'
+            scope: sub
+            derefAliases: never
+            pageSize: 0
+            filter: (objectClass=ipausergroup)
+        groupUIDAttribute: dn
+        groupNameAttributes: [ cn ]
+        groupMembershipAttributes: [ member ]
+        usersQuery:
+            baseDN: '{{ .Values.secrets.ldap.usersBaseDN }}'
+            # filter: (objectClass=inetOrgPerson)
+            scope: sub
+            derefAliases: never
+            pageSize: 0
+        userUIDAttribute: dn 
+        userNameAttributes: [ uid ] 
+        tolerateMemberNotFoundErrors: false
+        tolerateMemberOutOfScopeErrors: false

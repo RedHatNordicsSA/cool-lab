@@ -1,0 +1,10 @@
+---
+
+apiVersion: v2
+description: >-
+  A Helm chart to build and deploy a LDAP authentication and group sync
+  configuration from Red Hat IdM enabled by ACM and Vault
+keywords:
+  - pattern
+name: ldap-sync
+version: 0.0.1
