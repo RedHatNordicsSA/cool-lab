@@ -20,6 +20,13 @@ cp rh-ocp-01-install-config.yaml rh-ocp-01/install-config.yaml
 ./openshift-install --dir rh-ocp-01  create cluster
 ```
 
+# Adding PV for registry
+
+In case you want to have persistent registry,
+[this page describes what to do](https://docs.openshift.com/container-platform/4.10/installing/installing_vsphere/installing-vsphere-installer-provisioned-customizations.html#registry-removed_installing-vsphere-installer-provisioned-customizations).
+
+and here are the commands roughly: [fix-registry.sh](fix-registry.sh)
+
 # deleting the clusters
 
 The quickest I've found is to go to vmware GUI and select VMs, do poweroff,
