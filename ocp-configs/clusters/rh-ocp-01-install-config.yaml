@@ -1,0 +1,49 @@
+apiVersion: v1
+baseDomain: cool.lab
+compute:
+- architecture: amd64
+  hyperthreading: Enabled
+  name: worker
+  replicas: 6
+  platform:
+    vsphere: 
+      cpus: 2
+      coresPerSocket: 2
+      memoryMB: 8096
+controlPlane:
+  architecture: amd64
+  hyperthreading: Enabled
+  name: master
+  platform: {}
+  replicas: 3
+  platform:
+    vsphere: 
+      cpus: 4
+      coresPerSocket: 4
+      memoryMB: 16384
+metadata:
+  creationTimestamp: null
+  name: rh-ocp-01
+networking:
+  clusterNetwork:
+  - cidr: 10.132.0.0/14
+    hostPrefix: 23
+  machineNetwork:
+  - cidr: 10.0.0.0/16
+  networkType: OpenShiftSDN
+  serviceNetwork:
+  - 172.30.0.0/16
+platform:
+  vsphere:
+    apiVIP: 10.128.1.22
+    cluster: ARROWLAB
+    datacenter: KISTA-DC
+    defaultDatastore: SVC-LUN-2
+    ingressVIP: 10.128.1.23
+    network: RH-seg-2991
+    # password: CHANGEME
+    # username: CHANGEME
+    vCenter: arw-vcenter-21.arrowdemo.se
+publish: External
+sshKey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHV4O/qEctm+YmAY/o0aKk+sgxbFhLMsNN1m4j8FNKSF admin@coollab
+# pullSecret: '{"auths": CHANGEME}'
