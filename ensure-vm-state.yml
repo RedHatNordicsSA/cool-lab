@@ -62,15 +62,37 @@
           server_name: "{{ name }}"
       when: vm is succeeded
 
+    - name: Create tower inventory
+      awx.awx.inventory:
+        name: "Temporary Inventory"
+        description: "Temporary inventory for hosts to be created"
+        organization: "Default"
+        state: present
+        validate_certs: false
+      when:
+        - use_aap_inventory
+        - vm is succeeded
+
+    - name: Add tower host
+      awx.awx.host:
+        name: "{{ name }}"
+        inventory: "Temporary Inventory"
+        state: present
+        validate_certs: false
+        variables:
+          ansible_host: "{{ vm.instance.ipv4 }}"
+      when:
+        - use_aap_inventory
+        - vm is succeeded
+
     - name: Add host to temporary group for new vms
-      awx.awx.tower_group:
+      awx.awx.group:
         name: new_vms
-        inventory: "Demo Inventory"
+        inventory: "Temporary Inventory"
         hosts:
-          - "{{ name }}.{{ ipaserver_domain }}"
+          - "{{ name }}"
         validate_certs: false
         preserve_existing_hosts: True
-        preserve_existing_children: True
       when:
         - use_aap_inventory
         - vm is succeeded
