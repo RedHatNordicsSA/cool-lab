@@ -27,4 +27,5 @@ controller_settings:
       rhops:
         admins:
           - "CN=rhops,CN=groups,CN=accounts,DC=cool,DC=lab"
-
+    AWX_ROLES_ENABLED: true
+    AWX_COLLECTIONS_ENABLED: true
