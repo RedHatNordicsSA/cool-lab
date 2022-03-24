@@ -1,6 +1,0 @@
----
-
-ipaadmin_principal: admin
-ipaclient_ntp_servers: true
-ipaclient_mkhomedir: true
-ipasssd_enable_dns_updates: true

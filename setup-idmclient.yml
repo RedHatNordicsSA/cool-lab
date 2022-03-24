@@ -2,7 +2,7 @@
 
 
 - name: Register host to IdM
-  hosts: ipaclients
+  hosts: all
   vars:
     ipaclient_mkhomedir: true
     ipaclient_ntp_servers:

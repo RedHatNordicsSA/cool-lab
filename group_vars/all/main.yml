@@ -26,6 +26,10 @@ ipaserver_replica_name: rh-idm-02
 ipaserver_domain: cool.lab
 ipaserver_realm: COOL.LAB
 ipaserver_gw: 10.128.1.1
+ipaadmin_principal: admin
+ipaclient_ntp_servers: true
+ipaclient_mkhomedir: true
+ipasssd_enable_dns_updates: true
 
 # define the idm host groups
 hostgroups:
@@ -43,3 +47,4 @@ hostgroups:
 
 aap_ldap_username: aap_ldap
 aap_controller: rh-ansiblecontroller-01.cool.lab
+
