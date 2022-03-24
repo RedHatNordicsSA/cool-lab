@@ -30,4 +30,4 @@
   import_playbook: ensure-vm-state.yml
   vars:
     state: absent
-    name: "{{ short_name | mandatory }}"
+    vm_name: "{{ short_name | mandatory }}"
