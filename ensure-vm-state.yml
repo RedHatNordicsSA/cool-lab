@@ -19,6 +19,7 @@
     # dns_servers:
     #   - 10.128.1.10
     #   - 10.128.1.11
+    use_aap_inventory: false
 
   tasks:
     - name: Clone the template
@@ -40,7 +41,7 @@
           num_cpu_cores_per_socket: "{{ num_cpu_cores_per_socket }}"
         networks:
           - name: "{{ net_name }}"
-            type: "{{ net_type}}"
+            type: "{{ net_type }}"
             ip: "{{ ip | default(omit) }}"
             netmask: "{{ netmask | default(omit) }}"
             gateway: "{{ gateway | default(omit) }}"
@@ -53,6 +54,26 @@
           dns_servers: "{{ dns_servers | default(omit) }}"
       register: vm
       when: state != 'absent'
+
+    - name: Save Server IP Address for future use
+      set_stats:
+        data:
+          server_ip: "{{ vm.instance.ipv4 }}"
+          server_name: "{{ name }}"
+      when: vm is succeeded
+
+    - name: Add host to temporary group for new vms
+      awx.awx.tower_group:
+        name: new_vms
+        inventory: "Demo Inventory"
+        hosts:
+          - "{{ name }}.{{ ipaserver_domain }}"
+        validate_certs: false
+        preserve_existing_hosts: True
+        preserve_existing_children: True
+      when:
+        - use_aap_inventory
+        - vm is succeeded
 
     - name: Delete the VM
       vmware_guest:
