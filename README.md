@@ -257,3 +257,34 @@ podman save localhost/community -o community.img
 
 Better to upload it to some registry, now I manually loaded it into AAP.
 
+
+### Installing Private Automation Hub
+
+Installation of Private Automation Hub is (currently) automated with four playbooks, including prerequisites.
+
+**1. Prerequisite: Create VM**
+
+```
+ansible-playbook -i localhost -c local -e @../private-lab/secrets.yml -e name=rh-automation-hub-01 ensure-vm-state.yml
+```
+
+**2. Prerequisite: Prepare OS (RHEL 8)**
+
+```
+ansible-playbook -i hosts -u root -l rh-automation-hub-01.cool.lab -e subs_username=<rhuser> -e subs_pw=<rhpwd> -e subs_pool=<rhpoolid> prepare-rhel8.yml
+```
+
+**3. Prerequisite: Configure IDM client**
+
+```
+ansible-playbook -i hosts -u root -l rh-automation-hub-01.cool.lab -e short_name=rh-automation-hub-01 -e @../private-lab/secrets.yml setup-idmclient.yml
+```
+
+**4. Install Automation Hub**
+
+Get a [Red Hat API offline token](https://access.redhat.com/management/api) and run the [playbook](install-automationhub.yml) to install.
+
+```
+ansible-playbook -i hosts -u root -l rh-automation-hub-01.cool.lab -e aap_setup_down_offline_token=<token> -e @../private-lab/secrets.yml install-automationhub.yml
+```
+

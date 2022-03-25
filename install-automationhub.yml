@@ -1,0 +1,30 @@
+---
+- name: Install Automation Hub
+  hosts: automationhub
+  vars:
+    aap_setup_down_version: "2.1"
+    aap_setup_down_type: "setup-bundle"
+
+    aap_setup_prep_inv_nodes:
+      automationhub:
+        rh-automation-hub-01.cool.lab: "ansible_connection=local"
+
+    aap_setup_prep_inv_vars:
+      all:
+        automationhub_admin_password: "{{ aap_admin_password }}"
+
+        automationhub_pg_host: ""
+        automationhub_pg_port: ""
+        automationhub_pg_database: "automationhub"
+        automationhub_pg_username: "automationhub"
+        automationhub_pg_password: "{{ aap_database_password }}"
+        automationhub_pg_sslmode: "prefer"  # set to 'verify-full' for client-side enforced SSL
+
+        registry_username: "{{ subs_username }}"
+        registry_password: "{{ subs_pw }}"
+
+  roles:
+    - redhat_cop.aap_utilities.aap_setup_download
+    - redhat_cop.aap_utilities.aap_setup_prepare
+    - redhat_cop.aap_utilities.aap_setup_install
+
