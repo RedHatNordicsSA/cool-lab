@@ -1,0 +1,17 @@
+---
+
+- name: Cleanup host from AAP inventory
+  hosts: localhost
+  gather_facts: false
+  vars:
+    inventory_name: Temporary Inventory
+
+  tasks:
+
+    - name: delete vm from AAP temporary inventory
+      awx.awx.host:
+        name: "{{ vm_name | mandatory }}"
+        inventory: "{{ inventory_name }}"
+        state: absent
+        validate_certs: false
+
