@@ -7,6 +7,8 @@ collections:
     version: 19.4.0
   - name: community.general
     version: 4.3.0
+  - name: community.vmware
+    version: 1.17.0
   - name: freeipa.ansible_freeipa
     version: 1.5.3
   - name: redhat_cop.controller_configuration
