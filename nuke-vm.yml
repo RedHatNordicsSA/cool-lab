@@ -1,49 +1,14 @@
 ---
 
 
-- name: Nuke VM
-  hosts: all
-  vars:
-    use_inventory_for_hostname: false
-  tasks:
-
-    - name: unregister from IdM
-      vars:
-        state: absent
-      include_role:
-        name: freeipa.ansible_freeipa.ipaclient
-      tags: idm
-      ignore_errors: true
-
-    - name: unregister insights
-      command: insights-client --unregister
-      args:
-        creates: /etc/insights-client/.unregistered
-      tags: insights
-      ignore_errors: true
-
-    - name: unsubscribe from Red Hat
-      redhat_subscription:
-        state: absent
-      tags: subs
-      ignore_errors: true
-
-    - name: get the short name from inventory
-      set_fact:
-        short_name: "{{ inventory_hostname | regex_search('^[^._]*') }}"
-      when: use_inventory_for_hostname
-
-    - name: print out the short hostname
-      debug:
-        msg: "short hostname: {{ short_name }}"
-
 - name: Nuke VM from VMware
   connection: local
   hosts: localhost
   tasks:
+
     - name: nuke the vm
       community.vmware.vmware_guest:
-        name: "{{ short_name }}"
+        name: "{{ short_name | mandatory }}"
         state: absent
         hostname: "{{ vcenter_credentials.hostname }}"
         username: "{{ vcenter_credentials.username }}"

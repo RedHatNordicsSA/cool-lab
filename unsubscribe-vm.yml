@@ -1,0 +1,28 @@
+---
+
+
+- name: Unsubscribe VM
+  hosts: all
+  tasks:
+
+    - name: unregister from IdM
+      vars:
+        state: absent
+      include_role:
+        name: freeipa.ansible_freeipa.ipaclient
+      tags: idm
+      ignore_errors: true
+
+    - name: unregister insights
+      command: insights-client --unregister
+      args:
+        creates: /etc/insights-client/.unregistered
+      tags: insights
+      ignore_errors: true
+
+    - name: unsubscribe from Red Hat
+      redhat_subscription:
+        state: absent
+      tags: subs
+      ignore_errors: true
+
