@@ -3,6 +3,8 @@
 
 - name: Nuke VM
   hosts: all
+  vars:
+    use_inventory_for_hostname: false
   tasks:
 
     - name: unregister from IdM
@@ -25,6 +27,11 @@
         state: absent
       tags: subs
       ignore_errors: true
+
+    - name: Get the short name from inventory
+      set_fact:
+        short_name: "{{ inventory_hostname | regex_search('^[^._]*') }}"
+      when: use_inventory_for_hostname
 
 - name: Nuke VM from VMware
   import_playbook: ensure-vm-state.yml
