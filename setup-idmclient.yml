@@ -9,8 +9,15 @@
       - ntp.arrowdemo.se
       - time.cloudflare.com
     ipaclient_ssh_trust_dns: true
+    use_inventory_for_hostname: false
 
   tasks:
+
+    - name: Get the short hostname from inventory
+      # Normally there is dot in fqdn, vmware inventory has _ as separator
+      set_fact:
+        short_name: "{{ inventory_hostname | regex_search('^[^_.]*') }}"
+      when: use_inventory_for_hostname
 
     - name: setup hostname
       hostname:
