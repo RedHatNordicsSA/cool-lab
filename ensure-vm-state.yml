@@ -99,6 +99,15 @@
             - use_aap_inventory
             - vm is succeeded
 
+        - name: Wait for Virtual Machine to boot up and become responsive to SSH
+          wait_for:
+            port: 22
+            host: "{{ vm.instance.ipv4 }}"
+            search_regex: OpenSSH
+            delay: 10
+            timeout: 600
+          when: vm is succeeded
+
     - name: Delete the VM
       vmware_guest:
         name: "{{ vm_name }}"
