@@ -37,8 +37,20 @@
       debug:
         msg: "short hostname: {{ short_name }}"
 
-- name: Nuke VM "{{ short_name }}" from VMware
-  import_playbook: ensure-vm-state.yml
-  vars:
-    state: absent
-    vm_name: "{{ short_name | mandatory }}"
+- name: Nuke VM from VMware
+  connection: local
+  hosts: localhost
+  tasks:
+    - name: nuke the vm
+      community.vmware.vmware_guest:
+        name: "{{ short_name }}"
+        state: absent
+        hostname: "{{ vcenter_credentials.hostname }}"
+        username: "{{ vcenter_credentials.username }}"
+        password: "{{ vcenter_credentials.password }}"
+        validate_certs: false
+        datacenter: "{{ vcenter_datacenter }}"
+        folder: "{{ vcenter_folder }}"
+        cluster: "{{ vcenter_cluster }}"
+        force: true
+
