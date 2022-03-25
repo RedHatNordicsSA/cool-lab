@@ -28,12 +28,16 @@
       tags: subs
       ignore_errors: true
 
-    - name: Get the short name from inventory
+    - name: get the short name from inventory
       set_fact:
         short_name: "{{ inventory_hostname | regex_search('^[^._]*') }}"
       when: use_inventory_for_hostname
 
-- name: Nuke VM from VMware
+    - name: print out the short hostname
+      debug:
+        msg: "short hostname: {{ short_name }}"
+
+- name: Nuke VM "{{ short_name }}" from VMware
   import_playbook: ensure-vm-state.yml
   vars:
     state: absent
