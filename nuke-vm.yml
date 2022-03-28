@@ -4,7 +4,15 @@
 - name: Nuke VM from VMware
   connection: local
   hosts: localhost
+  gather_facts: false
   tasks:
+
+    - name: print out the target
+      debug:
+        msg: |
+          "About to delete VM {{ short_name | mandatory }}"
+          "from datacenter {{ vcenter_datacenter }}"
+          "in cluster {{ vcenter_cluster }}."
 
     - name: nuke the vm
       community.vmware.vmware_guest:
