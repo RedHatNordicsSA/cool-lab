@@ -10,7 +10,7 @@
 
     - name: delete vm from AAP temporary inventory
       awx.awx.host:
-        name: "{{ vm_name | mandatory }}"
+        name: "{{ short_name | mandatory }}"
         inventory: "{{ inventory_name }}"
         state: absent
         validate_certs: false

@@ -27,7 +27,7 @@
       block:
         - name: Clone the template
           community.vmware.vmware_guest:
-            name: "{{ vm_name }}"
+            name: "{{ short_name }}"
             state: "{{ state }}"
             hostname: "{{ vcenter_credentials.hostname }}"
             username: "{{ vcenter_credentials.username }}"
@@ -52,7 +52,7 @@
                 connected: true
                 start_connected: true
             customization:
-              # hostname: "{{ vm_name }}.{{ domain | default('localdomain')}}"
+              # hostname: "{{ short_name }}.{{ domain | default('localdomain')}}"
               domain: "{{ domain | default(omit) }}"
               dns_servers: "{{ dns_servers | default(omit) }}"
           register: vm
@@ -61,7 +61,7 @@
           set_stats:
             data:
               server_ip: "{{ vm.instance.ipv4 }}"
-              server_name: "{{ vm_name }}"
+              server_name: "{{ short_name }}"
           when: vm is succeeded
 
         - name: Create tower inventory
@@ -77,7 +77,7 @@
 
         - name: Add tower host
           awx.awx.host:
-            name: "{{ vm_name }}"
+            name: "{{ short_name }}"
             inventory: "Temporary Inventory"
             state: present
             validate_certs: false
@@ -92,7 +92,7 @@
             name: new_vms
             inventory: "Temporary Inventory"
             hosts:
-              - "{{ vm_name }}"
+              - "{{ short_name }}"
             validate_certs: false
             preserve_existing_hosts: True
           when:
@@ -110,7 +110,7 @@
 
     - name: Delete the VM
       community.vmware.vmware_guest:
-        name: "{{ vm_name }}"
+        name: "{{ short_name }}"
         hostname: "{{ vcenter_credentials.hostname }}"
         username: "{{ vcenter_credentials.username }}"
         password: "{{ vcenter_credentials.password }}"
