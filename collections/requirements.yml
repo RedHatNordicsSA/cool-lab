@@ -10,6 +10,6 @@ collections:
   - name: community.vmware
     version: 1.17.0
   - name: freeipa.ansible_freeipa
-    version: 1.5.3
+    version: 1.6.3
   - name: redhat_cop.controller_configuration
     version: 2.1.1
