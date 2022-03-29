@@ -114,13 +114,13 @@ There is [generic playbook](ensure-vm-state.yml) to create VMs from given
 template. If you want RHEL you run this:
 
 ```
-ansible-playbook -i localhost, -c local -e name=rh-test-net ensure-vm-state.yml
+ansible-playbook -i localhost, -c local -e short_name=rh-test-net ensure-vm-state.yml
 ```
 
 For power state commands:
 
 ```
-ansible-playbook -i localhost, -c local -e state=poweredoff -e name=rh-test-net ensure-vm-state.yml
+ansible-playbook -i localhost, -c local -e state=poweredoff -e short_name=rh-test-net ensure-vm-state.yml
 ```
 
 And to delete it nicely, unregistering from all places like subs and idm:
@@ -132,7 +132,7 @@ ansible-playbook  -u root -e "short_name=rh-test-01" -l rh-idm-01.cool.lab  nuke
 And bluntly just delete VM, leave subscriptions, insights and idm think it still exists:
 
 ```
-ansible-playbook -i localhost, -c local -e state=absent -e name=rh-test-net ensure-vm-state.yml
+ansible-playbook -i localhost, -c local -e state=absent -e short_name=rh-test-net ensure-vm-state.yml
 ```
 
 There are different values in vars, check them out. Like mem, cpu, network etc tunings.
@@ -239,4 +239,21 @@ Once you create or change the configs, do run the following playbook:
 ```
 ansible-playbook aap_configure_controller.yml
 ```
+### Adding community execution environment for AAP
+
+I had to add some community modules and python libraries to my env. So I
+created an EE for AAP. To rebuild it, get token from 
+[https://console.redhat.com/ansible/automation-hub/token](automation hub)
+and add it to [./aap_ee_community/ansible.cfg](EE ansible config).
+
+Make sure you have podman, and then build image:
+```
+pip install ansible-builder
+podman login registry.redhat.io
+cd aap_ee_community
+ansible-builder build -t community -f execution-enviroment.yml
+podman save localhost/community -o community.img
+```
+
+Better to upload it to some registry, now I manually loaded it into AAP.
 

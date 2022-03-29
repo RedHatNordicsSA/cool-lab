@@ -19,44 +19,98 @@
     # dns_servers:
     #   - 10.128.1.10
     #   - 10.128.1.11
+    use_aap_inventory: false
 
   tasks:
-    - name: Clone the template
-      vmware_guest:
-        name: "{{ name }}"
-        state: "{{ state }}"
-        hostname: "{{ vcenter_credentials.hostname }}"
-        username: "{{ vcenter_credentials.username }}"
-        password: "{{ vcenter_credentials.password }}"
-        validate_certs: false
-        template: "{{ template }}"
-        datacenter: "{{ vcenter_datacenter }}"
-        folder: "{{ vcenter_folder }}"
-        cluster: "{{ vcenter_cluster }}"
-        wait_for_ip_address: true
-        hardware:
-          memory_mb: "{{ memory_mb }}"
-          num_cpus: "{{ num_cpus }}"
-          num_cpu_cores_per_socket: "{{ num_cpu_cores_per_socket }}"
-        networks:
-          - name: "{{ net_name }}"
-            type: "{{ net_type}}"
-            ip: "{{ ip | default(omit) }}"
-            netmask: "{{ netmask | default(omit) }}"
-            gateway: "{{ gateway | default(omit) }}"
-            wait_for_ip_address_timeout: 60
-            connected: true
-            start_connected: true
-        customization:
-          # hostname: "{{ name }}.{{ domain | default('localdomain')}}"
-          domain: "{{ domain | default(omit) }}"
-          dns_servers: "{{ dns_servers | default(omit) }}"
-      register: vm
+    - name: when not deleting vm
       when: state != 'absent'
+      block:
+        - name: Clone the template
+          community.vmware.vmware_guest:
+            name: "{{ short_name }}"
+            state: "{{ state }}"
+            hostname: "{{ vcenter_credentials.hostname }}"
+            username: "{{ vcenter_credentials.username }}"
+            password: "{{ vcenter_credentials.password }}"
+            validate_certs: false
+            template: "{{ template }}"
+            datacenter: "{{ vcenter_datacenter }}"
+            folder: "{{ vcenter_folder }}"
+            cluster: "{{ vcenter_cluster }}"
+            wait_for_ip_address: true
+            hardware:
+              memory_mb: "{{ memory_mb }}"
+              num_cpus: "{{ num_cpus }}"
+              num_cpu_cores_per_socket: "{{ num_cpu_cores_per_socket }}"
+            networks:
+              - name: "{{ net_name }}"
+                type: "{{ net_type }}"
+                ip: "{{ ip | default(omit) }}"
+                netmask: "{{ netmask | default(omit) }}"
+                gateway: "{{ gateway | default(omit) }}"
+                wait_for_ip_address_timeout: 60
+                connected: true
+                start_connected: true
+            customization:
+              # hostname: "{{ short_name }}.{{ domain | default('localdomain')}}"
+              domain: "{{ domain | default(omit) }}"
+              dns_servers: "{{ dns_servers | default(omit) }}"
+          register: vm
+
+        - name: Save Server IP Address for future use
+          set_stats:
+            data:
+              server_ip: "{{ vm.instance.ipv4 }}"
+              server_name: "{{ short_name }}"
+          when: vm is succeeded
+
+        - name: Create tower inventory
+          awx.awx.inventory:
+            name: "Temporary Inventory"
+            description: "Temporary inventory for hosts to be created"
+            organization: "Default"
+            state: present
+            validate_certs: false
+          when:
+            - use_aap_inventory
+            - vm is succeeded
+
+        - name: Add tower host
+          awx.awx.host:
+            name: "{{ short_name }}"
+            inventory: "Temporary Inventory"
+            state: present
+            validate_certs: false
+            variables:
+              ansible_host: "{{ vm.instance.ipv4 }}"
+          when:
+            - use_aap_inventory
+            - vm is succeeded
+
+        - name: Add host to temporary group for new vms
+          awx.awx.group:
+            name: new_vms
+            inventory: "Temporary Inventory"
+            hosts:
+              - "{{ short_name }}"
+            validate_certs: false
+            preserve_existing_hosts: True
+          when:
+            - use_aap_inventory
+            - vm is succeeded
+
+        - name: Wait for Virtual Machine to boot up and become responsive to SSH
+          wait_for:
+            port: 22
+            host: "{{ vm.instance.ipv4 }}"
+            search_regex: OpenSSH
+            delay: 10
+            timeout: 600
+          when: vm is succeeded
 
     - name: Delete the VM
-      vmware_guest:
-        name: "{{ name }}"
+      community.vmware.vmware_guest:
+        name: "{{ short_name }}"
         hostname: "{{ vcenter_credentials.hostname }}"
         username: "{{ vcenter_credentials.username }}"
         password: "{{ vcenter_credentials.password }}"

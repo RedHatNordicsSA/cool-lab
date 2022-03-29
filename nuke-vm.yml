@@ -1,33 +1,29 @@
 ---
 
 
-- name: Nuke VM
-  hosts: all
+- name: Nuke VM from VMware
+  connection: local
+  hosts: localhost
+  gather_facts: false
   tasks:
 
-    - name: unregister from IdM
-      vars:
+    - name: print out the target
+      debug:
+        msg: |
+          "About to delete VM {{ short_name | mandatory }}"
+          "from datacenter {{ vcenter_datacenter }}"
+          "in cluster {{ vcenter_cluster }}."
+
+    - name: nuke the vm
+      community.vmware.vmware_guest:
+        name: "{{ short_name | mandatory }}"
         state: absent
-      include_role:
-        name: freeipa.ansible_freeipa.ipaclient
-      tags: idm
-      ignore_errors: true
+        hostname: "{{ vcenter_credentials.hostname }}"
+        username: "{{ vcenter_credentials.username }}"
+        password: "{{ vcenter_credentials.password }}"
+        validate_certs: false
+        datacenter: "{{ vcenter_datacenter }}"
+        folder: "{{ vcenter_folder }}"
+        cluster: "{{ vcenter_cluster }}"
+        force: true
 
-    - name: unregister insights
-      command: insights-client --unregister
-      args:
-        creates: /etc/insights-client/.unregistered
-      tags: insights
-      ignore_errors: true
-
-    - name: unsubscribe from Red Hat
-      redhat_subscription:
-        state: absent
-      tags: subs
-      ignore_errors: true
-
-- name: Nuke VM from VMware
-  import_playbook: ensure-vm-state.yml
-  vars:
-    state: absent
-    name: "{{ short_name | mandatory }}"

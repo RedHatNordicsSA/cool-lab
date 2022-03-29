@@ -1,0 +1,7 @@
+---
+
+collections:
+  - name: community.vmware
+    source: community_galaxy
+  - name: community.general
+    source: community_galaxy
