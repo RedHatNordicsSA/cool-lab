@@ -1,1 +1,3 @@
 ansible.cfg
+.vault-password
+ansible-navigator.yml
