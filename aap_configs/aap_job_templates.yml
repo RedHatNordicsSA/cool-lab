@@ -163,3 +163,94 @@ controller_templates:
     verbosity: 0
     webhook_credential: null
     webhook_service: ''
+
+  - name: Prepare new RHEL host
+    description: >
+      Subscribes RHEL to Red Hat subscription management and
+      Insights. Adds repositories and installs basic set of
+      packages.
+    allow_simultaneous: false
+    ask_credential_on_launch: false
+    ask_diff_mode_on_launch: false
+    ask_inventory_on_launch: false
+    ask_job_type_on_launch: false
+    ask_limit_on_launch: false
+    ask_scm_branch_on_launch: false
+    ask_skip_tags_on_launch: false
+    ask_tags_on_launch: false
+    ask_variables_on_launch: false
+    ask_verbosity_on_launch: false
+    become_enabled: false
+    diff_mode: false
+    execution_environment: Default execution environment
+    extra_vars: ''
+    force_handlers: false
+    forks: 15
+    host_config_key: ''
+    inventory:
+      name: Temporary Inventory
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_slice_count: 1
+    job_tags: ''
+    job_type: run
+    limit: new_vms
+    natural_key:
+      name: prep-new-rhels
+      organization:
+        name: rhops
+        type: organization
+      type: job_template
+    playbook: prepare-rhel8.yml
+    project:
+      name: Cool-Lab ikke-test
+      organization:
+        name: rhops
+        type: organization
+      type: project
+    related:
+      credentials:
+        - credential_type:
+            kind: cloud
+            name: Red Hat Subscription
+            type: credential_type
+          name: rh-subs
+          organization:
+            name: rhops
+            type: organization
+          type: credential
+        - credential_type:
+            kind: net
+            name: Network
+            type: credential_type
+          name: ikkedemo
+          organization:
+            name: rhops
+            type: organization
+          type: credential
+        - credential_type:
+            kind: ssh
+            name: Machine
+            type: credential_type
+          name: machine-creds-rhops-admin
+          organization:
+            name: rhops
+            type: organization
+          type: credential
+      labels: []
+      notification_templates_error: []
+      notification_templates_started: []
+      notification_templates_success: []
+      schedules: []
+      survey_spec: {}
+    scm_branch: ''
+    skip_tags: ''
+    start_at_task: ''
+    survey_enabled: false
+    timeout: 0
+    use_fact_cache: false
+    verbosity: 0
+    webhook_credential: null
+    webhook_service: ''
