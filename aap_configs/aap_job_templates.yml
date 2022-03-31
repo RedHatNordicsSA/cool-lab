@@ -1,0 +1,165 @@
+---
+
+controller_templates:
+  - name: ensure-vm-state
+    description: 'Creates of deletes a VM, or sets power state'
+    allow_simultaneous: false
+    ask_credential_on_launch: false
+    ask_diff_mode_on_launch: false
+    ask_inventory_on_launch: false
+    ask_job_type_on_launch: false
+    ask_limit_on_launch: false
+    ask_scm_branch_on_launch: false
+    ask_skip_tags_on_launch: false
+    ask_tags_on_launch: false
+    ask_variables_on_launch: false
+    ask_verbosity_on_launch: false
+    become_enabled: false
+    diff_mode: false
+    execution_environment: cool-lab-community
+    extra_vars:
+      ansible_python_interpreter: /bin/python3
+      net_name: RH-seg-2991
+      net_type: dhcp
+      memory_mb: 2048
+      num_cpus: 2
+      state: poweredon
+      short_name: rh-someoneforgottonameme-01
+    force_handlers: false
+    forks: 0
+    host_config_key: ''
+    inventory:
+      name: Demo Inventory
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_slice_count: 1
+    job_tags: ''
+    job_type: run
+    limit: localhost
+    natural_key:
+      name: ensure-vm-state
+      organization:
+        name: rhops
+        type: organization
+      type: job_template
+    playbook: ensure-vm-state.yml
+    project:
+      name: Cool-Lab
+      organization:
+        name: rhops
+        type: organization
+      type: project
+    related:
+      credentials:
+        - credential_type:
+            kind: cloud
+            name: VMware vCenter
+            type: credential_type
+          name: vcenter-21
+          organization:
+            name: rhops
+            type: organization
+          type: credential
+      labels: []
+      notification_templates_error: []
+      notification_templates_started: []
+      notification_templates_success: []
+      schedules: []
+      survey_spec:
+        description: ''
+        name: ''
+        spec:
+          - choices: ''
+            default: ''
+            max: 1024
+            min: 1
+            new_question: true
+            question_description: Short name for the hostname. Use format
+              rh-<whatever>-<number>, e.g. rh-ikketest-10. No domain part.
+            question_name: Host Name
+            required: true
+            type: text
+            variable: short_name
+          - choices: 'RH-seg-2990
+
+              RH-seg-2991
+
+              RH-seg-2992
+
+              RH-seg-2993'
+            default: RH-seg-2991
+            max: 1024
+            min: 0
+            new_question: true
+            question_description: Into which VLAN the VM goes into?
+            question_name: VLAN name
+            required: true
+            type: multiplechoice
+            variable: net_name
+          - choices: '512
+
+              1024
+
+              2048
+
+              4096
+
+              8192
+
+              16384
+
+              32768
+
+              65536'
+            default: '4096'
+            max: 65536
+            min: 512
+            new_question: true
+            question_description: How much RAM in megabytes
+            question_name: Memory MB
+            required: true
+            type: multiplechoice
+            variable: memory_mb
+          - choices: '1
+
+              2
+
+              4
+
+              8
+
+              16'
+            default: '2'
+            max: 1024
+            min: 0
+            new_question: true
+            question_description: How many CPU
+            question_name: CPU
+            required: true
+            type: multiplechoice
+            variable: num_cpu
+          - choices: 'poweredon
+
+              poweredoff
+
+              absent'
+            default: poweredon
+            max: 1024
+            min: 0
+            new_question: true
+            question_description: VM state is poweredon/off/absent
+            question_name: VM state
+            required: true
+            type: multiplechoice
+            variable: state
+    scm_branch: ''
+    skip_tags: ''
+    start_at_task: ''
+    survey_enabled: true
+    timeout: 0
+    use_fact_cache: false
+    verbosity: 0
+    webhook_credential: null
+    webhook_service: ''
