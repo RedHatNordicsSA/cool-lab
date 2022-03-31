@@ -22,6 +22,18 @@
     use_aap_inventory: false
 
   tasks:
+
+    - name: Use vmware credentials from vault if set there, otherwise from AAP credentials
+      set_fact:
+        vcenter_credentials:
+          hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+          username: '{{ lookup("env", "VMWARE_USER") }}'
+          password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+      when:
+        - vcenter_credentials.hostname is not defined
+        - vcenter_credentials.username is not defined
+        - vcenter_credentials.password is not defined
+
     - name: when not deleting vm
       when: state != 'absent'
       block:
