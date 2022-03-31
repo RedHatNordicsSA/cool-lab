@@ -105,7 +105,7 @@ power state.
 Create:
 
 ```
-ansible-playbook  -u root -e "subs_username=$subs_username subs_pw=$subs_pw" setup-bastion.yml
+ansible-playbook  -u root -e "rh_subs_username=$subs_username rh_subs_password=$subs_pw" setup-bastion.yml
 ```
 
 ## Create / Delete / power off / power on VM
@@ -154,7 +154,7 @@ We create one IdM server and a replica. They will be name rh-idm-01.coollab and
 rh-idm-02.coollab.
 
 ```
-ansible-playbook  -u root -e "subs_username=$subs_username subs_pw=$subs_pw" setup-idm.yml
+ansible-playbook  -u root -e "rh_subs_username=$subs_username rh_subs_password=$subs_pw" setup-idm.yml
 ```
 
 ## Setup IdM clients
@@ -222,7 +222,7 @@ rh-exnode-01.cool.lab ansible_host=10.128.1.14 short_name=rh-exnode-01
 and run:
 
 ```
-ansible-playbook -i hosts setup-ansible.yml -e @../private-lab/secrets.yml -e "subs_username=$subs_username subs_pw=$subs_pw" -l "ansibleautomationplatform, localhost" -u root --ask-pass
+ansible-playbook -i hosts setup-ansible.yml -e @../private-lab/secrets.yml -e "rh_subs_username=$subs_username rh_subs_password=$subs_pw" -l "ansibleautomationplatform, localhost" -u root --ask-pass
 ```
 
 ### Configuring AAP platofrm post intsall
