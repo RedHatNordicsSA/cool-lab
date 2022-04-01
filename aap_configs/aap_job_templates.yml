@@ -349,3 +349,54 @@ controller_templates:
     verbosity: 0
     webhook_credential: null
     webhook_service: ''
+
+  - name: Remove host from temp inventory
+    description: Removes host from temporary inventory
+    execution_environment: Default execution environment
+    inventory:
+      name: Demo Inventory
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_type: run
+    limit: localhost
+    natural_key:
+      name: Remove host from temp inventory
+      organization:
+        name: rhops
+        type: organization
+      type: job_template
+    playbook: remove-host-from-inventory.yml
+    project:
+      name: Cool-Lab ikke-test
+      organization:
+        name: rhops
+        type: organization
+      type: project
+    related:
+      credentials:
+        - credential_type:
+            kind: cloud
+            name: Red Hat Ansible Automation Platform
+            type: credential_type
+          name: aap-creds-rhops-admin
+          organization:
+            name: rhops
+            type: organization
+          type: credential
+      survey_spec:
+        description: Host to be removed from inventory
+        name: 'Removed host'
+        spec:
+          - question_name: Host name
+            default: i forgot to fill hostname
+            max: 1024
+            min: 0
+            new_question: true
+            question_description: >
+              The first part of FQDN, leave out the domain part
+            required: true
+            type: text
+            variable: short_name
+    survey_enabled: true
