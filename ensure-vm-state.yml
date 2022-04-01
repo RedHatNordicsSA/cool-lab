@@ -23,13 +23,16 @@
 
   tasks:
 
-    - name: Use vmware credentials from vault if set there, otherwise from AAP credentials
+    - name: >
+        Use vmware credentials from vault if set there, otherwise
+        from AAP credentials
       set_fact:
         vcenter_credentials:
           hostname: '{{ lookup("env", "VMWARE_HOST") }}'
           username: '{{ lookup("env", "VMWARE_USER") }}'
           password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
       when:
+        - vcenter_credentials is not defined
         - vcenter_credentials.hostname is not defined
         - vcenter_credentials.username is not defined
         - vcenter_credentials.password is not defined
@@ -64,7 +67,6 @@
                 connected: true
                 start_connected: true
             customization:
-              # hostname: "{{ short_name }}.{{ domain | default('localdomain')}}"
               domain: "{{ domain | default(omit) }}"
               dns_servers: "{{ dns_servers | default(omit) }}"
           register: vm
@@ -106,7 +108,7 @@
             hosts:
               - "{{ short_name }}"
             validate_certs: false
-            preserve_existing_hosts: True
+            preserve_existing_hosts: true
           when:
             - use_aap_inventory
             - vm is succeeded
