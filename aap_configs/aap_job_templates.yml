@@ -3,19 +3,6 @@
 controller_templates:
   - name: ensure-vm-state
     description: 'Creates of deletes a VM, or sets power state'
-    allow_simultaneous: false
-    ask_credential_on_launch: false
-    ask_diff_mode_on_launch: false
-    ask_inventory_on_launch: false
-    ask_job_type_on_launch: false
-    ask_limit_on_launch: false
-    ask_scm_branch_on_launch: false
-    ask_skip_tags_on_launch: false
-    ask_tags_on_launch: false
-    ask_variables_on_launch: false
-    ask_verbosity_on_launch: false
-    become_enabled: false
-    diff_mode: false
     execution_environment: cool-lab-community
     extra_vars:
       ansible_python_interpreter: /bin/python3
@@ -25,9 +12,6 @@ controller_templates:
       num_cpus: 2
       state: poweredon
       short_name: rh-someoneforgottonameme-01
-    force_handlers: false
-    forks: 0
-    host_config_key: ''
     inventory:
       name: Demo Inventory
       organization:
@@ -35,7 +19,6 @@ controller_templates:
         type: organization
       type: inventory
     job_slice_count: 1
-    job_tags: ''
     job_type: run
     limit: localhost
     natural_key:
@@ -62,11 +45,6 @@ controller_templates:
             name: rhops
             type: organization
           type: credential
-      labels: []
-      notification_templates_error: []
-      notification_templates_started: []
-      notification_templates_success: []
-      schedules: []
       survey_spec:
         description: ''
         name: ''
@@ -154,39 +132,15 @@ controller_templates:
             required: true
             type: multiplechoice
             variable: state
-    scm_branch: ''
-    skip_tags: ''
-    start_at_task: ''
     survey_enabled: true
-    timeout: 0
-    use_fact_cache: false
-    verbosity: 0
-    webhook_credential: null
-    webhook_service: ''
 
-  - name: Prepare new RHEL host
+  - name: Prepare new RHEL hosts
     description: >
       Subscribes RHEL to Red Hat subscription management and
       Insights. Adds repositories and installs basic set of
       packages.
-    allow_simultaneous: false
-    ask_credential_on_launch: false
-    ask_diff_mode_on_launch: false
-    ask_inventory_on_launch: false
-    ask_job_type_on_launch: false
-    ask_limit_on_launch: false
-    ask_scm_branch_on_launch: false
-    ask_skip_tags_on_launch: false
-    ask_tags_on_launch: false
-    ask_variables_on_launch: false
-    ask_verbosity_on_launch: false
-    become_enabled: false
-    diff_mode: false
     execution_environment: Default execution environment
-    extra_vars: ''
-    force_handlers: false
     forks: 15
-    host_config_key: ''
     inventory:
       name: Temporary Inventory
       organization:
@@ -194,7 +148,6 @@ controller_templates:
         type: organization
       type: inventory
     job_slice_count: 1
-    job_tags: ''
     job_type: run
     limit: new_vms
     natural_key:
@@ -239,45 +192,15 @@ controller_templates:
             name: rhops
             type: organization
           type: credential
-      labels: []
-      notification_templates_error: []
-      notification_templates_started: []
-      notification_templates_success: []
-      schedules: []
-      survey_spec: {}
-    scm_branch: ''
-    skip_tags: ''
-    start_at_task: ''
-    survey_enabled: false
-    timeout: 0
-    use_fact_cache: false
-    verbosity: 0
-    webhook_credential: null
-    webhook_service: ''
 
   - name: Add new hosts to IdM
     description: >
       Adds hosts in new_vms group to IdM control including things like DNS
       name and user management.
-    allow_simultaneous: false
-    ask_credential_on_launch: false
-    ask_diff_mode_on_launch: false
-    ask_inventory_on_launch: false
-    ask_job_type_on_launch: false
-    ask_limit_on_launch: false
-    ask_scm_branch_on_launch: false
-    ask_skip_tags_on_launch: false
-    ask_tags_on_launch: false
-    ask_variables_on_launch: false
-    ask_verbosity_on_launch: false
-    become_enabled: false
-    diff_mode: false
     execution_environment: Default execution environment
     extra_vars:
       use_inventory_for_hostname: true
-    force_handlers: false
     forks: 15
-    host_config_key: ''
     inventory:
       name: Temporary Inventory
       organization:
@@ -285,7 +208,6 @@ controller_templates:
         type: organization
       type: inventory
     job_slice_count: 1
-    job_tags: ''
     job_type: run
     limit: new_vms
     natural_key:
@@ -321,11 +243,6 @@ controller_templates:
             name: rhops
             type: organization
           type: credential
-      labels: []
-      notification_templates_error: []
-      notification_templates_started: []
-      notification_templates_success: []
-      schedules: []
       survey_spec:
         description: ''
         name: ''
@@ -340,15 +257,6 @@ controller_templates:
             required: true
             type: text
             variable: short_name
-    scm_branch: ''
-    skip_tags: ''
-    start_at_task: ''
-    survey_enabled: false
-    timeout: 0
-    use_fact_cache: false
-    verbosity: 0
-    webhook_credential: null
-    webhook_service: ''
 
   - name: Remove host from temp inventory
     description: Removes host from temporary inventory
