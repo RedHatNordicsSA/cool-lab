@@ -193,10 +193,10 @@ controller_templates:
             type: organization
           type: credential
 
-  - name: Add new hosts to IdM
+  - name: Add host to IdM
     description: >
-      Adds hosts in new_vms group to IdM control including things like DNS
-      name and user management.
+      Adds hosts to IdM control including things like DNS name and user
+      management.
     execution_environment: Default execution environment
     extra_vars:
       use_inventory_for_hostname: true
@@ -211,7 +211,7 @@ controller_templates:
     job_type: run
     limit: new_vms
     natural_key:
-      name: Add new host to IdM
+      name: Add host to IdM
       organization:
         name: rhops
         type: organization
@@ -257,6 +257,58 @@ controller_templates:
             required: true
             type: text
             variable: short_name
+    survey_enabled: true
+
+  - name: Add new hosts to IdM
+    description: >
+      Adds hosts in new_vms group to IdM control including things like DNS
+      name and user management.
+    execution_environment: Default execution environment
+    extra_vars:
+      use_inventory_for_hostname: true
+    forks: 15
+    inventory:
+      name: Temporary Inventory
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_slice_count: 1
+    job_type: run
+    limit: new_vms
+    natural_key:
+      name: Add new hosts to IdM
+      organization:
+        name: rhops
+        type: organization
+      type: job_template
+    playbook: setup-idmclient.yml
+    project:
+      name: Cool-Lab ikke-test
+      organization:
+        name: rhops
+        type: organization
+      type: project
+    related:
+      credentials:
+        - credential_type:
+            kind: ssh
+            name: Machine
+            type: credential_type
+          name: machine-creds-rhops-admin
+          organization:
+            name: rhops
+            type: organization
+          type: credential
+        - credential_type:
+            kind: net
+            name: Network
+            type: credential_type
+          name: net-creds-idm
+          organization:
+            name: rhops
+            type: organization
+          type: credential
 
   - name: Remove host from temp inventory
     description: Removes host from temporary inventory
