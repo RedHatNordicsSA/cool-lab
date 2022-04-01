@@ -134,6 +134,66 @@ controller_templates:
             variable: state
     survey_enabled: true
 
+  - name: Prepare RHEL host
+    description: >
+      Subscribes a RHEL to Red Hat subscription management and
+      Insights. Adds repositories and installs basic set of
+      packages.
+    execution_environment: Default execution environment
+    forks: 15
+    ask_inventory_on_launch: true
+    inventory:
+      name: vmware-rh
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_slice_count: 1
+    job_type: run
+    ask_limit_on_launch: true
+    natural_key:
+      name: prep-new-rhels
+      organization:
+        name: rhops
+        type: organization
+      type: job_template
+    playbook: prepare-rhel8.yml
+    project:
+      name: Cool-Lab ikke-test
+      organization:
+        name: rhops
+        type: organization
+      type: project
+    related:
+      credentials:
+        - credential_type:
+            kind: cloud
+            name: Red Hat Subscription
+            type: credential_type
+          name: rh-subs
+          organization:
+            name: rhops
+            type: organization
+          type: credential
+        - credential_type:
+            kind: net
+            name: Network
+            type: credential_type
+          name: ikkedemo
+          organization:
+            name: rhops
+            type: organization
+          type: credential
+        - credential_type:
+            kind: ssh
+            name: Machine
+            type: credential_type
+          name: machine-creds-rhops-admin
+          organization:
+            name: rhops
+            type: organization
+          type: credential
+
   - name: Prepare new RHEL hosts
     description: >
       Subscribes RHEL to Red Hat subscription management and
