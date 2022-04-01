@@ -29,7 +29,7 @@ controller_templates:
       type: job_template
     playbook: ensure-vm-state.yml
     project:
-      name: Cool-Lab
+      name: Cool-Lab ikke-test
       organization:
         name: rhops
         type: organization
