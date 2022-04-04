@@ -105,24 +105,44 @@ controller_workflows:
             required: true
             type: multiplechoice
             variable: state
-      simplified_workflow_nodes:
 
-        - identifier: add-vm-node
-          unified_job_template: Ensure VM State
-          success_nodes:
-            - add-vm-to-idm-node
+      workflow_nodes:
 
-        - identifier: add-vm-to-idm-node
-          unified_job_template: Add new hosts to IdM
-          success_nodes:
-            - identifier: remove-from-inventory-node
+        - identifier: 101-add-vm
+          unified_job_template:
+            name: Ensure VM State
+            type: job_template
+            organization:
+              name: rhops
+          related:
+            success_nodes:
+              - identifier: 201-prep-rhel
 
-        - identifier: prep-rhel-node
-          unified_job_template: Prepare new RHEL hosts
-          success_nodes:
-            - identifier: remove-from-inventory-node
+        - identifier: 201-prep-rhel
+          unified_job_template:
+            name: Prepare new RHEL hosts
+            type: job_template
+            organization:
+              name: rhops
+          related:
+            success_nodes:
+              - identifier: 301-add-vm-to-idm
 
-        - identifier: remove-from-inventory-node
-          unified_job_template: Remove host from temp inventory
+        - identifier: 301-add-vm-to-idm
+          unified_job_template:
+            name: Add new hosts to IdM
+            type: job_template
+            organization:
+              name: rhops
+          related:
+            success_nodes:
+              - identifier: 401-remove-from-inventory
+
+        - identifier: 401-remove-from-inventory
+          unified_job_template:
+            name: Remove host from temp inventory
+            type: job_template
+            organization:
+              name: rhops
 
     survey_enabled: true
