@@ -21,12 +21,6 @@ controller_templates:
     job_slice_count: 1
     job_type: run
     limit: localhost
-    natural_key:
-      name: ensure-vm-state
-      organization:
-        name: rhops
-        type: organization
-      type: job_template
     playbook: ensure-vm-state.yml
     project:
       name: Cool-Lab ikke-test
@@ -151,12 +145,6 @@ controller_templates:
     job_slice_count: 1
     job_type: run
     ask_limit_on_launch: true
-    natural_key:
-      name: prep-new-rhels
-      organization:
-        name: rhops
-        type: organization
-      type: job_template
     playbook: prepare-rhel8.yml
     project:
       name: Cool-Lab ikke-test
@@ -210,12 +198,6 @@ controller_templates:
     job_slice_count: 1
     job_type: run
     limit: new_vms
-    natural_key:
-      name: prep-new-rhels
-      organization:
-        name: rhops
-        type: organization
-      type: job_template
     playbook: prepare-rhel8.yml
     project:
       name: Cool-Lab ikke-test
@@ -270,12 +252,6 @@ controller_templates:
     job_slice_count: 1
     job_type: run
     limit: new_vms
-    natural_key:
-      name: Add host to IdM
-      organization:
-        name: rhops
-        type: organization
-      type: job_template
     playbook: setup-idmclient.yml
     project:
       name: Cool-Lab ikke-test
@@ -336,12 +312,6 @@ controller_templates:
     job_slice_count: 1
     job_type: run
     limit: new_vms
-    natural_key:
-      name: Add new hosts to IdM
-      organization:
-        name: rhops
-        type: organization
-      type: job_template
     playbook: setup-idmclient.yml
     project:
       name: Cool-Lab ikke-test
@@ -381,12 +351,6 @@ controller_templates:
       type: inventory
     job_type: run
     limit: localhost
-    natural_key:
-      name: Remove host from temp inventory
-      organization:
-        name: rhops
-        type: organization
-      type: job_template
     playbook: remove-host-from-inventory.yml
     project:
       name: Cool-Lab ikke-test
