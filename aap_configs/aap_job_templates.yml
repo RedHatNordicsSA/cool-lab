@@ -1,17 +1,12 @@
 ---
 
 controller_templates:
-  - name: ensure-vm-state
+  - name: Ensure VM State
     description: 'Creates of deletes a VM, or sets power state'
     execution_environment: cool-lab-community
+    ask_variables_on_launch: true
     extra_vars:
-      ansible_python_interpreter: /bin/python3
-      net_name: RH-seg-2991
-      net_type: dhcp
-      memory_mb: 2048
-      num_cpus: 2
-      state: poweredon
-      short_name: rh-someoneforgottonameme-01
+      use_aap_inventory: false
     inventory:
       name: Demo Inventory
       organization:
@@ -30,15 +25,8 @@ controller_templates:
       type: project
     related:
       credentials:
-        - credential_type:
-            kind: cloud
-            name: VMware vCenter
-            type: credential_type
-          name: vcenter-21
-          organization:
-            name: rhops
-            type: organization
-          type: credential
+        - name: vcenter-21
+        - name: aap-admin
       survey_spec:
         description: ''
         name: ''
