@@ -1,4 +1,8 @@
 ---
+#
+# check this blog for docs, there is no guidance for this ATM in official docs:
+# https://www.ansible.com/blog/automation-controller-workflow-deployment-as-code
+#
 controller_workflows:
   - name: Add RHEL8
     description: Creates and preps rhel8 vm
