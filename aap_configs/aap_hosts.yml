@@ -1,0 +1,6 @@
+---
+controller_hosts:
+  - name: localhost
+    inventory: Temporary Inventory
+    variables:
+      ansible_connection: local
