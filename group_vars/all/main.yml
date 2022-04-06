@@ -7,8 +7,8 @@ vcenter_datastore: SVC-LUN-1
 
 # RHEL subscriptions
 
-subs_username: foobar
-subs_pw: foobar
+rh_subs_username: foobar
+rh_subs_password: foobar
 subs_pool: Employee SKU
 enabled_repos_rhel8:
   - rhel-8-for-x86_64-appstream-rpms

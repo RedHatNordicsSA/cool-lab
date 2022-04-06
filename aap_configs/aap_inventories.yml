@@ -4,6 +4,9 @@ controller_inventories:
   - name: RH-IdM
     organization: rhops
     description: Sourced from IdM
+  - name: Temporary Inventory
+    organization: Default
+    description: Temporary inventory for hosts to be created
   - name: vmware-rh
     organization: rhops
     description: Red Hat VMs sourced from vmware

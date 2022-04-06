@@ -50,8 +50,8 @@ Example Playbook
       aap_database_name: "awx"
       aap_database_username: "awx"
       aap_database_password: "password"
-      aap_registry_username: "{{ subs_username }}"
-      aap_registry_password: "{{ subs_pw }}"
+      aap_registry_username: "{{ rh_subs_username }}"
+      aap_registry_password: "{{ rh_subs_password }}"
 
 License
 -------

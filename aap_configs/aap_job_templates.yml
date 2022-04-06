@@ -1,0 +1,386 @@
+---
+
+controller_templates:
+  - name: Ensure VM State
+    description: 'Creates of deletes a VM, or sets power state'
+    execution_environment: cool-lab-community
+    ask_variables_on_launch: true
+    extra_vars:
+      use_aap_inventory: false
+    inventory:
+      name: Demo Inventory
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_slice_count: 1
+    job_type: run
+    limit: localhost
+    playbook: ensure-vm-state.yml
+    project:
+      name: Cool-Lab ikke-test
+      organization:
+        name: rhops
+        type: organization
+      type: project
+    related:
+      credentials:
+        - name: vcenter-21
+        - name: aap-admin
+      survey_spec:
+        description: ''
+        name: ''
+        spec:
+          - choices: ''
+            default: ''
+            max: 1024
+            min: 1
+            new_question: true
+            question_description: Short name for the hostname. Use format
+              rh-<whatever>-<number>, e.g. rh-ikketest-10. No domain part.
+            question_name: Host Name
+            required: true
+            type: text
+            variable: short_name
+          - choices: 'RH-seg-2990
+
+              RH-seg-2991
+
+              RH-seg-2992
+
+              RH-seg-2993'
+            default: RH-seg-2991
+            max: 1024
+            min: 0
+            new_question: true
+            question_description: Into which VLAN the VM goes into?
+            question_name: VLAN name
+            required: true
+            type: multiplechoice
+            variable: net_name
+          - choices: '512
+
+              1024
+
+              2048
+
+              4096
+
+              8192
+
+              16384
+
+              32768
+
+              65536'
+            default: '4096'
+            max: 65536
+            min: 512
+            new_question: true
+            question_description: How much RAM in megabytes
+            question_name: Memory MB
+            required: true
+            type: multiplechoice
+            variable: memory_mb
+          - choices: '1
+
+              2
+
+              4
+
+              8
+
+              16'
+            default: '2'
+            max: 1024
+            min: 0
+            new_question: true
+            question_description: How many CPU
+            question_name: CPU
+            required: true
+            type: multiplechoice
+            variable: num_cpu
+          - choices: 'poweredon
+
+              poweredoff
+
+              absent'
+            default: poweredon
+            max: 1024
+            min: 0
+            new_question: true
+            question_description: VM state is poweredon/off/absent
+            question_name: VM state
+            required: true
+            type: multiplechoice
+            variable: state
+    survey_enabled: true
+
+  - name: Prepare RHEL host
+    description: >
+      Subscribes a RHEL to Red Hat subscription management and
+      Insights. Adds repositories and installs basic set of
+      packages.
+    execution_environment: Default execution environment
+    forks: 15
+    ask_inventory_on_launch: true
+    inventory:
+      name: vmware-rh
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_slice_count: 1
+    job_type: run
+    ask_limit_on_launch: true
+    playbook: prepare-rhel8.yml
+    project:
+      name: Cool-Lab ikke-test
+      organization:
+        name: rhops
+        type: organization
+      type: project
+    related:
+      credentials:
+        - credential_type:
+            kind: cloud
+            name: Red Hat Subscription
+            type: credential_type
+          name: rh-subs
+          organization:
+            name: rhops
+            type: organization
+          type: credential
+        - credential_type:
+            kind: net
+            name: Network
+            type: credential_type
+          name: ikkedemo
+          organization:
+            name: rhops
+            type: organization
+          type: credential
+        - credential_type:
+            kind: ssh
+            name: Machine
+            type: credential_type
+          name: machine-creds-rhops-admin
+          organization:
+            name: rhops
+            type: organization
+          type: credential
+
+  - name: Prepare new RHEL hosts
+    description: >
+      Subscribes RHEL to Red Hat subscription management and
+      Insights. Adds repositories and installs basic set of
+      packages.
+    execution_environment: Default execution environment
+    forks: 15
+    inventory:
+      name: Temporary Inventory
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_slice_count: 1
+    job_type: run
+    limit: new_vms
+    playbook: prepare-rhel8.yml
+    project:
+      name: Cool-Lab ikke-test
+      organization:
+        name: rhops
+        type: organization
+      type: project
+    related:
+      credentials:
+        - credential_type:
+            kind: cloud
+            name: Red Hat Subscription
+            type: credential_type
+          name: rh-subs
+          organization:
+            name: rhops
+            type: organization
+          type: credential
+        - credential_type:
+            kind: net
+            name: Network
+            type: credential_type
+          name: ikkedemo
+          organization:
+            name: rhops
+            type: organization
+          type: credential
+        - credential_type:
+            kind: ssh
+            name: Machine
+            type: credential_type
+          name: machine-creds-rhops-admin
+          organization:
+            name: rhops
+            type: organization
+          type: credential
+
+  - name: Add host to IdM
+    description: >
+      Adds hosts to IdM control including things like DNS name and user
+      management.
+    execution_environment: Default execution environment
+    extra_vars:
+      use_inventory_for_hostname: true
+    forks: 15
+    inventory:
+      name: Temporary Inventory
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_slice_count: 1
+    job_type: run
+    limit: new_vms
+    playbook: setup-idmclient.yml
+    project:
+      name: Cool-Lab ikke-test
+      organization:
+        name: rhops
+        type: organization
+      type: project
+    related:
+      credentials:
+        - credential_type:
+            kind: ssh
+            name: Machine
+            type: credential_type
+          name: machine-creds-rhops-admin
+          organization:
+            name: rhops
+            type: organization
+          type: credential
+        - name: IdM
+          # credential_type:
+          #   kind: net
+          #   name: Network
+          #   type: credential_type
+          # organization:
+          #   name: rhops
+          #   type: organization
+          # type: credential
+      survey_spec:
+        description: ''
+        name: ''
+        spec:
+          - choices: ''
+            default: ''
+            max: 1024
+            min: 1
+            new_question: true
+            question_description: first part of FQDN
+            question_name: Short name
+            required: true
+            type: text
+            variable: short_name
+    survey_enabled: true
+
+  - name: Add new hosts to IdM
+    description: >
+      Adds hosts in new_vms group to IdM control including things like DNS
+      name and user management.
+    execution_environment: Default execution environment
+    extra_vars:
+      use_inventory_for_hostname: true
+    forks: 15
+    inventory:
+      name: Temporary Inventory
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_slice_count: 1
+    job_type: run
+    limit: new_vms
+    playbook: setup-idmclient.yml
+    project:
+      name: Cool-Lab ikke-test
+      organization:
+        name: rhops
+        type: organization
+      type: project
+    related:
+      credentials:
+        - name: machine-creds-rhops-admin
+        - name: IdM
+
+  - name: Remove host from temp inventory
+    description: Removes host from temporary inventory
+    execution_environment: Default execution environment
+    inventory:
+      name: Demo Inventory
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_type: run
+    limit: localhost
+    playbook: remove-host-from-inventory.yml
+    project:
+      name: Cool-Lab ikke-test
+      organization:
+        name: rhops
+        type: organization
+      type: project
+    related:
+      credentials:
+        - credential_type:
+            kind: cloud
+            name: Red Hat Ansible Automation Platform
+            type: credential_type
+          name: aap-creds-rhops-admin
+          organization:
+            name: rhops
+            type: organization
+          type: credential
+      survey_spec:
+        description: Host to be removed from inventory
+        name: 'Removed host'
+        spec:
+          - question_name: Host name
+            default: i forgot to fill hostname
+            max: 1024
+            min: 0
+            new_question: true
+            question_description: >
+              The first part of FQDN, leave out the domain part
+            required: true
+            type: text
+            variable: short_name
+    survey_enabled: true
+
+  - name: Nuke VM
+    description: Unsubscribes IdM, subs and insights and deletes vm
+    limit: localhost
+    job_type: run
+    playbook: nuke-vm.yml
+    project:
+      name: Cool-Lab ikke-test
+      organization:
+        name: rhops
+    inventory:
+      name: Temporary Inventory
+    related:
+      credentials:
+        - name: vcenter-21
+      survey_spec:
+        description: ''
+        name: ''
+        spec:
+          - choices: ''
+            default: 'I forgot to set hostname in nuke vm'
+            new_question: true
+            question_description: First part of hostname
+            question_name: Short hostname
+            required: true
+            type: text
+            variable: short_name
+    survey_enabled: true

@@ -4,8 +4,8 @@
   delegate_to: "{{ host_ip }}"
   redhat_subscription:
     state: present
-    username: "{{ subs_username }}"
-    password: "{{ subs_pw }}"
+    username: "{{ rh_subs_username }}"
+    password: "{{ rh_subs_password }}"
     autosubscribe: false
     pool: "{{ subs_pool }}"
     force_register: "{{ force_register }}"

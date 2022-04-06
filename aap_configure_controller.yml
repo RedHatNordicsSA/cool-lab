@@ -19,6 +19,7 @@
         dir: "{{ controller_configs_dir | default((lookup('env','CONTROLLER_CONFIGS_DIR') == '') | ternary('./configs', lookup('env','CONTROLLER_CONFIGS_DIR'))) }}"
         ignore_files: [controller_config.yml.template]
         extensions: ["yml"]
+        ignore_unknown_extensions: true
       tags:
         - always
 

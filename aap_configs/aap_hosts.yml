@@ -1,0 +1,7 @@
+---
+controller_hosts:
+  - name: localhost
+    inventory: Temporary Inventory
+    variables:
+      ansible_connection: local
+      ansible_python_interpreter: /usr/bin/python
