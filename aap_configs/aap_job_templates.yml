@@ -357,8 +357,8 @@ controller_templates:
             variable: short_name
     survey_enabled: true
 
-  - name: Nuke VM
-    description: Unsubscribes IdM, subs and insights and deletes vm
+  - name: Delete VM from VMware
+    description: Deletes the host from VMware
     limit: localhost
     job_type: run
     playbook: nuke-vm.yml
@@ -368,9 +368,41 @@ controller_templates:
         name: rhops
     inventory:
       name: Temporary Inventory
+    execution_environment: Default execution environment
     related:
       credentials:
         - name: vcenter-21
+      survey_spec:
+        description: ''
+        name: ''
+        spec:
+          - choices: ''
+            default: 'I forgot to set hostname in nuke vm'
+            new_question: true
+            question_description: First part of hostname
+            question_name: Short hostname
+            required: true
+            type: text
+            variable: short_name
+    survey_enabled: true
+
+  - name: Unsubscribe host
+    description: Unsubscribes IdM, subs and insights
+    ask_limit_on_launch: true
+    limit:
+    job_type: run
+    playbook: unsubscribe-vm.yml
+    project:
+      name: Cool-Lab ikke-test
+      organization:
+        name: rhops
+    inventory:
+      name: vmware-rh
+    execution_environment: Default execution environment
+    related:
+      credentials:
+        - name: machine-creds-rhops-admin
+        - name: IdM
       survey_spec:
         description: ''
         name: ''
