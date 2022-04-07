@@ -60,7 +60,16 @@ enabled_users:
     gid: 10007
     # yamllint disable-line rule:line-length
     sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDh1I/jpC7E6WyDJYw7LORehpd/50YtmMeE1bQaCX6KG3PfBFdKyu0VtssuevU6WS4zfDRruNNpoukUdbsL7dWQqgXQQB0hbPykDd8iqaC4bqKIYAqYEBv6anHppnr39hvKtLrmNDMAVwMNFdns3dFSUueg1PcdfyNNQ8qnKu1Mq9JmAKsb8WwJ8cdwpRMeGujU5QUAJF7FicHgftLyhKJQbgsN+KNWbwRTSTknjjot2e869mSV9qwo58iZZLt1BUyofVQch7a5h7/PXxXjuYjHmXAgK5fXRqktPqqSB0rqgSApIv5IOfm02zbOt5EopVLijLSTTxWnM+gTHETYBg7nmYdMUztBmbbKeGvsw5UzIMO4qHYaqCWRYn6Oq/Shtb07LrASD2vVthe57qg2MR7QwmoiVXxt+Fpxx4v2nzjMcs2lTWigie4COiS7jatu/rU7JYQEouwmxOy1JFj1p51e7u0fplAx8JhdklQZ1aqgDQcacdC0YOT7yfJ5jiKeIe0=
-
+  
+  - name: codell
+    first: Johan 
+    last: Odell
+    password: "coolpw"
+    uid: 10008
+    gid: 10008
+    # yamllint disable-line rule:line-length
+    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDQ1dxXMyaAD1L2H3BgG2pYG0eA3cPNpc6OPD1tQrkNK+irN/NW877Hvgt5mX+V7DSBIqWx05g4mcmscrccnEA4j96QMQFqsjrIjj1sk1URH5GmWPyfmsV1w46VWVtTjgIxf1zbdwgbbEgOYlgdS0DyN1dXOsPpZmnxy4OqCz6lt3Hvx2vdSywHk7mqRLNMn36zf9ZxtBviN8IwLU6ZCIZQfW1/9EULAvjMXft/uqM/211NDVE7yxpsMfoD+6dlk8i8hVjtresKSVqu9WAQ09gQvmbOVEyJun2EiB58pPG1rOdwk7Tmk/raRrro/jnX1zYLwu/tIKZocuFLlFT0hrvp54iCRPR8bLMvjs4kohT4x9RA/PS35rT2YLBqCg2DU1zgCNMEqUqgdyRHKnA/1TFR+VffDdPsFtbBKPwj5WR6aCrmsspyBVahGAZ888hbNMxohxiW8LBupvVGkAVDgtiNHYKCJL3YXoiV2S3qYehgQDRL3Zfm27/SG4EcaOZwOBs=
+  
 idm_admins:
   - jwesterl
   - ikke
@@ -68,6 +77,7 @@ idm_admins:
   - jboivie
   - mglantz
   - jwennerb
+  - codell
 
 aap_admins:
   - jwesterl
@@ -76,6 +86,7 @@ aap_admins:
   - jboivie
   - mglantz
   - jwennerb
+  - codell
 
 rh_ops:
   - ikke
