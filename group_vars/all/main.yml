@@ -48,3 +48,8 @@ hostgroups:
 aap_ldap_username: aap_ldap
 aap_controller: rh-ansiblecontroller-01.cool.lab
 
+ah_hostname: rh-automation-hub-01.cool.lab
+ah_username: "admin"
+ah_password: "{{ aap_admin_password }}"
+ah_oauthtoken: ""
+ah_validate_certs: false
