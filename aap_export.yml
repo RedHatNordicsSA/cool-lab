@@ -1,0 +1,45 @@
+---
+#
+# This playbook is handy to get examples from AAP how to turn objects into playbooks.
+# Personally I used it to export job and workflow templates to crate my own, which
+# are in ./aap_configs/ directory.
+#
+# Run this: ansible-playbook aap_export.yml
+# Output will be dumped into aap_exported.yaml file.
+
+- name: Playbook to export AAP configs to file
+  hosts: localhost
+  connection: local
+  collections:
+    - awx.awx
+  environment:
+    CONTROLLER_HOST: "{{ aap_controller }}"
+    CONTROLLER_USERNAME: admin
+    CONTROLLER_PASSWORD: "{{ aap_admin_password }}"
+    CONTROLLER_VERIFY_SSL: false
+
+  tasks:
+
+    - name: Export stuff
+      export:
+        #
+        # Put here the resource you want to export. you can look at the object names from
+        # e.g. controller API via browser.
+        #
+        # controller_config_file:
+        workflow_job_templates: "test-add-rhel8"
+        # job_templates: "test-remove-vm-from-inventory"
+        # credentials: 'all'
+      register: dump
+
+
+    # - name: Export all assets
+    #   export:
+    #     all: True
+    #   register: dump
+
+    - name: Export workflow job template to file
+      copy:
+        # yamllint disable-line rule:line-length
+        content: "{{ dump | to_nice_yaml( width=50, explicit_start=True, explicit_end=True) }}"
+        dest: aap_exported.yaml
