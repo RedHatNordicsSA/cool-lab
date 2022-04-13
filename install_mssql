@@ -1,5 +1,5 @@
 ---
-- hosts: "{{ vm_name }}"
+- hosts: "{{ short_name }}"
   become: yes
   vars:
     mssql_accept_microsoft_odbc_driver_17_for_sql_server_eula: true
