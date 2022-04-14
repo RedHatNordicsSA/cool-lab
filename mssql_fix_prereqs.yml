@@ -1,6 +1,6 @@
 --- 
 - name: Solve prereqs for sql installation on the host  
-  hosts: "{{ short_name }}"
+  hosts: mssql
   become: yes 
 
   tasks: 
