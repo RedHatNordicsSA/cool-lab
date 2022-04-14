@@ -4,6 +4,18 @@ Documentation to Red Hat Nordics Lab
 ## Communication
 See: https://github.com/mglantz/cool-lab/blob/main/communication.md
 
+## Generic Rules
+
+1. Remember, no private stuff into github. There is vault for that.
+2. All VMs created by Red Hat personnel should start with ```rh-``` prefix
+   and and with two digit number. E.g. ```rh-bastion-01```
+3. We have four VLANs in use, see
+   [miro](https://miro.com/app/board/uXjVOd3rE1I=/).
+4. Add any permanent services to miro board "Arrow lab architecture facts" table
+   for others to find them.
+5. If creating permanent services, consider static ip. Otherwise dhcp is fine.
+
+
 ## Development
 
 It is agreed we don't manually do anything. Of course you can play around
@@ -14,6 +26,26 @@ to track issues. Definiton of done is that:
 
 * Implementation is automated
 * Anyone can run automation based on instructions here.
+
+
+### Git branching
+
+The main branch should always be in working state. So any half done stuff should
+be on your presonal feature branch.
+
+Here's good blog about such
+[better git flow](https://render.com/blog/git-organized-a-better-git-flow).
+Instead of ```git reset``` I prefer ```git rebasei -i origin/main```.
+
+### AAP developement
+
+Now that we have AAP, and it's configs are here in [./aap_configs](./aap_configs)
+you need to think about branching git. So create your own branch for development
+and add a temporary project to AAP to point there. That gives you opportunity
+to push new playbooks and changes to your branch, and for the time of testing,
+the temporary project pulls from there. Once feature is ready, do PR to main
+and switch the tasks to point to project for main branch.
+
 
 ## Private matters
 
