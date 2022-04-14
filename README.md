@@ -14,6 +14,9 @@ See: https://github.com/mglantz/cool-lab/blob/main/communication.md
 4. Add any permanent services to miro board "Arrow lab architecture facts" table
    for others to find them.
 5. If creating permanent services, consider static ip. Otherwise dhcp is fine.
+6. Consider that anything you do with ansible for the infra bits should work
+   both from command line and AAP. Secrets are in secrets.yml, from where they
+   are populated to AAP as credentials where needed.
 
 
 ## Development
