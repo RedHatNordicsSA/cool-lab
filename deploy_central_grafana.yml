@@ -1,0 +1,26 @@
+---
+- name: Setup a central metrics server with grafana and pcp
+  hosts: "{{ short_name }}"
+  collections:
+    - redhat.rhel_system_roles
+  become: yes 
+  
+  tasks: 
+
+    - name: Open Firewall for grafana
+      firewalld:
+        service: grafana
+        permanent: yes
+        immediate: yes
+        state: enabled
+
+- name: Use metrics systems role to configure grafana  
+  hosts: "{{ short_name }}"
+  vars:
+    metrics_graph_service: yes
+    metrics_query_service: yes
+    metrics_from_mssql: yes
+    metrics_retention_days: 7
+
+  roles:
+    - redhat.rhel_system_roles.metrics
