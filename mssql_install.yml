@@ -1,0 +1,12 @@
+---
+- hosts: "{{ short_name }}"
+  become: yes
+  vars:
+    mssql_accept_microsoft_odbc_driver_17_for_sql_server_eula: true
+    mssql_accept_microsoft_cli_utilities_for_sql_server_eula: true
+    mssql_accept_microsoft_sql_server_standard_eula: true
+    mssql_password: 
+    mssql_edition: Developer
+    mssql_tcp_port: 1433
+  roles:
+    - microsoft.sql.server
