@@ -19,7 +19,7 @@
   vars:
     metrics_graph_service: yes
     metrics_query_service: yes
-    metrics_from_mssql: yes
+    metrics_from_mssql: no
     metrics_retention_days: 7
 
   roles:
