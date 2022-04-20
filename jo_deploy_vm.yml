@@ -1,0 +1,147 @@
+---
+
+- name: Ensure VM state
+  hosts: localhost
+  gather_facts: false
+  vars:
+    name: delete_this_machine_anytime
+    state: poweredon
+    memory_mb: 2048
+    num_cpus: 2
+    num_cpu_cores_per_socket: 1
+    template: rhel_8_5_image
+    net_name: RH-seg-2991
+    net_type: dhcp       # dhcp vs. static. If static, fix below values
+    # ip: 10.128.1.256
+    # netmask: 255.255.255.0
+    # gateway: 10.128.1.1
+    # domain: cool.lab
+    # dns_servers:
+    #   - 10.128.1.10
+    #   - 10.128.1.11
+    use_aap_inventory: false
+
+  tasks:
+
+    - name: >
+        Use vmware credentials from vault if set there, otherwise
+        from AAP credentials
+      set_fact:
+        vcenter_credentials:
+          hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+          username: '{{ lookup("env", "VMWARE_USER") }}'
+          password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+      when:
+        - vcenter_credentials is not defined
+        - vcenter_credentials.hostname is not defined
+        - vcenter_credentials.username is not defined
+        - vcenter_credentials.password is not defined
+
+    - name: when not deleting vm
+      when: state != 'absent'
+      block:
+        - name: Clone the template
+          community.vmware.vmware_guest:
+            name: "{{ short_name }}"
+            state: "{{ state }}"
+            hostname: "{{ vcenter_credentials.hostname }}"
+            username: "{{ vcenter_credentials.username }}"
+            password: "{{ vcenter_credentials.password }}"
+            validate_certs: false
+            template: "{{ template }}"
+            datacenter: "{{ vcenter_datacenter }}"
+            folder: "{{ vcenter_folder }}"
+            cluster: "{{ vcenter_cluster }}"
+            wait_for_ip_address: true
+            hardware:
+              memory_mb: "{{ memory_mb }}"
+              num_cpus: "{{ num_cpus }}"
+              num_cpu_cores_per_socket: "{{ num_cpu_cores_per_socket }}"
+            networks:
+              - name: "{{ net_name }}"
+                type: "{{ net_type }}"
+                ip: "{{ ip | default(omit) }}"
+                netmask: "{{ netmask | default(omit) }}"
+                gateway: "{{ gateway | default(omit) }}"
+                wait_for_ip_address_timeout: 60
+                connected: true
+                start_connected: true
+            customization:
+              domain: "{{ domain | default(omit) }}"
+              dns_servers: "{{ dns_servers | default(omit) }}"
+          register: vm
+
+        - name: Save Server IP Address for future use
+          set_stats:
+            data:
+              server_ip: "{{ vm.instance.ipv4 }}"
+              server_name: "{{ short_name }}"
+          when: vm is succeeded
+
+        #- name: Create tower inventory
+        #  awx.awx.inventory:
+        #    name: "Temporary Inventory"
+        #    description: "Temporary inventory for hosts to be created"
+        #    organization: "Default"
+        #    state: present
+        #    validate_certs: false
+        #  when:
+        #    - use_aap_inventory
+        #    - vm is succeeded
+
+        - name: Add tower host
+          awx.awx.host:
+            name: "{{ short_name }}"
+            inventory: "vmware-rh"
+            state: present
+            validate_certs: false
+            variables:
+              ansible_host: "{{ vm.instance.ipv4 }}"
+          when:
+            - use_aap_inventory
+            - vm is succeeded
+
+        - name: Add host to group for new vms
+          awx.awx.group:
+            name: mssql
+            inventory: "vmware-rh"
+            hosts:
+              - "{{ short_name }}"
+            validate_certs: false
+            preserve_existing_hosts: true
+          when:
+            - use_aap_inventory
+            - vm is succeeded
+
+        - name: Wait for Virtual Machine to boot up and become responsive to SSH
+          wait_for:
+            port: 22
+            host: "{{ vm.instance.ipv4 }}"
+            search_regex: OpenSSH
+            delay: 10
+            timeout: 600
+          when: vm is succeeded
+
+    - name: Delete the VM
+      community.vmware.vmware_guest:
+        name: "{{ short_name }}"
+        hostname: "{{ vcenter_credentials.hostname }}"
+        username: "{{ vcenter_credentials.username }}"
+        password: "{{ vcenter_credentials.password }}"
+        validate_certs: false
+        datacenter: "{{ vcenter_datacenter }}"
+        folder: "{{ vcenter_folder }}"
+        state: "{{ state }}"
+        cluster: "{{ vcenter_cluster }}"
+        force: true
+      when: state == 'absent'
+
+    - name: vm info
+      debug:
+        var: vm
+      when: state != 'absent'
+
+    - name: store vm ip
+      set_fact:
+        host_ip: "{{ vm.instance.ipv4 }}"
+      when: state != 'absent'
