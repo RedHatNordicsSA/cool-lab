@@ -92,7 +92,7 @@
         - name: Add tower host
           awx.awx.host:
             name: "{{ short_name }}"
-            inventory: "vmware-rh"
+            inventory: "Temporary Inventory"
             state: present
             validate_certs: false
             variables:
@@ -104,7 +104,7 @@
         - name: Add host to group for new vms
           awx.awx.group:
             name: "{{ inventory_group }}"
-            inventory: "vmware-rh"
+            inventory: "Temporary Inventory"
             hosts:
               - "{{ short_name }}"
             validate_certs: false
