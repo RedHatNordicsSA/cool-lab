@@ -103,7 +103,7 @@
 
         - name: Add host to group for new vms
           awx.awx.group:
-            name: mssql
+            name: "{{ inventory_group }}"
             inventory: "vmware-rh"
             hosts:
               - "{{ short_name }}"
