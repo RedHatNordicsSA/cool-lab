@@ -89,24 +89,24 @@
         #    - use_aap_inventory
         #    - vm is succeeded
 
-        - name: Add tower host
-          awx.awx.host:
-            name: "{{ short_name }}"
-            inventory: "Temporary Inventory"
-            state: present
-            validate_certs: false
-            variables:
-              ansible_host: "{{ vm.instance.ipv4 }}"
-          when:
-            - use_aap_inventory
-            - vm is succeeded
+        #- name: Add tower host
+        #  awx.awx.host:
+        #    name: "{{ short_name }}"
+        #    inventory: "Temporary Inventory"
+        #    state: present
+        #    validate_certs: false
+        #    variables:
+        #      ansible_host: "{{ vm.instance.ipv4 }}"
+        #  when:
+        #    - use_aap_inventory
+        #    - vm is succeeded
 
         - name: Add host to group for new vms
           awx.awx.group:
             name: "{{ inventory_group }}"
             inventory: "Temporary Inventory"
             hosts:
-              - "{{ short_name }}"
+             - "{{ short_name }}"
             validate_certs: false
             preserve_existing_hosts: true
           when:
