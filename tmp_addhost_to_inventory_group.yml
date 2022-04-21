@@ -1,0 +1,14 @@
+- name: Add new host to inventory group
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+
+    - name: Add host to mssql invetory group 
+      awx.awx.group:
+        name: mssql
+        inventory: "vmware-rh"
+        hosts:
+          - "{{ short_name }}"
+        validate_certs: false
+        preserve_existing_hosts: true
