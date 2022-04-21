@@ -101,17 +101,17 @@
         #    - use_aap_inventory
         #    - vm is succeeded
 
-        - name: Add host to group for new vms
-          awx.awx.group:
-            name: "{{ inventory_group }}"
-            inventory: "vmware-rh"
-            hosts:
-             - "{{ short_name }}"
-            validate_certs: false
-            preserve_existing_hosts: true
-          when:
-            - use_aap_inventory
-            - vm is succeeded
+        #- name: Add host to group for new vms
+        #  awx.awx.group:
+        #    name: "{{ inventory_group }}"
+        #    inventory: "vmware-rh"
+        #   hosts:
+        #     - "{{ short_name }}"
+        #    validate_certs: false
+        #    preserve_existing_hosts: true
+        #  when:
+        #    - use_aap_inventory
+        #    - vm is succeeded
 
         - name: Wait for Virtual Machine to boot up and become responsive to SSH
           wait_for:
