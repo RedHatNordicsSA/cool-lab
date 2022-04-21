@@ -104,7 +104,7 @@
         - name: Add host to group for new vms
           awx.awx.group:
             name: "{{ inventory_group }}"
-            inventory: "Temporary Inventory"
+            inventory: "vmware-rh"
             hosts:
              - "{{ short_name }}"
             validate_certs: false
