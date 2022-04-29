@@ -69,7 +69,14 @@ enabled_users:
     gid: 10008
     # yamllint disable-line rule:line-length
     sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDQ1dxXMyaAD1L2H3BgG2pYG0eA3cPNpc6OPD1tQrkNK+irN/NW877Hvgt5mX+V7DSBIqWx05g4mcmscrccnEA4j96QMQFqsjrIjj1sk1URH5GmWPyfmsV1w46VWVtTjgIxf1zbdwgbbEgOYlgdS0DyN1dXOsPpZmnxy4OqCz6lt3Hvx2vdSywHk7mqRLNMn36zf9ZxtBviN8IwLU6ZCIZQfW1/9EULAvjMXft/uqM/211NDVE7yxpsMfoD+6dlk8i8hVjtresKSVqu9WAQ09gQvmbOVEyJun2EiB58pPG1rOdwk7Tmk/raRrro/jnX1zYLwu/tIKZocuFLlFT0hrvp54iCRPR8bLMvjs4kohT4x9RA/PS35rT2YLBqCg2DU1zgCNMEqUqgdyRHKnA/1TFR+VffDdPsFtbBKPwj5WR6aCrmsspyBVahGAZ888hbNMxohxiW8LBupvVGkAVDgtiNHYKCJL3YXoiV2S3qYehgQDRL3Zfm27/SG4EcaOZwOBs=
-  
+  - name: pgustafs
+    first: Peter 
+    last: Gustafsson
+    password: "coolpw"
+    uid: 10009
+    gid: 10009
+    # yamllint disable-line rule:line-length
+    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDMbO9QKzdNvJtJbCcr8+WA3JhVle9R8TG/Atb4L7LyCIFXsYxqZQOvfdw1sm2O9NFvRFb6Gag0rvNjTqw9O7R5qB+fepu+qkc7a5pwAP7SYcQNXZWblg7KKUd0vAeSLzBSWjAFEJpj/wwYaJBOyyGwNSfzF+mtSQqNVbrqtR0BvMa3ohuq/eHUKZ5Jx4SZP16S5CMjivu8BzMEVvyRB62Y/KtfvTH1/FDEPdPCcbaGzXxgK6zc1hKyIjShPMzRekW6O5kLQ88WaQuWqGp+mOJywYauIz4o2/mjySUeUjQSxL1KCmWEmS7tcNhXRUjmHTvoPPr+2csRGH7LzZOAb8F3
 idm_admins:
   - jwesterl
   - ikke
@@ -78,6 +85,7 @@ idm_admins:
   - mglantz
   - jwennerb
   - codell
+  - pgustafs
 
 aap_admins:
   - jwesterl
@@ -87,6 +95,7 @@ aap_admins:
   - mglantz
   - jwennerb
   - codell
+  - pgustafs
 
 rh_ops:
   - ikke
