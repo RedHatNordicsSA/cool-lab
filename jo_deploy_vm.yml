@@ -11,14 +11,14 @@
     num_cpu_cores_per_socket: 1
     template: rhel_8_5_image
     net_name: RH-seg-2991
-    net_type: dhcp       # dhcp vs. static. If static, fix below values
-    # ip: 10.128.1.256
-    # netmask: 255.255.255.0
-    # gateway: 10.128.1.1
-    # domain: cool.lab
-    # dns_servers:
-    #   - 10.128.1.10
-    #   - 10.128.1.11
+    net_type: static       # dhcp vs. static. If static, fix below values
+    ip: 10.128.1.15
+    netmask: 255.255.255.0
+    gateway: 10.128.1.1
+    domain: cool.lab
+    dns_servers:
+      - 10.128.1.10
+      - 10.128.1.11
     use_aap_inventory: false
 
   tasks:
