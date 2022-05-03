@@ -5,7 +5,7 @@
   gather_facts: false
   vars:
     name: delete_this_machine_anytime
-    state: poweredon
+    vm_state: poweredon
     memory_mb: 2048
     num_cpus: 2
     num_cpu_cores_per_socket: 1
@@ -38,12 +38,12 @@
         - vcenter_credentials.password is not defined
 
     - name: when not deleting vm
-      when: state != 'absent'
+      when: vm_state != 'absent'
       block:
         - name: Clone the template
           community.vmware.vmware_guest:
             name: "{{ short_name }}"
-            state: "{{ state }}"
+            state: "{{ vm_state }}"
             hostname: "{{ vcenter_credentials.hostname }}"
             username: "{{ vcenter_credentials.username }}"
             password: "{{ vcenter_credentials.password }}"
@@ -131,17 +131,17 @@
         validate_certs: false
         datacenter: "{{ vcenter_datacenter }}"
         folder: "{{ vcenter_folder }}"
-        state: "{{ state }}"
+        state: "{{ vm_state }}"
         cluster: "{{ vcenter_cluster }}"
         force: true
-      when: state == 'absent'
+      when: vm_state == 'absent'
 
     - name: vm info
       debug:
         var: vm
-      when: state != 'absent'
+      when: vm_state != 'absent'
 
     - name: store vm ip
       set_fact:
         host_ip: "{{ vm.instance.ipv4 }}"
-      when: state != 'absent'
+      when: vm_state != 'absent'

@@ -13,7 +13,7 @@
       # The ansible-controller-01
       memory_mb: 16384 
       num_cpus: 2
-      state: poweredon
+      vm_state: poweredon
       net_name: RH-seg-2991
       net_type: static
       ip: "{{ hostvars[ rh_aap_controller ].ansible_host }}"
@@ -34,7 +34,7 @@
       # The ansible-controller-01
       memory_mb: 16384
       num_cpus: 2
-      state: poweredon
+      vm_state: poweredon
       net_name: RH-seg-2991
       net_type: static
       ip: "{{ hostvars[ rh_aap_database ].ansible_host }}"
@@ -55,7 +55,7 @@
       # The exnode-01
       memory_mb: 16384
       num_cpus: 2
-      state: poweredon
+      vm_state: poweredon
       net_name: RH-seg-2991
       net_type: static
       ip: "{{ hostvars[ rh_aap_exnode ].ansible_host }}"
@@ -77,7 +77,7 @@
 #   vars:
 #     memory_mb: 4096
 #     num_cpus: 2
-#     state: poweredon
+#     vm_state: poweredon
 #     net_name: RH-seg-2991
 #     net_type: dhcp
 #     name: rh-ansible-controller-01.coollab
@@ -102,7 +102,7 @@
 #   vars:
 #     memory_mb: 2048
 #     num_cpus: 2
-#     state: poweredon
+#     vm_state: poweredon
 #     net_name: RH-seg-2991
 #     net_type: dhcp
 #     name: rh-exnode-01.coollab
