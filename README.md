@@ -155,7 +155,7 @@ ansible-playbook -i localhost, -c local -e short_name=rh-test-net ensure-vm-stat
 For power state commands:
 
 ```
-ansible-playbook -i localhost, -c local -e state=poweredoff -e short_name=rh-test-net ensure-vm-state.yml
+ansible-playbook -i localhost, -c local -e vm_state=poweredoff -e short_name=rh-test-net ensure-vm-state.yml
 ```
 
 And to delete it nicely, unregistering from all places like subs and idm:
@@ -167,7 +167,7 @@ ansible-playbook  -u root -e "short_name=rh-test-01" -l rh-idm-01.cool.lab  nuke
 And bluntly just delete VM, leave subscriptions, insights and idm think it still exists:
 
 ```
-ansible-playbook -i localhost, -c local -e state=absent -e short_name=rh-test-net ensure-vm-state.yml
+ansible-playbook -i localhost, -c local -e vm_state=absent -e short_name=rh-test-net ensure-vm-state.yml
 ```
 
 There are different values in vars, check them out. Like mem, cpu, network etc tunings.

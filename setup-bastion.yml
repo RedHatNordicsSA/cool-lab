@@ -2,7 +2,7 @@
 
 - import_playbook: ensure-vm-state.yml
   vars:
-    state: poweredon
+    vm_state: poweredon
     name: rh-bastion-01.coollab
     memory_mb: 2048
     num_cpus: 2

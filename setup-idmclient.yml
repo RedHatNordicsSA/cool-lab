@@ -44,6 +44,8 @@
 
     - name: add to IdM
       vars:
+        ipaclients:
+          - "{{ short_name | mandatory }}.{{ ipaserver_domain }}"
         state: present
         ipasssd_enable_dns_updates: true
         ipaclient_domain: "{{ ipaserver_domain }}"

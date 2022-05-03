@@ -3,7 +3,7 @@
 - name: Playbook to manage host groups
   hosts: rh-idm-01.cool.lab
   vars:
-    state: present
+    hostgroup_state: present
   tasks:
 
     - name: ensure hostgroup exists
@@ -17,5 +17,5 @@
         name: "{{ item.name }}"
         host: "{{ item.hosts }}"
         action: member
-        state: "{{ state }}"
+        state: "{{ hostgroup_state }}"
       loop: "{{ hostgroups }}"

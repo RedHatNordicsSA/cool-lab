@@ -4,6 +4,7 @@
 # https://www.ansible.com/blog/automation-controller-workflow-deployment-as-code
 #
 controller_workflows:
+
   - name: Add RHEL8
     description: Creates and preps rhel8 vm
     state: present
@@ -108,7 +109,7 @@ controller_workflows:
             question_name: VM state
             required: true
             type: multiplechoice
-            variable: state
+            variable: vm_state
 
       workflow_nodes:
 
@@ -145,6 +146,53 @@ controller_workflows:
         - identifier: 401-remove-from-inventory
           unified_job_template:
             name: Remove host from temp inventory
+            type: job_template
+            organization:
+              name: rhops
+
+    survey_enabled: true
+
+  - name: Nuke RHEL8
+    description: Unsubscribes idm, subs and insights and deletes VM
+    state: present
+    inventory:
+      name: vmware-rh
+    ask_limit_on_launch: true
+    limit: do not loose all your VMs :)
+    organization:
+      name: Red Hat
+      type: organization
+    ask_variables_on_launch: true
+    related:
+      survey_spec:
+        description: ''
+        name: ''
+        spec:
+          - choices: ''
+            default: ''
+            new_question: false
+            question_description: >
+              short name for the hostname. Use format rh-<whatever>-<number>,
+              e.g.  rh-ikketest-10
+            question_name: Host Name
+            required: true
+            type: text
+            variable: short_name
+      workflow_nodes:
+
+        - identifier: 101-unsubscribe-host
+          unified_job_template:
+            name: Unsubscribe host
+            type: job_template
+            organization:
+              name: rhops
+          related:
+            success_nodes:
+              - identifier: 201-delete-from-vmware
+
+        - identifier: 201-delete-from-vmware
+          unified_job_template:
+            name: Delete VM from VMware
             type: job_template
             organization:
               name: rhops
