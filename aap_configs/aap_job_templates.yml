@@ -18,7 +18,7 @@ controller_templates:
     limit: localhost
     playbook: ensure-vm-state.yml
     project:
-      name: Cool-Lab ikke-test
+      name: Cool-Lab
       organization:
         name: rhops
         type: organization
@@ -135,7 +135,7 @@ controller_templates:
     ask_limit_on_launch: true
     playbook: prepare-rhel8.yml
     project:
-      name: Cool-Lab ikke-test
+      name: Cool-Lab
       organization:
         name: rhops
         type: organization
@@ -188,7 +188,7 @@ controller_templates:
     limit: new_vms
     playbook: prepare-rhel8.yml
     project:
-      name: Cool-Lab ikke-test
+      name: Cool-Lab
       organization:
         name: rhops
         type: organization
@@ -242,7 +242,7 @@ controller_templates:
     limit: new_vms
     playbook: setup-idmclient.yml
     project:
-      name: Cool-Lab ikke-test
+      name: Cool-Lab
       organization:
         name: rhops
         type: organization
@@ -302,7 +302,7 @@ controller_templates:
     limit: new_vms
     playbook: setup-idmclient.yml
     project:
-      name: Cool-Lab ikke-test
+      name: Cool-Lab
       organization:
         name: rhops
         type: organization
@@ -325,7 +325,7 @@ controller_templates:
     limit: localhost
     playbook: remove-host-from-inventory.yml
     project:
-      name: Cool-Lab ikke-test
+      name: Cool-Lab
       organization:
         name: rhops
         type: organization
@@ -363,7 +363,7 @@ controller_templates:
     job_type: run
     playbook: nuke-vm.yml
     project:
-      name: Cool-Lab ikke-test
+      name: Cool-Lab
       organization:
         name: rhops
     inventory:
@@ -393,7 +393,7 @@ controller_templates:
     job_type: run
     playbook: unsubscribe-vm.yml
     project:
-      name: Cool-Lab ikke-test
+      name: Cool-Lab
       organization:
         name: rhops
     inventory:
