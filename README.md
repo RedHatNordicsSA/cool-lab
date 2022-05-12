@@ -1,7 +1,6 @@
-# The Red Hat Nordics SA lab
-
 ![Alt text](cool_lab_transparent_background_logos.png?raw=true "Cool Lab")
 
+# The Red Hat Nordics SA lab
 Documentation to Red Hat Nordics Lab
 
 ## Communication
