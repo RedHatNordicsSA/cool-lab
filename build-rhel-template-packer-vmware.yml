@@ -7,30 +7,59 @@
 
     - name: build rhel template for vmware
       vars:
-        vsphere_server: arw-vcenter-21.arrowdemo.se
         vcenter_datacenter: KISTA-DC
         vcenter_folder: KISTA-DC/Redhat
         vcenter_cluster: ARROWLAB
         vcenter_resource_pool:
         vcenter_datastore: SVC-LUN-1
-        vsphere_network: vlan2102
+        vcenter_network: vlan2102
+        vcenter_convert_to_template: true
+
+        do_cleanup: true
 
         packer_builder: vmware
-        packer_target: rhel_8_5
+        packer_target: rhel_9_0
+        packer_binary: packer
+        vcenter_insecure_connection: true
         boot_password: "{{ cloud_user_password }}"
         root_password: "{{ cloud_user_password }}"
         partitioning: auto
         disable_ipv6: true
+        boot_parameters: net.ifnames.prefix=net quiet systemd.show_status=yes
+        ntp_servers: time.cloudflare.com
+        timezone: Europe/Helsinki
+        keyboard: fi
+        disk_size: 30720
+
+        create_admin: true
+        admin_user:
+          uid: 4444
+          gid: 4444
+          name: cloud-user
+          group: cloud-user
+          groups: wheel
+          home: /home/cloud-user
+          gecos: Admin User
+          ssh_key: >
+            ssh-ed25519
+            AAAAC3NzaC1lZDI1NTE5AAAAIHV4O/qEctm+YmAY/o0aKk+sgxbFhLMsNN1m4j8FNKSF
+            admin@coollab
+          passwordless_sudo: true
+
+        root_permit_local: true
+
         # security_profile: cis_server_l1
-        image_name: rhel_8_5_image
+        image_name: rhel_9_0_image
         root_ssh_key: >
           ssh-ed25519
           AAAAC3NzaC1lZDI1NTE5AAAAIHV4O/qEctm+YmAY/o0aKk+sgxbFhLMsNN1m4j8FNKSF
           admin@coollab
         # disk_size: 4096
         iso:
-          rhel_8_5:
-            url: "file:///home/itengval/VirtualMachines/rhel-8.5-x86_64-dvd.iso"
-            checksum: sha256:1f78e705cd1d8897a05afa060f77d81ed81ac141c2465d4763c0382aa96cadd0
+          rhel_9_0:
+            # yamllint disable-line rule:line-length
+            url: "file:///home/itengval/VirtualMachines/rhel-baseos-9.0-x86_64-dvd.iso"
+            # yamllint disable-line rule:line-length
+            checksum: sha256:a387f3230acf87ee38707ee90d3c88f44d7bf579e6325492f562f0f1f9449e89
       include_role:
         name: ansible-packer
