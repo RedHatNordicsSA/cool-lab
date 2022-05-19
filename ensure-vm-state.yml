@@ -33,9 +33,9 @@
           password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
       when:
         - vcenter_credentials is not defined
-        - vcenter_credentials.hostname is not defined
-        - vcenter_credentials.username is not defined
-        - vcenter_credentials.password is not defined
+        - vcenter_credentials.vcenter_server is not defined
+        - vcenter_credentials.vcenter_username is not defined
+        - vcenter_credentials.vcenter_password is not defined
 
     - name: when not deleting vm
       when: vm_state != 'absent'
@@ -44,9 +44,9 @@
           community.vmware.vmware_guest:
             name: "{{ short_name }}"
             state: "{{ vm_state }}"
-            hostname: "{{ vcenter_credentials.hostname }}"
-            username: "{{ vcenter_credentials.username }}"
-            password: "{{ vcenter_credentials.password }}"
+            hostname: "{{ vcenter_credentials.vcenter_server }}"
+            username: "{{ vcenter_credentials.vcenter_username }}"
+            password: "{{ vcenter_credentials.vcenter_password }}"
             validate_certs: false
             template: "{{ template }}"
             datacenter: "{{ vcenter_datacenter }}"
@@ -125,9 +125,9 @@
     - name: Delete the VM
       community.vmware.vmware_guest:
         name: "{{ short_name }}"
-        hostname: "{{ vcenter_credentials.hostname }}"
-        username: "{{ vcenter_credentials.username }}"
-        password: "{{ vcenter_credentials.password }}"
+        hostname: "{{ vcenter_credentials.vcenter_server }}"
+        username: "{{ vcenter_credentials.vcenter_username }}"
+        password: "{{ vcenter_credentials.vcenter_password }}"
         validate_certs: false
         datacenter: "{{ vcenter_datacenter }}"
         folder: "{{ vcenter_folder }}"

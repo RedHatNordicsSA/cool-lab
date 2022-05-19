@@ -5,9 +5,9 @@
   vmware_guest:
     name: "{{ vm_name }}"
     state: "{{ state }}"
-    hostname: "{{ vcenter_credentials.hostname }}"
-    username: "{{ vcenter_credentials.username }}"
-    password: "{{ vcenter_credentials.password }}"
+    hostname: "{{ vcenter_credentials.vcenter_server }}"
+    username: "{{ vcenter_credentials.vcenter_username }}"
+    password: "{{ vcenter_credentials.vcenter_password }}"
     validate_certs: false
     template: "{{ template }}"
     datacenter: "{{ vcenter_datacenter }}"
@@ -37,9 +37,9 @@
 - name: Delete the VM
   vmware_guest:
     name: "{{ vm_name }}"
-    hostname: "{{ vcenter_credentials.hostname }}"
-    username: "{{ vcenter_credentials.username }}"
-    password: "{{ vcenter_credentials.password }}"
+    hostname: "{{ vcenter_credentials.vcenter_server }}"
+    username: "{{ vcenter_credentials.vcenter_username }}"
+    password: "{{ vcenter_credentials.vcenter_password }}"
     validate_certs: false
     datacenter: "{{ vcenter_datacenter }}"
     folder: "{{ vcenter_folder }}"
