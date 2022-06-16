@@ -9,6 +9,10 @@
       - insights-client
     register_insights: true
     epel: false
+    # https://access.redhat.com/articles/simple-content-access
+    # XXX someone figure out how to simplify subs process by using sca
+    # Currently it's both slow and risky.
+    sca: true
   tasks:
 
     - name: Subscribe to Red Hat
@@ -17,13 +21,13 @@
         username: "{{ rh_subs_username }}"
         password: "{{ rh_subs_password }}"
         autosubscribe: false
-        pool: "{{ subs_pool }}"
         force_register: "{{ force_register }}"
       tags: subs
 
     - name: Enable required repositories
       rhsm_repository:
-        name: "{{ enabled_repos_rhel8 }}"
+        # yamllint disable-line rule:line-length
+        name: "{{ enabled_repos_rhel[ ansible_facts['distribution_major_version'] ] }}"
         state: enabled
       tags: regs
 
@@ -36,7 +40,8 @@
 
     - name: Install Epel repos
       yum:
-        name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+        # yamllint disable-line rule:line-length
+        name: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_facts['distribution_major_version'] }}.noarch.rpm"
         state: present
         disable_gpg_check: true
       when: epel | bool

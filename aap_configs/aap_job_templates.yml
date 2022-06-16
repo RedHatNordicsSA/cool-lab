@@ -133,7 +133,7 @@ controller_templates:
     job_slice_count: 1
     job_type: run
     ask_limit_on_launch: true
-    playbook: prepare-rhel8.yml
+    playbook: prepare-rhel.yml
     project:
       name: Cool-Lab
       organization:
@@ -186,7 +186,7 @@ controller_templates:
     job_slice_count: 1
     job_type: run
     limit: new_vms
-    playbook: prepare-rhel8.yml
+    playbook: prepare-rhel.yml
     project:
       name: Cool-Lab
       organization:
