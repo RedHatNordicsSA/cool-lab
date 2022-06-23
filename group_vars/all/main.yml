@@ -7,8 +7,8 @@ vcenter_datastore: SVC-LUN-1
 
 # RHEL subscriptions
 
-rh_subs_username: foobar
-rh_subs_password: foobar
+rh_subs_username: "{{ vault_rh_subs_username }}"
+rh_subs_password: "{{ vault_rh_subs_password }}"
 subs_pool: Employee SKU
 enabled_repos_rhel:
   '8':
