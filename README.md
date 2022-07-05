@@ -1,6 +1,8 @@
 # The Red Hat Nordics SA lab
 Documentation to Red Hat Nordics Lab
 
+![Alt text](cool_lab_transparent_background_logos.png?raw=true "Cool Lab")
+
 ## Communication
 See: https://github.com/mglantz/cool-lab/blob/main/communication.md
 
