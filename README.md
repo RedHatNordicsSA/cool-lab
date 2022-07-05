@@ -83,9 +83,9 @@ export ANSIBLE_HOST_KEY_CHECKING=False
 ```
 
 
-We use ansible roles and collections. When starting work from scratch you
-need to download dependencies. To get collections and roles to your
-workstation, do:
+We use ansible roles and collections (some of them are from Red Hat Ansible Automation Hub, and hence need subscriptions). When starting work from scratch you need to download dependencies. To be able to download subscription based dependencies/collections from Red Hat Ansible Automation Hub you need to have the auth_server_url, server_url and token in place. The URLs are specified in the example-ansible.cfg file. The token is available in the secrets file in vault. ansible-galaxy client can unfortunately not read vault, but in the secrets.yml file there is a comment line you can copy to export the token as a variable. If you do that, content from ansible automation hub can be used with your ansible command line client. If you don't do this your ansible-galaxy collention install will fail.  
+
+To get collections and roles to your workstation, do:
 
 ```
 ansible-galaxy role install -r roles/requirements.yml -p roles
