@@ -5,7 +5,7 @@
 #
 controller_workflows:
 
-  - name: Add RHEL8
+  - name: Add RHEL
     description: Creates and preps rhel8 vm
     state: present
     inventory:
@@ -38,6 +38,16 @@ controller_workflows:
             required: true
             type: text
             variable: short_name
+          - choices: 'rhel_9_0_image
+
+            rhel_8_5_image'
+            default: rhel_9_0_image
+            new_question: true
+            question_description: Select the RHEL version template
+            question_name: RHEL template
+            required: true
+            type: multiplechoice
+            variable: template
           - choices: 'RH-seg-2990
 
               RH-seg-2991
@@ -152,7 +162,7 @@ controller_workflows:
 
     survey_enabled: true
 
-  - name: Nuke RHEL8
+  - name: Nuke RHEL
     description: Unsubscribes idm, subs and insights and deletes VM
     state: present
     inventory:
