@@ -17,10 +17,11 @@
     - name: Use vmware credentials from vault if set there, otherwise from AAP credentials
       set_fact:
         vcenter_credentials:
-          hostname: '{{ lookup("env", "VMWARE_HOST") }}'
-          username: '{{ lookup("env", "VMWARE_USER") }}'
-          password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+          vcenter_server: '{{ lookup("env", "VMWARE_HOST") }}'
+          vcenter_username: '{{ lookup("env", "VMWARE_USER") }}'
+          vcenter_password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
       when:
+        - vcenter_credentials is not defined
         - vcenter_credentials.vcenter_server is not defined
         - vcenter_credentials.vcenter_username is not defined
         - vcenter_credentials.vcenter_password is not defined
