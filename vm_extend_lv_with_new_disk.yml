@@ -1,0 +1,49 @@
+---
+
+- name: Provision new disk to VM
+  hosts: all
+
+  vars:
+    - vm_lv_name: "home"
+    - vm_vg_name: "rvg"
+
+  collections:
+    - redhat.rhel_system_roles
+    - community.general
+
+  tasks:
+    - name: Register unused disk to variable
+      find_unused_disk:
+        min_size: '1g'
+      register: vm_unused_disk
+      failed_when: "'Unable to find unused disk' in vm_unused_disk"
+
+    - name: Unused disk output debug
+      debug:
+        msg: "{{ vm_unused_disk }}"
+        verbosity: 1
+
+    - name: Unused disks debug
+      debug:
+        msg: "{{ vm_unused_disk.disks[0] }}"
+        verbosity: 1
+
+    - name: Check if there is empty disks and abort playbook if there isn't
+      when: vm_unused_disk.disks[0]  == "Unable to find unused disk"
+      fail:
+        msg: "Unable to find unused disk from the VM."
+
+    - name: Create PV with CMD
+      command: pvcreate "/dev/{{ vm_unused_disk.disks[0] }}"
+
+    - name: Add PV to given VG with CMD
+      command: vgextend "{{ vm_vg_name }}" "/dev/{{ vm_unused_disk.disks[0] }}"
+
+    - name: >
+        Extend the logical volume to take all remaining space of the PVs
+        and resize the underlying filesystem
+      lvol:
+        vg: "{{ vm_vg_name }}"
+        lv: "{{ vm_lv_name }}"
+        size: +100%FREE
+        resizefs: true
