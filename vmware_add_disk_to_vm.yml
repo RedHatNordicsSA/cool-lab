@@ -1,0 +1,57 @@
+---
+
+- name: Add disk to VMware VM
+  hosts: all
+  connection: local
+
+  vars:
+    - vm_disksize: "1 GB"
+    - use_inventory_for_hostname: false
+
+  tasks:
+
+    - name: Get the short hostname from inventory
+      # Normally there is dot in fqdn, vmware inventory has _ as separator
+      set_fact:
+        short_name: "{{ inventory_hostname | regex_search('^[^_.]*') }}"
+      when: use_inventory_for_hostname
+
+    - name: >
+        Use vmware credentials from vault if set there, otherwise
+        from AAP credentials
+      set_fact:
+        vcenter_credentials:
+          vcenter_server: '{{ lookup("env", "VMWARE_HOST") }}'
+          vcenter_username: '{{ lookup("env", "VMWARE_USER") }}'
+          vcenter_password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
+      when:
+        - vcenter_credentials is not defined
+        - vcenter_credentials.vcenter_server is not defined
+        - vcenter_credentials.vcenter_username is not defined
+        - vcenter_credentials.vcenter_password is not defined
+
+    - name: Look up the VM called {{ vm_fqdn_name }} in the inventory
+      register: search_result
+      vmware.vmware_rest.vcenter_vm_info:
+        filter_names:
+        - "{{ short_name }}"
+
+    - name: Collect information about a specific VM
+      vmware.vmware_rest.vcenter_vm_info:
+        vm: "{{ search_result.value[0].vm }}"
+      register: vmware_vm_info
+
+    - name: Create a new disk to VM
+      vmware.vmware_rest.vcenter_vm_hardware_disk:
+        vm: "{{ vmware_vm_info.id }}"
+        type: SCSI
+        state: present
+        new_vmdk:
+          # e.g. 5GB
+          capacity: "{{ vm_disksize |human_to_bytes }}"
+      register: my_new_disk
+
+    - name: Debug new disk creating
+      debug:
+        var: my_new_disk
+        verbosity: 1

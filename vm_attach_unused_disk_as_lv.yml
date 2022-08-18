@@ -1,0 +1,46 @@
+---
+
+- name: Add partition to VM.
+  hosts: all
+
+  collections: 
+    - redhat.rhel_system_roles
+    - community.general
+
+  vars:
+    vm_generated_mount_point: "/{{ vm_new_vg }}/{{ vm_new_lv }}"
+
+  pre_tasks:
+    - name: Register unused disk to variable
+      find_unused_disk:
+        min_size: '1g'
+      register: vm_unused_disk
+
+    - name:  Unused disk output debug
+      debug:
+        msg: "{{ vm_unused_disk }}"
+        verbosity: 1
+
+    - name: Unused disks debug
+      debug:
+        msg: "{{ vm_unused_disk.disks[0] }}"
+        verbosity: 1
+
+    - name: Check if there is empty disks
+      when: vm_unused_disk.disks[0]  == "Unable to find unused disk"
+      fail:
+        msg: "Unable to find unused disk from the VM."
+
+  roles:
+    - name: redhat.rhel_system_roles.storage
+      storage_pools:
+        - name: "{{ vm_new_vg }}"
+          type: lvm
+          disks:
+            - "{{ vm_unused_disk.disks[0] }}"
+          volumes:
+            - name: "{{ vm_new_lv }}"
+              size: "{{ vm_disksize }}"
+              mount_point: "{{ vm_new_mount_point | default(vm_generated_mount_point,true) }}"
+              fs_type: xfs
+              state: present

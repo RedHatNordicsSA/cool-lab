@@ -174,6 +174,36 @@ ansible-playbook -i localhost, -c local -e vm_state=absent -e short_name=rh-test
 
 There are different values in vars, check them out. Like mem, cpu, network etc tunings.
 
+## Add more disk space to VM
+
+Create and attach new disk to VM. Pass the size of the disk in format of e.g. 5GB.
+This will only create and attach the disk, there is no filesystem yet.
+
+```
+VMWARE_VALIDATE_CERTS=no ansible-playbook -e @../private-lab/secrets.yml \
+-i hosts -l rh-disks-01.cool.lab -e vm_disksize=25GB  vmware_add_disk_to_vm.yml
+```
+
+This playbook finds the above created empty disk from VM, and creates PV to it and
+extends the given LV to include the new PV. E.g. if you have LV for logs, extend the
+logs space by giving ```vm_lv_name=logs```.
+
+```
+VMWARE_VALIDATE_CERTS=no ansible-playbook -e @../private-lab/secrets.yml \
+-u root -i hosts -l rh-disks-01.cool.lab -e vm_vg_name=rhel -e vm_lv_name=root \
+vm_extend_lv_with_new_disk.yml
+```
+
+Alternatively you can attach the disk as totally new VG and LV, or old VG and new LV, with
+new mount point. For size you can use absolute size like 5G or percentage of PV, like 100%.
+
+```
+VMWARE_VALIDATE_CERTS=no ansible-playbook -e @../private-lab/secrets.yml \
+-u root -i hosts -l rh-disks-01.cool.lab \
+-e vm_new_vg=new -e vm_new_lv=disk -e vm_disksize='100%' \
+vm_attach_unused_disk_as_lv.yml
+```
+
 # IdM - Identity Management
 
 We control identity by using Red Hat Identity Manager. We have it in
@@ -293,4 +323,3 @@ podman save localhost/community -o community.img
 ```
 
 Better to upload it to some registry, now I manually loaded it into AAP.
-
