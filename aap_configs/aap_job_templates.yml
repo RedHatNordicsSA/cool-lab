@@ -259,14 +259,6 @@ controller_templates:
             type: organization
           type: credential
         - name: IdM
-          # credential_type:
-          #   kind: net
-          #   name: Network
-          #   type: credential_type
-          # organization:
-          #   name: rhops
-          #   type: organization
-          # type: credential
       survey_spec:
         description: ''
         name: ''
