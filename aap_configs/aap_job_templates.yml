@@ -408,3 +408,163 @@ controller_templates:
             type: text
             variable: short_name
     survey_enabled: true
+
+  - name: Add disk to VM
+    description: 'Adds new disk to virtual machine.'
+    execution_environment: Default execution environment
+    ask_variables_on_launch: true
+    extra_vars:
+      use_aap_inventory: false
+    inventory:
+      name: Demo Inventory
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_slice_count: 1
+    job_type: run
+    limit: localhost
+    playbook: vmware_add_disk_to_vm.yml
+    project:
+      name: Cool-Lab
+      organization:
+        name: rhops
+        type: organization
+      type: project
+    related:
+      credentials:
+        - name: vcenter-21
+        - name: aap-admin
+      survey_spec:
+        description: ''
+        name: ''
+        spec:
+          - question_name: Disk size
+            variable: vm_disksize
+            default: '20GB'
+            new_question: true
+            question_description: Disk size, e.g. 20GB
+            required: true
+            type: text
+          - question_name: Host name to which disk is added
+            default: 'my-vm'
+            new_question: true
+            question_description: >
+              To which host do you want to attach the disk to? In vmware
+              inventory format.
+            required: true
+            type: text
+            variable: short_name
+    survey_enabled: true
+
+  - name: Create LV to empty disk on VM
+    description: 'Creates logical volume from extra disk in VM.'
+    execution_environment: Default execution environment
+    ask_variables_on_launch: true
+    extra_vars:
+      use_aap_inventory: false
+    inventory:
+      name: vmware-rh
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_slice_count: 1
+    job_type: run
+    limit: some_host_name_here_please
+    ask_limit_on_launch: true
+    playbook: vm_attach_unused_disk_as_lv.yml
+    project:
+      name: Cool-Lab
+      organization:
+        name: rhops
+        type: organization
+      type: project
+    related:
+      credentials:
+        - name: machine-creds-rhops-admin
+      survey_spec:
+        description: ''
+        name: ''
+        spec:
+          - question_name: LV size
+            variable: vm_disksize
+            default: '100%FREE'
+            new_question: true
+            question_description: Disk size, e.g. 20GB or 100%FREE
+            required: true
+            type: text
+          - question_name: Volume group name to which disk is added
+            default: 'my-vg'
+            new_question: true
+            question_description: >
+              To which volume group do you want to attach the disk to?
+              This could be an existing one or new one.
+            required: true
+            type: text
+            variable: vm_new_vg
+          - question_name: Logical volume to which disk is added
+            default: 'my-lv'
+            new_question: true
+            question_description: >
+              To which logical volume do you want to use the disk for?
+            required: true
+            type: text
+            variable: vm_new_lv
+          - question_name: Logical volume to which disk is added
+            default: '/my-volume'
+            new_question: true
+            question_description: >
+              What is the mount point for the volume? E.g. /database
+            required: true
+            type: text
+            variable: vm_new_mount_point
+    survey_enabled: true
+
+  - name: Use empty disk to extend LV in VM
+    description: 'Uses and extra disk to extend an existing logical volume in VM.'
+    execution_environment: Default execution environment
+    ask_variables_on_launch: true
+    extra_vars:
+      use_aap_inventory: false
+    inventory:
+      name: vmware-rh
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_slice_count: 1
+    job_type: run
+    limit: some_host_name_here_please
+    ask_limit_on_launch: true
+    playbook: vm_extend_lv_with_new_disk.yml
+    project:
+      name: Cool-Lab
+      organization:
+        name: rhops
+        type: organization
+      type: project
+    related:
+      credentials:
+        - name: machine-creds-rhops-admin
+      survey_spec:
+        description: ''
+        name: ''
+        spec:
+          - question_name: Volume Group name
+            variable: vm_vg_name
+            default: 'my-vg'
+            new_question: true
+            question_description: >
+              Which volume group holds the logical volume to be extended?
+            required: true
+            type: text
+          - question_name: Logical Volume to extend
+            default: 'my-lv'
+            new_question: true
+            question_description: >
+              To which logical volume do you want to attach the disk to?
+            required: true
+            type: text
+            variable: vm_lv_name
+    survey_enabled: true
