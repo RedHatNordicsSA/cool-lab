@@ -413,8 +413,6 @@ controller_templates:
     description: 'Adds new disk to virtual machine.'
     execution_environment: Default execution environment
     ask_variables_on_launch: true
-    extra_vars:
-      use_aap_inventory: false
     inventory:
       name: Demo Inventory
       organization:
@@ -461,8 +459,6 @@ controller_templates:
     description: 'Creates logical volume from extra disk in VM.'
     execution_environment: Default execution environment
     ask_variables_on_launch: true
-    extra_vars:
-      use_aap_inventory: false
     inventory:
       name: vmware-rh
       organization:
@@ -511,7 +507,7 @@ controller_templates:
             required: true
             type: text
             variable: vm_new_lv
-          - question_name: Logical volume to which disk is added
+          - question_name: Mount point for the volume
             default: '/my-volume'
             new_question: true
             question_description: >
@@ -521,12 +517,11 @@ controller_templates:
             variable: vm_new_mount_point
     survey_enabled: true
 
-  - name: Use empty disk to extend LV in VM
-    description: 'Uses and extra disk to extend an existing logical volume in VM.'
+  - name: Extend LV in VM by extra disk
+    description: >
+      Uses and extra disk to extend an existing logical volume in VM.
     execution_environment: Default execution environment
     ask_variables_on_launch: true
-    extra_vars:
-      use_aap_inventory: false
     inventory:
       name: vmware-rh
       organization:
