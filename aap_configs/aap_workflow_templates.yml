@@ -208,3 +208,83 @@ controller_workflows:
               name: rhops
 
     survey_enabled: true
+
+  - name: Add Disk to VM
+    description: Adds new disk as LV at given mount point to VM
+    state: present
+    inventory:
+      name: vmware-rh
+    organization:
+      name: Red Hat
+      type: organization
+    ask_variables_on_launch: true
+    ask_limit_on_launch: true
+    limit: add_vm_short_name_here
+    related:
+      survey_spec:
+        description: ''
+        name: ''
+        spec:
+          - question_name: Disk size
+            variable: vm_disksize
+            default: '20GB'
+            new_question: true
+            question_description: Disk size, e.g. 20GB
+            required: true
+            type: text
+          - question_name: Host name to which disk is added
+            default: 'my-vm'
+            new_question: true
+            question_description: >
+              To which host do you want to attach the disk to? In vmware
+              inventory format.
+            required: true
+            type: text
+            variable: short_name
+          - question_name: Volume group name to which disk is added
+            default: 'my-vg'
+            new_question: true
+            question_description: >
+              To which volume group do you want to attach the disk to?
+              This could be an existing one or new one.
+            required: true
+            type: text
+            variable: vm_new_vg
+          - question_name: Logical volume to which disk is added
+            default: 'my-lv'
+            new_question: true
+            question_description: >
+              To which logical volume do you want to use the disk for?
+            required: true
+            type: text
+            variable: vm_new_lv
+          - question_name: Mount point for the volume
+            default: '/my-volume'
+            new_question: true
+            question_description: >
+              What is the mount point for the volume? E.g. /database
+            required: true
+            type: text
+            variable: vm_new_mount_point
+
+      workflow_nodes:
+
+        - identifier: 101-add-disk
+          unified_job_template:
+            name: Add disk to VM
+            type: job_template
+            organization:
+              name: rhops
+          related:
+            success_nodes:
+              - identifier: 201-create-lv
+
+        - identifier: 201-create-lv
+          unified_job_template:
+            name: Create LV to empty disk on VM
+            type: job_template
+            organization:
+              name: rhops
+
+    survey_enabled: true
+
