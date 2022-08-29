@@ -77,6 +77,14 @@ enabled_users:
     gid: 10009
     # yamllint disable-line rule:line-length
     sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDMbO9QKzdNvJtJbCcr8+WA3JhVle9R8TG/Atb4L7LyCIFXsYxqZQOvfdw1sm2O9NFvRFb6Gag0rvNjTqw9O7R5qB+fepu+qkc7a5pwAP7SYcQNXZWblg7KKUd0vAeSLzBSWjAFEJpj/wwYaJBOyyGwNSfzF+mtSQqNVbrqtR0BvMa3ohuq/eHUKZ5Jx4SZP16S5CMjivu8BzMEVvyRB62Y/KtfvTH1/FDEPdPCcbaGzXxgK6zc1hKyIjShPMzRekW6O5kLQ88WaQuWqGp+mOJywYauIz4o2/mjySUeUjQSxL1KCmWEmS7tcNhXRUjmHTvoPPr+2csRGH7LzZOAb8F3
+  - name: tsohlber
+    first: Tommi
+    last: Sohlberg
+    password: "coolpw"
+    uid: 10010
+    gid: 10010
+    # yamllint disable-line rule:line-length
+    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDJ2cHjhSVd4KNUYVultbOUtUNqYsdEd+FGW90vbAXdAPt5DJ6+11NWIvSY8BHs0U84zh5MLsGzZYqmpgdYmPUuD0BCvUhoNdaZBxtn1upVl5ep+8qBWnNiSevxmBoK1xnuSexNOiCeV4JBHzBgLRCy92R8kzc8eE6XmsVZn+aFDwC/ZUa3LVvVTwreM1LWYxDMPPla25iq0R8Q0+aerpXX+/8aujevat+EOp9EuJ3J87T1KnBl1yV0s3mbLvwQHtCnBUNDSpCMbRJZmj1JpX4Hf1Qh60lMT0mFiV3d1WUDLGdQB6JciTo/I/J5nUdTxGZ+IQvOaud9/+562mD26z43 tsohlber@MacBook-Pro
 idm_admins:
   - jwesterl
   - ikke
@@ -86,6 +94,7 @@ idm_admins:
   - jwennerb
   - codell
   - pgustafs
+  - tsohlber
 
 aap_admins:
   - jwesterl
@@ -96,9 +105,11 @@ aap_admins:
   - jwennerb
   - codell
   - pgustafs
+  - tsohlber
 
 rh_ops:
   - ikke
   - mbang
   - jboivie
+  - tsohlber
   - earvonen
