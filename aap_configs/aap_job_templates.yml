@@ -3,7 +3,7 @@
 controller_templates:
   - name: Ensure VM State
     description: 'Creates of deletes a VM, or sets power state'
-    execution_environment: cool-lab-community
+    execution_environment: Default execution environment
     ask_variables_on_launch: true
     extra_vars:
       use_aap_inventory: false
