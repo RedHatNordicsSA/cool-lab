@@ -127,3 +127,53 @@ virt-install \
 --location=/home/itengval/VirtualMachines/fleet_out.iso \
 --extra-args 'console=tty0 console=ttyS0,115200n8 inst.ks=hd:LABEL=RHEL-9-0-0-BaseOS-x86_64:/fleet.ks'
 ```
+
+# Edge for VMware
+
+This part is little in progress still. It consists of building image template
+using Packer, and then creating instance of it.
+
+## Build the image template for VMware
+
+This part expects that you have made install os-tree available somewhere.
+Follow the above guide to do it.
+
+I added open-vm-tools into vmware image at image builder. This is to get
+the VMware virtualization bits to work better. Otherwise any edge image is
+fine.
+
+There is a playbook to build edge image,
+[look at the options there](../build-rhel-edge-template-packer-vmware.yml).
+You'll need the RHEL install DVD and sha checksum of it. Then run the
+playbook, while connected to network reaching VMware:
+
+```
+ansible-playbook -i localhost, -c local \
+-e @../private-lab/secrets.yml \
+build-rhel-edge-template-packer-vmware.yml
+```
+
+This will create customization CDROM, upload that and DVD to VMware, and
+it does install of RHEL Edge, all automated. See
+[ansible template for kickstart](https://github.com/myllynen/ansible-packer/blob/master/roles/ansible_packer/templates/cfg-rhel-edge_9.j2)
+for modifications if you need customizations.
+
+After running that, you have image built as template in VMware.
+
+## Running the Edge image in VMware
+
+This part is still a bit rough. We don't have IdM connectivity, so this just
+spins up new instance of RHEL Edge, and you need to check out the IP yourself
+and ssh/cockpit into it to tune it further:
+
+```
+ansible-playbook -i localhost, -c local \
+-e @../private-lab/secrets.yml \
+-e "vm_state=powered-on template=rhel_edge_9_0_image short_name=rh-edge-01" \
+ensure-vm-state.yml
+```
+
+It seems there is something odd at least in our VMware so that it won't
+connect VM to network, even if image has open-vm-tools. I had to go to
+VMware and edit the VM to have network in connected state.
+
