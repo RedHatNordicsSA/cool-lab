@@ -19,3 +19,7 @@ collections:
     version: 1.19.3
   - name: vmware.vmware_rest
     version: 2.2.0
+  - name: myllynen.ansible_packer
+    source: https://github.com/myllynen/ansible-packer
+    version: master
+    type: git

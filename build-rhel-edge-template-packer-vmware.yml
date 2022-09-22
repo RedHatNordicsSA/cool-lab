@@ -1,11 +1,11 @@
 ---
 
-- name: Build RHEL template with Packer
+- name: Build RHEL edge template with Packer
   hosts: all
   become: true
   tasks:
 
-    - name: build rhel template for vmware
+    - name: build rhel edge template for vmware
       vars:
         vcenter_datacenter: KISTA-DC
         vcenter_folder: KISTA-DC/Redhat
@@ -16,9 +16,14 @@
         vcenter_convert_to_template: true
 
         do_cleanup: true
+        # do_cleanup: false
 
         packer_builder: vmware
-        packer_target: rhel_9_0
+        # packer_builder: qemu
+        # qemu_binary: /usr/bin/qemu-kvm
+        # output_directory: /home/itengval/VirtualMachines/packer_out
+        packer_target: rhel-edge_9_0
+        packer_target_pretty: RHEL9 Edge
         packer_binary: packer
         vcenter_insecure_connection: true
         boot_password: "{{ cloud_user_password }}"
@@ -29,7 +34,10 @@
         ntp_servers: time.cloudflare.com
         timezone: Europe/Helsinki
         keyboard: fi
-        disk_size: 30720
+        disk_size: 10240
+        ostree_url: http://10.128.1.177:8080/repo/
+        ostree_href: rhel/9/x86_64/edge
+
 
         create_admin: true
         admin_user:
@@ -49,17 +57,17 @@
         root_permit_local: true
 
         # security_profile: cis_server_l1
-        image_name: rhel_9_0_image
+        image_name: rhel_edge_9_0_image
         root_ssh_key: >
           ssh-ed25519
           AAAAC3NzaC1lZDI1NTE5AAAAIHV4O/qEctm+YmAY/o0aKk+sgxbFhLMsNN1m4j8FNKSF
           admin@coollab
         # disk_size: 4096
         iso:
-          rhel_9_0:
+          rhel-edge_9_0:
             # yamllint disable-line rule:line-length
             url: "file:///home/itengval/VirtualMachines/rhel-baseos-9.0-x86_64-dvd.iso"
             # yamllint disable-line rule:line-length
-            checksum: sha256:a387f3230acf87ee38707ee90d3c88f44d7bf579e6325492f562f0f1f9449e89
+            checksum: sha256:c6942e3ed65947ed48c30589d9c1a752e96c5b94ee8de1923331449fee162cc1
       include_role:
         name: myllynen.ansible_packer.ansible_packer

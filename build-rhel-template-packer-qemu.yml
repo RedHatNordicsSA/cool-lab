@@ -25,4 +25,4 @@
         output_directory: /VirtualMachines/templates
         disk_size: 4096
       include_role:
-        name: ansible-packer
+        name: myllynen.ansible_packer.ansible_packer
