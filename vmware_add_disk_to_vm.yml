@@ -3,6 +3,7 @@
 - name: Add disk to VMware VM
   hosts: all
   connection: local
+  gather_facts: false
 
   vars:
     - vm_disksize: "1 GB"
@@ -21,24 +22,47 @@
         from AAP credentials
       set_fact:
         vcenter_credentials:
-          vcenter_server: '{{ lookup("env", "VMWARE_HOST") }}'
+          vcenter_hostname: '{{ lookup("env", "VMWARE_HOST") }}'
           vcenter_username: '{{ lookup("env", "VMWARE_USER") }}'
           vcenter_password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
       when:
-        - vcenter_credentials is not defined
-        - vcenter_credentials.vcenter_server is not defined
-        - vcenter_credentials.vcenter_username is not defined
-        - vcenter_credentials.vcenter_password is not defined
+        - vcenter_credentials is undefined
+        - vcenter_credentials.vcenter_server is undefined
+        - vcenter_credentials.vcenter_username is undefined
+        - vcenter_credentials.vcenter_password is undefined
+
+    - name: >
+        Use vmware credentials from vault if set there, and not set in params
+      set_fact:
+        vcenter_hostname: '{{ vcenter_credentials.vcenter_server }}'
+        vcenter_username: '{{ vcenter_credentials.vcenter_username }}'
+        vcenter_password: '{{ vcenter_credentials.vcenter_password }}'
+      when:
+        - vcenter_credentials is defined
+        - vcenter_credentials.vcenter_server is defined
+        - vcenter_credentials.vcenter_username is defined
+        - vcenter_credentials.vcenter_password is defined
+        - vcenter_hostname is undefined
+        - vcenter_username is undefined
+        - vcenter_password is undefined
 
     - name: Look up the VM called {{ short_name }} in the inventory
       register: search_result
       vmware.vmware_rest.vcenter_vm_info:
         filter_names:
-        - "{{ short_name }}"
+          - "{{ short_name }}"
+        vcenter_hostname: "{{ vcenter_hostname }}"
+        vcenter_username: "{{ vcenter_username }}"
+        vcenter_password: "{{ vcenter_password }}"
+        vcenter_validate_certs: false
 
     - name: Collect information about a specific VM
       vmware.vmware_rest.vcenter_vm_info:
         vm: "{{ search_result.value[0].vm }}"
+        vcenter_hostname: "{{ vcenter_hostname }}"
+        vcenter_username: "{{ vcenter_username }}"
+        vcenter_password: "{{ vcenter_password }}"
+        vcenter_validate_certs: false
       register: vmware_vm_info
 
     - name: Create a new disk to VM
@@ -49,6 +73,10 @@
         new_vmdk:
           # e.g. 5GB
           capacity: "{{ vm_disksize |human_to_bytes }}"
+        vcenter_hostname: "{{ vcenter_hostname }}"
+        vcenter_username: "{{ vcenter_username }}"
+        vcenter_password: "{{ vcenter_password }}"
+        vcenter_validate_certs: false
       register: my_new_disk
 
     - name: Debug new disk creating
