@@ -29,3 +29,5 @@ collections:
     source: https://github.com/myllynen/satellite-automation
     version: master
     type: git
+  - name: redhat.satellite
+    version: 3.7.0

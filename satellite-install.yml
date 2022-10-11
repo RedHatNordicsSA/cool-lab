@@ -1,0 +1,139 @@
+---
+
+- name: Install Red Hat Satellite
+  hosts: rh-satellite-01.cool.lab
+  vars:
+    satellite_server_url: https://rh-satellite-01.cool.lab
+    satellite_organization: Red Hat Cool Lab
+    satellite_location: Cool Lab Infra
+    satellite_validate_certs: true
+    satellite_firewall_zone: public
+    satellite_products:
+      - name: Red Hat Enterprise Linux for x86_64
+        repository_sets:
+          - name: Red Hat Enterprise Linux 8 for x86_64 - BaseOS (RPMs)
+            releasever: 8
+          - name: Red Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)
+            releasever: 8
+          - name: Red Hat Enterprise Linux 8 for x86_64 - BaseOS (Kickstart)
+            releasever: 8.6
+          - name: Red Hat Satellite Client 6 for RHEL 8 x86_64 (RPMs)
+          - name: Red Hat Satellite Client 6 for RHEL 9 x86_64 (RPMs)
+
+          - name: Red Hat Enterprise Linux 9 for x86_64 - BaseOS (RPMs)
+            releasever: 9
+          - name: Red Hat Enterprise Linux 9 for x86_64 - AppStream (RPMs)
+            releasever: 9
+
+      - name: Red Hat Ansible Automation Platform
+        repository_sets:
+          - name:
+              "Red Hat Ansible Automation Platform 2.2 for RHEL 9 x86_64 (RPMs)"
+
+    satellite_sync_plans:
+      - name: Weekly Red Hat repository sync
+        interval: weekly
+        sync_date: 2022-01-01 02:02:00 UTC
+        enabled: true
+        products:
+          - Red Hat Enterprise Linux for x86_64
+          - Red Hat Ansible Automation Platform
+
+    satellite_lifecycle_environments:
+      - name: Development
+        prior: Library
+
+      - name: Testing
+        prior: Development
+
+      - name: Production
+        prior: Testing
+    satellite_rhsm_username: "{{ vault_rh_subs_username }}"
+    satellite_rhsm_password: "{{ vault_rh_subs_password }}"
+    satellite_installer_custom_parameters: >
+      --foreman-proxy-dhcp false
+      --foreman-proxy-dns false
+      --foreman-proxy-tftp false
+      --register-with-insights
+    satellite_manifest_download: true
+    satellite_manifest_file: /root/satellite_manifest.zip
+    satellite_manifest_refresh: false
+
+  tasks:
+
+    - name: Check manifest file on Satellite server
+      stat:
+        path: "{{ satellite_manifest_file }}"
+      register: manifest_file
+      when: satellite_manifest_download | bool
+
+    - name: Attach subs to manifest
+      redhat.satellite.redhat_manifest:
+        name: "rh-satellite-01.cool.lab"
+        username: "{{ vault_rh_subs_username }}"
+        password: "{{ vault_rh_subs_password }}"
+        validate_certs: "{{ satellite_validate_certs }}"
+        state: present
+        pool_state: present
+        pool_id: "{{ item }}"
+        quantity: 1
+        path: "{{ satellite_manifest_file }}"
+      with_items:
+        - 8a82c49480862395018097e532dd5f8c
+        - 8a82c49480862395018097e5b4be5fda
+        - 8a82c49480862395018097e5b5365fdc
+        - 8a82c58b80862385018097e5e58a2bf9
+        - 8a82c58b80862385018097e5e5c02bfb
+        - 8a82c65580863028018097e76c09027d
+        - 8a82c68d80862c73018097e643521cad
+      register: manifest
+      when:
+        - satellite_manifest_download | bool
+        - not manifest_file.stat.exists
+
+    - debug:
+        var: manifest
+
+    - name: install satellite
+      include_role:
+        name: myllynen.satellite_automation.satellite_install
+      vars:
+        satellite_manifest_uuid: "{{ manifest.uuid }}"
+
+    - name: decide if we want to upload fresh manifest
+      set_fact:
+        manifest_state: present
+      when: not satellite_manifest_refresh | bool
+
+    - name: decide if we want to refresh the manifest
+      set_fact:
+        manifest_state: refreshed
+      when: satellite_manifest_refresh | bool
+
+    # Update to use "manifest_download is changed" in when once working
+    # https://github.com/theforeman/foreman-ansible-modules/issues/1473
+    - name: Upload Satellite manifest
+      redhat.satellite.subscription_manifest:
+        server_url: "{{ satellite_server_url }}"
+        username: "{{ satellite_username }}"
+        password: "{{ satellite_password }}"
+        organization: "{{ satellite_organization }}"
+        validate_certs: "{{ satellite_validate_certs }}"
+        manifest_path: "{{ satellite_manifest_file }}"
+        state: "{{ manifest_state }}"
+      when:
+        - satellite_manifest_download | bool
+        - not manifest_file.stat.exists
+
+    - name: setup repos
+      include_role:
+        name: redhat.satellite.repositories
+      tags: repos
+
+    - name: setup sync plans
+      include_role:
+        name: redhat.satellite.sync_plans
+
+    - name: setup lifecycle environments
+      include_role:
+        name: redhat.satellite.lifecycle_environments

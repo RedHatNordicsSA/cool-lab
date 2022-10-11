@@ -1,0 +1,204 @@
+---
+# building VM based on requirements here
+# https://access.redhat.com/documentation/en-us/red_hat_satellite/6.11/html/installing_satellite_server_in_a_connected_network_environment/preparing_your_environment_for_installation_satellite
+#
+- import_playbook: ensure-vm-state.yml
+  vars:
+    template: rhel_8_5_image
+    memory_mb: 20480
+    num_cpus: 4
+    vm_state: poweredon
+    net_name: RH-seg-2991
+    short_name: "{{ short_name }}"
+    net_type: static
+    ip: "{{ satellite_ip }}"
+    netmask: 255.255.255.0
+    gateway: 10.128.1.1
+    domain: "{{ ipaserver_domain }}"
+    dns_servers:
+      - "{{ ipaserver_master_ip }}"
+      - "{{ ipaserver_replica_ip }}"
+  tags: vm
+
+- name: update inventory
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: debug host ip
+      debug:
+        var: host_ip
+
+    - name: fix in-memory inventory with client
+      add_host:
+        name: "{{ host_ip }}"
+        # become: true
+        ansible_ssh_user: root
+        groups:
+          - ipaclients
+          - new_satellite
+
+- name: Play checks if disks are done previously
+  hosts: "{{ host_ip | default('new_satellite')}}"
+  tasks:
+    - name: check if we can skip disks part
+      lineinfile:
+        path: /etc/mtab
+        regexp: ^/dev/mapper/satellite--reqs-logs
+        state: absent
+      check_mode: true
+      register: disks_already_done
+      changed_when: false
+
+# satellite reqs: psql 20GB + pulp 300GB + swap 4G + logs 10GB
+- import_playbook: vmware_add_disk_to_vm.yml
+  vars:
+    vm_disksize: "334 GB"
+  tags:
+    - vm
+    - disks
+  when: not disks_already_done.found
+
+- name: setup stuff at vm
+  hosts: "{{ host_ip | default('new_satellite')}}"
+  collections:
+    - redhat.rhel_system_roles
+    - community.general
+
+  pre_tasks:
+
+    - name: Subscribe to Red Hat
+      redhat_subscription:
+        state: present
+        username: "{{ rh_subs_username }}"
+        password: "{{ rh_subs_password }}"
+        autosubscribe: false
+        pool: 'Red Hat Satellite Infrastructure Subscription'
+      tags: subs
+
+    - name: Enable required repositories
+      rhsm_repository:
+        # yamllint disable-line rule:line-length
+        name:
+          - rhel-8-for-x86_64-baseos-rpms
+          - rhel-8-for-x86_64-appstream-rpms
+          - satellite-6.11-for-rhel-8-x86_64-rpms
+          - satellite-maintenance-6.11-for-rhel-8-x86_64-rpms
+        state: enabled
+      tags: regs
+
+    - name: set yum module
+      command:
+        cmd: yum module enable -y satellite:el8
+        warn: false
+      tags: yum
+
+    - name: install some pre-req stuff
+      yum:
+        name:
+          # - python3-blivet
+          - insights-client
+        state: present
+      tags: packages
+
+    - name: Register unused disk to variable
+      find_unused_disk:
+        min_size: '1g'
+      register: vm_unused_disk
+      tags: disks
+      when: not disks_already_done.found
+
+    - name: Unused disk output debug
+      debug:
+        msg: "{{ vm_unused_disk }}"
+      tags: disks
+      when: not disks_already_done.found
+
+    - name: Unused disks debug
+      debug:
+        msg: "{{ vm_unused_disk.disks[0] }}"
+      tags: disks
+      when: not disks_already_done.found
+
+    - name: Check if there is empty disks
+      when:
+        - not disks_already_done.found
+        - vm_unused_disk.disks[0]  == "Unable to find unused disk"
+      fail:
+        msg: "Unable to find unused disk from the VM."
+      tags: disks
+
+  tasks:
+
+    - name: Create filesystems on the new disk
+      ansible.builtin.include_role:
+        name: redhat.rhel_system_roles.storage
+      tags: disks
+      when: not disks_already_done.found
+      vars:
+        storage_pools:
+          - name: "satellite-reqs"
+            type: lvm
+            disks:
+              - "{{ vm_unused_disk.disks[0] }}"
+            # satellite reqs: psql 20GB + pulp 300GB + swap 4G + logs 10GB
+            volumes:
+              - name: psql
+                size: 20GB
+                mount_point: /var/lib/pgsql
+                fs_type: xfs
+                state: present
+              - name: pulp
+                size: 300GB
+                mount_point: "/var/lib/pulp"
+                fs_type: xfs
+                state: present
+              - name: swap
+                size: 4GB
+                fs_type: swap
+                state: present
+              - name: logs
+                size: 10GB
+                mount_point: "/var/log_new"
+                fs_type: xfs
+                state: present
+
+    - name: ensure fqdn hostname
+      hostname:
+        name: "{{ short_name }}.{{ ipaserver_domain }}"
+        use: systemd
+
+    - name: Move logs
+      tags: disks
+      ansible.builtin.shell: |
+        cp -ar /var/logs /var/logs_new/
+        rm -rf /var/logs
+      when: not disks_already_done.found
+
+    - name: umount logs
+      tags: disks
+      ansible.posix.mount:
+        path: /var/lib/logs_new
+        src: /dev/mapper/satellite--reqs-logs
+        state: absent
+      when: not disks_already_done.found
+
+    - name: replace logs
+      tags: disks
+      ansible.posix.mount:
+        path: /var/log
+        src: /dev/mapper/satellite--reqs-logs
+        fstype: xfs
+        state: present
+      when: not disks_already_done.found
+
+    - name: Fix logs selinux labels
+      tags: disks
+      ansible.builtin.shell:
+        restorecon -r /var/log
+      when: not disks_already_done.found
+
+    - name: Reboot the machine
+      tags: disks
+      ansible.builtin.reboot:
+      when: not disks_already_done.found

@@ -55,3 +55,6 @@ hostgroups:
 
 aap_ldap_username: aap_ldap
 aap_controller: rh-ansiblecontroller-01.cool.lab
+
+
+satellite_ip: 10.128.1.17
