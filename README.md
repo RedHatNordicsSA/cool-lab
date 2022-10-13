@@ -323,3 +323,21 @@ podman save localhost/community -o community.img
 ```
 
 Better to upload it to some registry, now I manually loaded it into AAP.
+
+## Install Satellite
+
+Satellite will be installed on fixed IP address. Installation takes run of
+three playbooks:
+
+  1. Create or verify satellite VM exists according to minimum requirements
+  2. Set up the VM to IdM management
+  3. Install and configure the satellite
+
+```
+ansible-playbook -e @../private-lab/secrets.yml -e "short_name=rh-satellite-01" -e ansible_python_interpreter=/usr/bin/python3 ensure-satellite.yml
+ansible-playbook -i hosts -u root -e @../private-lab/secrets.yml -l rh-satellite-01.cool.lab setup-idmclient.yml
+ansible-playbook -i hosts -u root -e @../private-lab/secrets.yml satellite-install.yml
+```
+
+Once Satellite is installed, the configuration is updated by modifying and
+running the satellite-install.yml playbook

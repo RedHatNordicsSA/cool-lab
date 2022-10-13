@@ -2,7 +2,7 @@
 
 collections:
   - name: ansible.posix
-    version: 1.3.0
+    version: 1.4.0
   - name: awx.awx
     version: 21.4.0
   - name: community.general
@@ -17,9 +17,17 @@ collections:
     version: 2.1.3
   - name: redhat.rhel_system_roles
     version: 1.19.3
+  - name: redhat.rhel_idm
+    version: 1.8.4
   - name: vmware.vmware_rest
     version: 2.2.0
   - name: myllynen.ansible_packer
     source: https://github.com/myllynen/ansible-packer
     version: master
     type: git
+  - name: myllynen.satellite-automation
+    source: https://github.com/myllynen/satellite-automation
+    version: master
+    type: git
+  - name: redhat.satellite
+    version: 3.7.0
