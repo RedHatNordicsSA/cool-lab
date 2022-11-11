@@ -1,0 +1,12 @@
+---
+- name: Playbook to delete host from IdM
+  hosts: ipaservers
+  become: true
+
+  tasks:
+  # Ensure host is absent
+  - freeipa.ansible_freeipa.ipahost:
+      ipaadmin_password: "{{ ipaadmin_password }}"
+      name: "{{ short_name | mandatory }}.{{ ipaserver_domain }}"
+      update_dns: true
+      state: absent
