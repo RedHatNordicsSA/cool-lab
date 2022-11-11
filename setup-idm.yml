@@ -34,7 +34,7 @@
       - "{{ dns_forwarder2_ip }}"
   tags: replica
 
-- import_playbook: prepare-rhel8.yml
+- import_playbook: prepare-rhel.yml
   vars:
     install_pkgs_list:
       - tmux
@@ -169,6 +169,7 @@
     - name: setup reverse zone
       freeipa.ansible_freeipa.ipadnszone:
         ipaadmin_password: "{{ ipaadmin_password }}"
-        name: "{{ dns_reverse_zone }}"
+        name: "{{ item }}"
         state: present
+      loop: "{{ dns_reverse_zones }}"
   tags: reversedns
