@@ -166,10 +166,20 @@
     - ipaservers
   tasks:
 
+    - name: setup dns zone
+      freeipa.ansible_freeipa.ipadnszone:
+        ipaadmin_password: "{{ ipaadmin_password }}"
+        name: "{{ ipaserver_domain }}"
+        allow_sync_ptr: true
+        dynamic_update: true
+        state: present
+
     - name: setup reverse zone
       freeipa.ansible_freeipa.ipadnszone:
         ipaadmin_password: "{{ ipaadmin_password }}"
         name: "{{ item }}"
+        allow_sync_ptr: true
+        dynamic_update: true
         state: present
       loop: "{{ dns_reverse_zones }}"
-  tags: reversedns
+  tags: dns
