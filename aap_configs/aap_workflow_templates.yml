@@ -199,6 +199,7 @@ controller_workflows:
           related:
             success_nodes:
               - identifier: 201-delete-from-vmware
+              - identifier: 202-delete-from-idm
 
         - identifier: 201-delete-from-vmware
           unified_job_template:
@@ -207,6 +208,12 @@ controller_workflows:
             organization:
               name: rhops
 
+        - identifier: 202-delete-from-idm
+          unified_job_template:
+            name: Remove host from IdM
+            type: job_template
+            organization:
+              name: rhops
     survey_enabled: true
 
   - name: Add Disk to VM
@@ -287,4 +294,3 @@ controller_workflows:
               name: rhops
 
     survey_enabled: true
-

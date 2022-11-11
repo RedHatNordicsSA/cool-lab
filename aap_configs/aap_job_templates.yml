@@ -563,3 +563,41 @@ controller_templates:
             type: text
             variable: vm_lv_name
     survey_enabled: true
+
+  - name: Remove host from IdM
+    description: >
+      Removes host details from IdM config
+    execution_environment: Default execution environment
+    ask_variables_on_launch: true
+    inventory:
+      name: vmware-rh
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_slice_count: 1
+    job_type: run
+    ask_limit_on_launch: true
+    playbook: idm_remove_host.yml
+    project:
+      name: Cool-Lab
+      organization:
+        name: rhops
+        type: organization
+      type: project
+    related:
+      credentials:
+        - name: machine-creds-rhops-admin
+      survey_spec:
+        description: ''
+        name: ''
+        spec:
+          - question_name: Host name to remove
+            default: 'my-vm'
+            new_question: true
+            question_description: >
+              Which host do you want remove from IdM?
+            required: true
+            type: text
+            variable: short_name
+    survey_enabled: true
