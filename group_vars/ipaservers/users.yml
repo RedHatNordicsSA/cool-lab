@@ -97,6 +97,19 @@ enabled_users:
     # yamllint disable-line rule:line-length
     sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQD5quBk/pj92SPJJNW5Io7AWCmrie5KMXAW5zroUOJfI0D720buQbAIdWIKo+CpBwSHsyn7kpUREKJfOqLVPalhN17YC5X9k9cOzq+CuLAzGYL5zL2YR7TAwzj2v8cFwvTQ/86VLy+TghPf1CMFPxVXkQ8V1V1LGI4hoRhc1eynedGjKv9CBqSNP6HuWpuezUtM3/rHpzmZJE7kqzXmi8eklCSs1twzgibkT7ECbOIZHicRhwbThSQ18Vtb+LAz2XqO7VpKrJQ5I1ZBNlipgZCbcRmbFQLTkiBXFbJSlLH1FSQn5TxlJiT2MXQEz+zQD3CjXclgxyxZWxzZrUoF/rtp8P5TRx3sxoV1LpeCJoH+hM8D2zo/jJwnqIswVC0C5C0a9T4lPBoWCMsd8fJNgjHvUsfUgitr0dyGwczmiAhZukNmqiHKF9tcpYkJDDNf3Aun6QyAnucB7+SvRUExcZ+n/vJKY3vbGXJmY01tht+XdiFQkey204A/pf+fnMXHbQ0= mmurakam@mmurakam.remote.csb
 
+
+  #
+  # Arrow users
+  #
+  - name: teli
+    first: Terje
+    last: Lindholm
+    password: "coolpw"
+    uid: 20001
+    gid: 20001
+    # yamllint disable-line rule:line-length
+    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC/A45JyRp8OOvC95Db42mz7KocV2x/zuOqmuQTSY0A9QhoBlIRJEhb9PaQCLy43u/chBEaqPKgtp7JphXJf6rr6vN5aLofeEGQvb/z+obdFKxobQKmUCm6BJK6HvcK/unvimtb9Ub7c1UGJ+Iy+Hg7HZJGbjrHZCjLjviFsrkMlikvNB+hZO/B56f5ewQVbtPJ9RzDVs3ut/AciEaYRVsRCZWylP4eIDWxqfQhTfC3ER6Xe0CSoIs94Nhtug0wZzIrP+UHtb7ryQaKd9PkLHReBH4nJ+jz+syJAxwZxPvDkQUKofPtxgeSdLp30q8JFYTkStbRx05pw0kvaGmO2qD4V16W1ZApzbg3j64/tDs+P0VjWnZr0SklvBkcY84HMQ+Zq287N3T0SU4yp1CrnFNzMv82kpGJL8z5rBQYe2TrOxt6iJqHSd1Dm8QT47XLenj53khPp+5dJWyo9Dwae3s1MoDio4r8ZT2ASAqmNkntMWMaoEAsdZrYIidx63rY2tk= a91466@C02DN3WNMD6R
+
 idm_admins:
   - jwesterl
   - ikke
@@ -107,6 +120,7 @@ idm_admins:
   - codell
   - pgustafs
   - tsohlber
+  - teli
 
 aap_admins:
   - jwesterl
@@ -125,3 +139,6 @@ rh_ops:
   - jboivie
   - tsohlber
   - earvonen
+
+arrow_ops:
+  - teli

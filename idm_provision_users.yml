@@ -42,6 +42,21 @@
         user: "{{ rh_ops }}"
       tags: groups
 
+    - name: Ensure group Arrow Ops (arrowops) with gid 2100
+      freeipa.ansible_freeipa.ipagroup:
+        ipaadmin_password: "{{ ipaadmin_password }}"
+        name: arrowops
+        gidnumber: 2100
+      tags: groups
+
+    - name: Ensure members in group Arrow Ops (arrowops)
+      freeipa.ansible_freeipa.ipagroup:
+        ipaadmin_password: "{{ ipaadmin_password }}"
+        name: arrowops
+        action: member
+        user: "{{ arrow_ops }}"
+      tags: groups
+
     - name: Create LDAP bind user for AAP
       community.general.ldap_entry:
         server_uri: ldaps://rh-idm-01.cool.lab
