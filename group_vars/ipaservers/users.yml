@@ -60,9 +60,9 @@ enabled_users:
     gid: 10007
     # yamllint disable-line rule:line-length
     sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDh1I/jpC7E6WyDJYw7LORehpd/50YtmMeE1bQaCX6KG3PfBFdKyu0VtssuevU6WS4zfDRruNNpoukUdbsL7dWQqgXQQB0hbPykDd8iqaC4bqKIYAqYEBv6anHppnr39hvKtLrmNDMAVwMNFdns3dFSUueg1PcdfyNNQ8qnKu1Mq9JmAKsb8WwJ8cdwpRMeGujU5QUAJF7FicHgftLyhKJQbgsN+KNWbwRTSTknjjot2e869mSV9qwo58iZZLt1BUyofVQch7a5h7/PXxXjuYjHmXAgK5fXRqktPqqSB0rqgSApIv5IOfm02zbOt5EopVLijLSTTxWnM+gTHETYBg7nmYdMUztBmbbKeGvsw5UzIMO4qHYaqCWRYn6Oq/Shtb07LrASD2vVthe57qg2MR7QwmoiVXxt+Fpxx4v2nzjMcs2lTWigie4COiS7jatu/rU7JYQEouwmxOy1JFj1p51e7u0fplAx8JhdklQZ1aqgDQcacdC0YOT7yfJ5jiKeIe0=
-  
+
   - name: codell
-    first: Johan 
+    first: Johan
     last: Odell
     password: "coolpw"
     uid: 10008
@@ -71,7 +71,7 @@ enabled_users:
     sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDQ1dxXMyaAD1L2H3BgG2pYG0eA3cPNpc6OPD1tQrkNK+irN/NW877Hvgt5mX+V7DSBIqWx05g4mcmscrccnEA4j96QMQFqsjrIjj1sk1URH5GmWPyfmsV1w46VWVtTjgIxf1zbdwgbbEgOYlgdS0DyN1dXOsPpZmnxy4OqCz6lt3Hvx2vdSywHk7mqRLNMn36zf9ZxtBviN8IwLU6ZCIZQfW1/9EULAvjMXft/uqM/211NDVE7yxpsMfoD+6dlk8i8hVjtresKSVqu9WAQ09gQvmbOVEyJun2EiB58pPG1rOdwk7Tmk/raRrro/jnX1zYLwu/tIKZocuFLlFT0hrvp54iCRPR8bLMvjs4kohT4x9RA/PS35rT2YLBqCg2DU1zgCNMEqUqgdyRHKnA/1TFR+VffDdPsFtbBKPwj5WR6aCrmsspyBVahGAZ888hbNMxohxiW8LBupvVGkAVDgtiNHYKCJL3YXoiV2S3qYehgQDRL3Zfm27/SG4EcaOZwOBs=
 
   - name: pgustafs
-    first: Peter 
+    first: Peter
     last: Gustafsson
     password: "coolpw"
     uid: 10009
@@ -110,6 +110,15 @@ enabled_users:
     # yamllint disable-line rule:line-length
     sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC/A45JyRp8OOvC95Db42mz7KocV2x/zuOqmuQTSY0A9QhoBlIRJEhb9PaQCLy43u/chBEaqPKgtp7JphXJf6rr6vN5aLofeEGQvb/z+obdFKxobQKmUCm6BJK6HvcK/unvimtb9Ub7c1UGJ+Iy+Hg7HZJGbjrHZCjLjviFsrkMlikvNB+hZO/B56f5ewQVbtPJ9RzDVs3ut/AciEaYRVsRCZWylP4eIDWxqfQhTfC3ER6Xe0CSoIs94Nhtug0wZzIrP+UHtb7ryQaKd9PkLHReBH4nJ+jz+syJAxwZxPvDkQUKofPtxgeSdLp30q8JFYTkStbRx05pw0kvaGmO2qD4V16W1ZApzbg3j64/tDs+P0VjWnZr0SklvBkcY84HMQ+Zq287N3T0SU4yp1CrnFNzMv82kpGJL8z5rBQYe2TrOxt6iJqHSd1Dm8QT47XLenj53khPp+5dJWyo9Dwae3s1MoDio4r8ZT2ASAqmNkntMWMaoEAsdZrYIidx63rY2tk= a91466@C02DN3WNMD6R
 
+  - name: sara
+    first: Sara
+    last: Banderby
+    password: "coolpw"
+    uid: 20002
+    gid: 20002
+    # yamllint disable-line rule:line-length
+    sshpubkey:
+
 idm_admins:
   - jwesterl
   - ikke
@@ -140,5 +149,15 @@ rh_ops:
   - tsohlber
   - earvonen
 
+arrow:
+  - teli
+  - sara
+
 arrow_ops:
   - teli
+
+odh_admins:
+  - ikke
+  - teli
+  - sara
+  - mmurakam

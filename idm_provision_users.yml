@@ -57,6 +57,36 @@
         user: "{{ arrow_ops }}"
       tags: groups
 
+    - name: ensure group arrow (arrow) with gid 2101
+      freeipa.ansible_freeipa.ipagroup:
+        ipaadmin_password: "{{ ipaadmin_password }}"
+        name: arrow
+        gidnumber: 2101
+      tags: groups
+
+    - name: ensure members in group arrow (arrow)
+      freeipa.ansible_freeipa.ipagroup:
+        ipaadmin_password: "{{ ipaadmin_password }}"
+        name: arrow
+        action: member
+        user: "{{ arrow }}"
+      tags: groups
+
+    - name: ensure group ODH admins (odh_admins) with gid 2102
+      freeipa.ansible_freeipa.ipagroup:
+        ipaadmin_password: "{{ ipaadmin_password }}"
+        name: odh_admins
+        gidnumber: 2102
+      tags: groups
+
+    - name: ensure members in group ODH admins (odh_admins)
+      freeipa.ansible_freeipa.ipagroup:
+        ipaadmin_password: "{{ ipaadmin_password }}"
+        name: odh_admins
+        action: member
+        user: "{{ odh_admins }}"
+      tags: groups
+
     - name: Create LDAP bind user for AAP
       community.general.ldap_entry:
         server_uri: ldaps://rh-idm-01.cool.lab
