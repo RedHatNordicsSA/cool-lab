@@ -72,17 +72,17 @@
         user: "{{ arrow }}"
       tags: groups
 
-    - name: ensure group ODH admins (odh_admins) with gid 2102
+    - name: ensure group ODH admins (odh_admins) with gid 2103
       freeipa.ansible_freeipa.ipagroup:
         ipaadmin_password: "{{ ipaadmin_password }}"
-        name: odh_admins
-        gidnumber: 2102
+        name: odh-admins
+        gidnumber: 2103
       tags: groups
 
     - name: ensure members in group ODH admins (odh_admins)
       freeipa.ansible_freeipa.ipagroup:
         ipaadmin_password: "{{ ipaadmin_password }}"
-        name: odh_admins
+        name: odh-admins
         action: member
         user: "{{ odh_admins }}"
       tags: groups
