@@ -98,6 +98,16 @@ enabled_users:
     sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQD5quBk/pj92SPJJNW5Io7AWCmrie5KMXAW5zroUOJfI0D720buQbAIdWIKo+CpBwSHsyn7kpUREKJfOqLVPalhN17YC5X9k9cOzq+CuLAzGYL5zL2YR7TAwzj2v8cFwvTQ/86VLy+TghPf1CMFPxVXkQ8V1V1LGI4hoRhc1eynedGjKv9CBqSNP6HuWpuezUtM3/rHpzmZJE7kqzXmi8eklCSs1twzgibkT7ECbOIZHicRhwbThSQ18Vtb+LAz2XqO7VpKrJQ5I1ZBNlipgZCbcRmbFQLTkiBXFbJSlLH1FSQn5TxlJiT2MXQEz+zQD3CjXclgxyxZWxzZrUoF/rtp8P5TRx3sxoV1LpeCJoH+hM8D2zo/jJwnqIswVC0C5C0a9T4lPBoWCMsd8fJNgjHvUsfUgitr0dyGwczmiAhZukNmqiHKF9tcpYkJDDNf3Aun6QyAnucB7+SvRUExcZ+n/vJKY3vbGXJmY01tht+XdiFQkey204A/pf+fnMXHbQ0= mmurakam@mmurakam.remote.csb
 
 
+  - name: suvmitra
+    first: Suvendu
+    last: Mitra
+    password: "coolpw"
+    uid: 10012
+    gid: 10012
+    # yamllint disable-line rule:line-length
+    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCuZqgLjI/QB1iI+dVEj8QZg1+Tar/lLDeChmOxQ8DhRuOaEgxSLWf2AMLuiqsVvVkoClFjmTPGAPb2qvfCMYxFf87U8CVzzKyCFXojOqo0jCQXJQQ/DczCtcihjDaXWdoioi01k2WIKecitc+lKKT2FLKimqSvlgBqY6fou+sZP3rCtrrcx0kYqZiXrvD6C9eB2ZyupZtWUBdL5KwGS/mY+749ORkA378YOsHwbZdbQMuepJCVIfdArcIgiYBzVGMf7CtNc1H9VU90A3i6hQrq8GNkWXJMlyi4kpYwsxTAE4MHeRVomYSFgxRb3tFX9tq3AmqPNKz6He10L6TPGHydzZR5RsvdEwbGf2KWFClOvZOLkw5YKrqa9ehQQozkLt/6C05esju25uRMujw2Y5z5DAFyIK/lPSk1HML1Ldp0Mx8fCsq+xQifExzyo/euzgViVCbcrqTHU38+IbD2RwVNFsr6LyW6J9w0nmDK7mMVgBMfDERriZd798xKP3w9prk= suvmitra@MacBook-Pro
+
+
   #
   # Arrow users
   #
@@ -148,6 +158,7 @@ rh_ops:
   - jboivie
   - tsohlber
   - earvonen
+  - suvmitra
 
 arrow:
   - teli
