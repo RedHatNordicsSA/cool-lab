@@ -87,6 +87,21 @@
         user: "{{ odh_admins }}"
       tags: groups
 
+    - name: ensure group developers with gid 2104
+      freeipa.ansible_freeipa.ipagroup:
+        ipaadmin_password: "{{ ipaadmin_password }}"
+        name: developers
+        gidnumber: 2104
+      tags: groups
+
+    - name: ensure members in group developers
+      freeipa.ansible_freeipa.ipagroup:
+        ipaadmin_password: "{{ ipaadmin_password }}"
+        name: developers
+        action: member
+        user: "{{ developers }}"
+      tags: groups
+
     - name: Create LDAP bind user for AAP
       community.general.ldap_entry:
         server_uri: ldaps://rh-idm-01.cool.lab
