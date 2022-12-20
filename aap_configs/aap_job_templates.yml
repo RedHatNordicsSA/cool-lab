@@ -601,3 +601,30 @@ controller_templates:
             type: text
             variable: short_name
     survey_enabled: true
+
+  - name: Update IdM users
+    description: >
+      Run this to verify IdM users match to what is in git.
+    execution_environment: Default execution environment
+    ask_variables_on_launch: false
+    inventory:
+      name: vmware-rh
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_slice_count: 1
+    job_type: run
+    ask_limit_on_launch: false
+    limit: rh-idm-01.cool.lab
+    playbook: idm_provision_users.yml
+    project:
+      name: Cool-Lab
+      organization:
+        name: rhops
+        type: organization
+      type: project
+    related:
+      credentials:
+        - name: machine-creds-rhops-admin
+    survey_enabled: false
