@@ -107,6 +107,15 @@ enabled_users:
     # yamllint disable-line rule:line-length
     sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCuZqgLjI/QB1iI+dVEj8QZg1+Tar/lLDeChmOxQ8DhRuOaEgxSLWf2AMLuiqsVvVkoClFjmTPGAPb2qvfCMYxFf87U8CVzzKyCFXojOqo0jCQXJQQ/DczCtcihjDaXWdoioi01k2WIKecitc+lKKT2FLKimqSvlgBqY6fou+sZP3rCtrrcx0kYqZiXrvD6C9eB2ZyupZtWUBdL5KwGS/mY+749ORkA378YOsHwbZdbQMuepJCVIfdArcIgiYBzVGMf7CtNc1H9VU90A3i6hQrq8GNkWXJMlyi4kpYwsxTAE4MHeRVomYSFgxRb3tFX9tq3AmqPNKz6He10L6TPGHydzZR5RsvdEwbGf2KWFClOvZOLkw5YKrqa9ehQQozkLt/6C05esju25uRMujw2Y5z5DAFyIK/lPSk1HML1Ldp0Mx8fCsq+xQifExzyo/euzgViVCbcrqTHU38+IbD2RwVNFsr6LyW6J9w0nmDK7mMVgBMfDERriZd798xKP3w9prk= suvmitra@MacBook-Pro
 
+  - name: mbengtss
+    first: Magnus
+    last: Bengtsson
+    password: "coolpw"
+    userauthtype: password
+    uid: 10013
+    gid: 10013
+    # yamllint disable-line rule:line-length
+    sshpubkey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIcn2qbmAu0O6oPEEoFhPiYWn5oqVrAGOPW1AbsvJMBJ
 
   #
   # Arrow users
@@ -139,6 +148,7 @@ idm_admins:
   - codell
   - pgustafs
   - tsohlber
+  - mbengtss
   - teli
 
 aap_admins:
@@ -151,6 +161,7 @@ aap_admins:
   - codell
   - pgustafs
   - tsohlber
+  - mbengtss
 
 rh_ops:
   - ikke
@@ -159,6 +170,7 @@ rh_ops:
   - tsohlber
   - earvonen
   - suvmitra
+  - mbengtss
 
 arrow:
   - teli
