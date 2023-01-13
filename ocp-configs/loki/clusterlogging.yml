@@ -1,0 +1,18 @@
+apiVersion: logging.openshift.io/v1
+kind: ClusterLogging
+metadata:
+  annotations:
+    logging.openshift.io/preview-vector-collector: enabled
+  name: instance
+  namespace: openshift-logging
+spec:
+  collection:
+    logs:
+      type: vector
+    resources: null
+    type: vector
+  logStore:
+    lokistack:
+      name: logging-loki
+    type: lokistack
+  managementState: Managed
