@@ -125,6 +125,82 @@
         - satellite_manifest_download | bool
         - not manifest_file.stat.exists
 
+    - name: FreeIPA with automatic registration
+      tags: users
+      redhat.satellite.auth_source_ldap:
+        name: "Red Hat IdM"
+        host: "{{ ipaservers | first }}"
+        onthefly_register: true
+        account: uid=aap_ldap,cn=sysaccounts,cn=etc,dc=cool,dc=lab
+        account_password: "{{ aap_ldap_password }}"
+        base_dn: dc=cool,dc=lab
+        groups_base: cn=groups,cn=accounts,dc=cool,dc=lab
+        server_type: free_ipa
+        attr_login: uid
+        attr_firstname: givenName
+        attr_lastname: sn
+        attr_mail: mail
+        attr_photo: jpegPhoto
+        server_url: "{{ satellite_server_url }}"
+        username: "{{ satellite_username }}"
+        password: "{{ satellite_password }}"
+        state: present
+
+    - name: Create Red Hat Ops user group
+      tags: users
+      redhat.satellite.usergroup:
+        server_url: "{{ satellite_server_url }}"
+        username: "{{ satellite_username }}"
+        password: "{{ satellite_password }}"
+        name: "Red Hat Ops"
+        admin: true
+        state: present
+
+    - name: Link rhops from FreeIPA
+      tags: users
+      redhat.satellite.external_usergroup:
+        server_url: "{{ satellite_server_url }}"
+        username: "{{ satellite_username }}"
+        password: "{{ satellite_password }}"
+        name: rhops
+        auth_source: "Red Hat IdM"
+        usergroup: "Red Hat Ops"
+        state: present
+
+    - name: Link rhops group from FreeIPA
+      tags: users
+      redhat.satellite.external_usergroup:
+        server_url: "{{ satellite_server_url }}"
+        username: "{{ satellite_username }}"
+        password: "{{ satellite_password }}"
+        auth_source: "Red Hat IdM"
+        name: rhops
+        usergroup: "Red Hat Ops"
+        state: present
+
+    - name: Create Arrow user group
+      tags: users
+      redhat.satellite.usergroup:
+        server_url: "{{ satellite_server_url }}"
+        username: "{{ satellite_username }}"
+        password: "{{ satellite_password }}"
+        name: "Arrow users"
+        admin: false
+        roles:
+          - Viewer
+        state: present
+
+    - name: Link arrow group from FreeIPA
+      tags: users
+      redhat.satellite.external_usergroup:
+        server_url: "{{ satellite_server_url }}"
+        username: "{{ satellite_username }}"
+        password: "{{ satellite_password }}"
+        auth_source: "Red Hat IdM"
+        name: arrow
+        usergroup: "Arrow users"
+        state: present
+
     - name: setup repos
       include_role:
         name: redhat.satellite.repositories
