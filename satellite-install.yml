@@ -48,6 +48,31 @@
 
       - name: Production
         prior: Testing
+
+    satellite_content_views:
+      - name: RHEL8
+        repositories:
+          - name: 'Red Hat Enterprise Linux 8 for x86_64 - BaseOS RPMs 8'
+            product: 'Red Hat Enterprise Linux for x86_64'
+          - name: 'Red Hat Enterprise Linux 8 for x86_64 - AppStream RPMs 8'
+            product: 'Red Hat Enterprise Linux for x86_64'
+      - name: RHEL9
+        repositories:
+          - name: 'Red Hat Enterprise Linux 9 for x86_64 - BaseOS RPMs 9'
+            product: 'Red Hat Enterprise Linux for x86_64'
+          - name: 'Red Hat Enterprise Linux 9 for x86_64 - AppStream RPMs 9'
+            product: 'Red Hat Enterprise Linux for x86_64'
+
+    satellite_activation_keys:
+      - name: RHEL8
+        lifecycle_environment: "Library"
+        content_view: RHEL8
+        release_version: 8
+      - name: RHEL9
+        lifecycle_environment: "Library"
+        content_view: RHEL9
+        release_version: 9
+
     satellite_rhsm_username: "{{ vault_rh_subs_username }}"
     satellite_rhsm_password: "{{ vault_rh_subs_password }}"
     satellite_installer_custom_parameters: >
@@ -213,3 +238,22 @@
     - name: setup lifecycle environments
       include_role:
         name: redhat.satellite.lifecycle_environments
+
+    - name: setup content views
+      tags: contentviews
+      include_role:
+        name: redhat.satellite.content_views
+
+    - name: publish content views
+      tags: contentviews
+      include_role:
+        name: redhat.satellite.content_view_publish
+      vars:
+        satellite_content_views:
+          - RHEL8
+          - RHEL9
+
+    - name: create activation keys
+      tags: keys
+      include_role:
+        name: redhat.satellite.activation_keys
