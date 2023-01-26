@@ -5,6 +5,7 @@ controller_templates:
     description: 'Creates of deletes a VM, or sets power state'
     execution_environment: Default execution environment
     ask_variables_on_launch: true
+    use_fact_cache: true
     extra_vars:
       use_aap_inventory: false
     inventory:
@@ -122,6 +123,7 @@ controller_templates:
       Insights. Adds repositories and installs basic set of
       packages.
     execution_environment: Default execution environment
+    use_fact_cache: true
     forks: 15
     ask_inventory_on_launch: true
     inventory:
@@ -176,6 +178,7 @@ controller_templates:
       Insights. Adds repositories and installs basic set of
       packages.
     execution_environment: Default execution environment
+    use_fact_cache: true
     forks: 15
     inventory:
       name: Temporary Inventory
@@ -228,6 +231,7 @@ controller_templates:
       Adds hosts to IdM control including things like DNS name and user
       management.
     execution_environment: Default execution environment
+    use_fact_cache: true
     extra_vars:
       use_inventory_for_hostname: true
     forks: 15
@@ -280,6 +284,7 @@ controller_templates:
       Adds hosts in new_vms group to IdM control including things like DNS
       name and user management.
     execution_environment: Default execution environment
+    use_fact_cache: true
     extra_vars:
       use_inventory_for_hostname: true
     forks: 15
@@ -412,6 +417,7 @@ controller_templates:
   - name: Add disk to VM
     description: 'Adds new disk to virtual machine.'
     execution_environment: Default execution environment
+    use_fact_cache: true
     ask_variables_on_launch: true
     inventory:
       name: Demo Inventory
@@ -458,6 +464,7 @@ controller_templates:
   - name: Create LV to empty disk on VM
     description: 'Creates logical volume from extra disk in VM.'
     execution_environment: Default execution environment
+    use_fact_cache: true
     ask_variables_on_launch: true
     inventory:
       name: vmware-rh
@@ -521,6 +528,7 @@ controller_templates:
     description: >
       Uses and extra disk to extend an existing logical volume in VM.
     execution_environment: Default execution environment
+    use_fact_cache: true
     ask_variables_on_launch: true
     inventory:
       name: vmware-rh
@@ -568,6 +576,7 @@ controller_templates:
     description: >
       Removes host details from IdM config
     execution_environment: Default execution environment
+    use_fact_cache: true
     ask_variables_on_launch: true
     inventory:
       name: vmware-rh
@@ -606,6 +615,7 @@ controller_templates:
     description: >
       Run this to verify IdM users match to what is in git.
     execution_environment: Default execution environment
+    use_fact_cache: true
     ask_variables_on_launch: false
     inventory:
       name: vmware-rh
