@@ -11,14 +11,15 @@
         vcenter_folder: KISTA-DC/Redhat
         vcenter_cluster: ARROWLAB
         vcenter_resource_pool:
-        vcenter_datastore: SVC-LUN-1
+        vcenter_datastore: SVC-LUN-2
         vcenter_network: vlan2102
         vcenter_convert_to_template: true
 
         do_cleanup: true
 
         packer_builder: vmware
-        packer_target: rhel_9_0
+        # packer_target: rhel_8_7
+        packer_target: rhel_9_1
         packer_binary: packer
         vcenter_insecure_connection: true
         boot_password: "{{ cloud_user_password }}"
@@ -49,17 +50,23 @@
         root_permit_local: true
 
         # security_profile: cis_server_l1
-        image_name: rhel_9_0_image
+        image_name: rhel_9_1_image
+        # image_name: rhel_8_7_image
         root_ssh_key: >
           ssh-ed25519
           AAAAC3NzaC1lZDI1NTE5AAAAIHV4O/qEctm+YmAY/o0aKk+sgxbFhLMsNN1m4j8FNKSF
           admin@coollab
         # disk_size: 4096
         iso:
-          rhel_9_0:
+          rhel_9_1:
             # yamllint disable-line rule:line-length
-            url: "file:///home/itengval/VirtualMachines/rhel-baseos-9.0-x86_64-dvd.iso"
+            url: "file:///home/itengval/VirtualMachines/rhel-baseos-9.1-x86_64-dvd.iso"
             # yamllint disable-line rule:line-length
-            checksum: sha256:a387f3230acf87ee38707ee90d3c88f44d7bf579e6325492f562f0f1f9449e89
+            checksum: sha256:d9dcae2b6e760d0f9dcf4a517bddc227d5fa3f213a8323592f4a07a05aa542a2
+          rhel_8_7:
+            # yamllint disable-line rule:line-length
+            url: "file:///home/itengval/VirtualMachines/rhel-8.7-x86_64-dvd.iso"
+            # yamllint disable-line rule:line-length
+            checksum: sha256:a6a7418a75d721cc696d3cbdd648b5248808e7fef0f8742f518e43b46fa08139
       include_role:
         name: myllynen.ansible_packer.ansible_packer
