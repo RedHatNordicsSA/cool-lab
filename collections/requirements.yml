@@ -6,7 +6,7 @@ collections:
   - name: awx.awx
     version: 21.4.0
   - name: community.general
-    version: 4.6.1
+    version: 6.1.0
   - name: community.vmware
     version: 2.2.0
   - name: freeipa.ansible_freeipa
@@ -23,11 +23,15 @@ collections:
     version: 2.2.0
   - name: myllynen.ansible_packer
     source: https://github.com/myllynen/ansible-packer
-    version: master
+    # version: master
+    type: git
+  - name: myllynen.rhel-ansible-roles
+    source: https://github.com/myllynen/rhel-ansible-roles
+    version: 'v0.5.7'
     type: git
   - name: myllynen.satellite-automation
     source: https://github.com/myllynen/satellite-automation
-    version: master
+    # version: master
     type: git
   - name: redhat.satellite
     version: 3.7.0

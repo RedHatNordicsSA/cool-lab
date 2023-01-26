@@ -1,0 +1,26 @@
+---
+- hosts: all
+  vars:
+    repository_setup_rhsm_configure: true
+    repository_setup_install_katello_rpm: true
+    repository_setup_rhsm_subscribe: true
+    repository_setup_rhsm_parameters:
+      activationkey: RHEL9
+      server_insecure: true
+      rhsm_baseurl: https://rh-satellite-01.cool.lab
+      org_id: Red_Hat_Cool_Lab
+  tasks:
+
+    - name: clean all previous subscriptions
+      include_role:
+        name: myllynen.rhel_ansible_roles.system_unregister
+
+    - name: subscribe to satellite
+      include_role:
+        name: myllynen.rhel_ansible_roles.repository_setup
+
+    - name: drop foreman ssh-key
+      ansible.posix.authorized_key:
+        user: root
+        state: present
+        key: "{{ satellite_foreman_pubkey }}"
