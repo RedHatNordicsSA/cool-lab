@@ -117,6 +117,36 @@ enabled_users:
     # yamllint disable-line rule:line-length
     sshpubkey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIcn2qbmAu0O6oPEEoFhPiYWn5oqVrAGOPW1AbsvJMBJ
 
+  - name: apelline
+    first: Aki
+    last: Pellinen
+    password: "coolpw"
+    userauthtype: password
+    uid: 10014
+    gid: 10014
+    # yamllint disable-line rule:line-length
+    sshpubkey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOczcHwu8u3ODTNxkNqKR7liLC0BOxNs642fW7qksCJx apelline@redhat.com
+
+  - name: luferrar
+    first: Luca
+    last: Ferrari
+    password: "coolpw"
+    userauthtype: password
+    uid: 10015
+    gid: 10015
+    # yamllint disable-line rule:line-length
+    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDHN46fhD8gfSUDJzXH0kMyI8GYbUECLuPhD8IcbV7EUtmpj+adTQB1vopgKAwEMuW9T6lFZMeyTn/ToWxoAcIBSPf9hOpb/L9j75mn9n2HoghbD0bP5sjxAd/Tf8VgIY77uru2CR31M546TBF44VGvmlCI2GTjYywEXG9haInQLy+TVQIA+hX6ICqji65H+ri9gRr4ukDf0IZjgaodazT4L+rcdbNkFU1dgh33ZHZ8Fm6+C/fW+j5aKQa1nkqvbma5BIEeiz3IZu5LQoeLbO0URd5zm00r3yDta+VIFJbKrEFfDZIem72lPuQx3Gg+ts4TpWWVNYJH41YrgS3StwulZnFh+MiYbgP9Dp5nK20xvtIWxkpYvOh4tbI5kdJMGK3oso9xXYaC11ETi9e5jHouYm0/f4ZxkobWTg60tVLbnrZi/KBFDgW7eSWxNG7ixt8txno0bhNwC0eIwIImIuUn5+5FWFNbIqCWOQIjYuZ1EsenPLkQN+UG+pPlMp3c6z0= luferrar@x1-lmf
+
+  - name: elajoie
+    first: Eric
+    last: Lajoie
+    password: "coolpw"
+    userauthtype: password
+    uid: 10015
+    gid: 10015
+    # yamllint disable-line rule:line-length
+    sshpubkey:
+
   #
   # Arrow users
   #
@@ -171,6 +201,9 @@ rh_ops:
   - earvonen
   - suvmitra
   - mbengtss
+  - apelline
+  - elajoie
+  - luferrar
 
 arrow:
   - teli
