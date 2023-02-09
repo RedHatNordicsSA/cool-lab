@@ -166,7 +166,7 @@ enabled_users:
     uid: 20002
     gid: 20002
     # yamllint disable-line rule:line-length
-    sshpubkey:
+    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCMeCQ/mpzMpapDaP17Ja6SW//nWH3vUqQbkizWjZiTIZOGT41sNbsuREcw02a56n/2VCcO0yE2LykbXFTFx0hf6x7Fk0j+RGop19laReR5U0WRNK7lK76aomxrPIgKLxs/ReS5QBNX1UUnsfw/LW0nvEq4So3eVhNePVS3RJchNjPcOLrorAvj7mW+RLURczQIJLHeR99PJVRD/tEwaaKr43aGu/RKHrmJl/3dZ1E6N2D89hZP/Mf3li0fFOSCNHS4bJ8uMAp5Z6Bs8/1QvRYCy+JVix+VxX5dNc+NS2r3D0EidHxvvsvef7PvE/s7j2Z28vdptLgSPYaOcc6klxHGJxQIxGpI42m/0kM7TzlBzkPaOM70dyt3FegYFNB0UYYVUF5UGVFHYfIOStZAnWDdf8CVwkR1z71haYAy7qAitVL3/4zJMttCm8o7nYPVGEK2T8717XAA+ghvjcPjhNMyAZF5v0bvT4OUYcQ8vNtQmZbiOK3qeB3kaCd8iU84PL8= elajoie@redhat.home.lab
 
 idm_admins:
   - jwesterl
