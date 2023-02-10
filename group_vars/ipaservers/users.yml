@@ -150,8 +150,8 @@ enabled_users:
   - name: rschaert
     first: Richard
     last: Schaertel
-    password: "coolpw"
-    userauthtype: password
+    #password: "coolpw"
+    #userauthtype: password
     uid: 10018
     gid: 10018
     # yamllint disable-line rule:line-length
