@@ -157,6 +157,16 @@ enabled_users:
     # yamllint disable-line rule:line-length
     sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDsUB2PIDFdEim3Tlb4qGm+K8zpCirV2lQgRF7eegmwNBTg3jWk5f6uFR07W5s1unwkAK2upCm0E9Aj9vT46N7abYAspC2CQojOawSsO9soV2Np++y/EwtW52UVP91hkhcYRuXVQ0RUn4pG7USfdrIScPydez91eBZasQJFdwY+hwwvYzeFnsrhlxZcMF6cyhlZgQl80QoG4hJadmEFVDFHruk+zNMo8qKxKa636FGJX+ZSBqA9RMs+IfCBzs1/hDWL64gDx0LEM2ydE8ae6Oq5bwKiBjLaqE6B7D09wdLzh8jcu3BPLqw2wNo7cFvVRRg+H78ixfc/UW3LicWGJjiR+cDROdkClqQxL8ePMp2btHkQTYk+FhfZD9RG0v+7l1XKgjLEp1UlgBJHYlBd5vzzvu2QXZJv/aP28L9xZ4vMP1u8siJv0DwcPmCG0kFf5+JWa44YUu5VgE5GqUIMr36L7BbRdMM5pQktOO67nUCF1CznJttUZ5QClaWGd+GbmDc= rschaert@rschaert-mac
 
+  - name: sunathan
+    first: Susinthiran
+    last: Sitham
+    password: "coolpw"
+    userauthtype: password
+    uid: 10019
+    gid: 10019
+    # yamllint disable-line rule:line-length
+    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDNrNa+UNpjBO0jBpt3iBz3Zfs0/g2wymqlHxRRP2//hUrN/nuivm82zMHFSufkkDj2HQgSzElmfwd+hurV9y7COkq8erFOgoYnr88113Iuav5gD/wTvqNe8YVPxvvk45heFOL78nYe6F/bLLNId2R9m5g/z7iM+LZ6lYatK0ttZ1/zhgZQV7e15T5ecdY1BJ9TQlkZnGqrc1840iJk+vmzEP990og3FoW81GxDqM3ut6t6sQ0Wp3u6mFoFZ1T7SYgJg+YHz0Ha+6qezj0QSGrVgP1VY0mIqbGcl1zVzKHGxv+E7A9FnUeEN0vHqEUKh6vbA77mH7mCvDtFDJgpr8X9 susinths@localhost.localdomain
+
   #
   # Arrow users
   #
@@ -190,6 +200,7 @@ idm_admins:
   - tsohlber
   - mbengtss
   - teli
+  - sunathan
 
 aap_admins:
   - jwesterl
@@ -202,6 +213,7 @@ aap_admins:
   - pgustafs
   - tsohlber
   - mbengtss
+  - sunathan
 
 rh_ops:
   - ikke
@@ -215,6 +227,7 @@ rh_ops:
   - elajoie
   - luferrar
   - rschaert
+  - sunathan
 
 arrow:
   - teli
