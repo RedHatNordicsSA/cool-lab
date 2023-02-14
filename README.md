@@ -100,7 +100,7 @@ ERROR! Failed to resolve the requested dependencies map. Could not satisfy the f
 ```
 
 You are probably having issues with authentication to Red Hat Automation Hub.
-Follow this [documentation](https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/1.2/html-single/getting_started_with_red_hat_ansible_automation_hub/index) to generate a `token`for you and and that to your `ansible.cfg` file.
+Follow this [documentation](https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/1.2/html-single/getting_started_with_red_hat_ansible_automation_hub/index) to generate a `token`for you and add that to your `ansible.cfg` file.
 
 ```
 ...
@@ -316,7 +316,7 @@ and run:
 ansible-playbook -i hosts setup-ansible.yml -e @../private-lab/secrets.yml -e "rh_subs_username=$subs_username rh_subs_password=$subs_pw" -l "ansibleautomationplatform, localhost" -u root --ask-pass
 ```
 
-### Configuring AAP platofrm post intsall
+### Configuring AAP platofrm post install
 
 There is playbook
 [aap_configure_controller.yml](./aap_configure_controller.yml) which
