@@ -1,16 +1,18 @@
 # The Red Hat Nordics SA lab
+
 Documentation to Red Hat Nordics Lab
 
 ![Alt text](cool_lab_transparent_background_logos.png?raw=true "Cool Lab")
 
 ## Communication
+
 See: https://github.com/mglantz/cool-lab/blob/main/communication.md
 
 ## Generic Rules
 
 1. Remember, no private stuff into github. There is vault for that.
-2. All VMs created by Red Hat personnel should start with ```rh-``` prefix
-   and and with two digit number. E.g. ```rh-bastion-01```
+2. All VMs created by Red Hat personnel should start with `rh-` prefix
+   and and with two digit number. E.g. `rh-bastion-01`
 3. We have four VLANs in use, see
    [miro](https://miro.com/app/board/uXjVOd3rE1I=/).
 4. Add any permanent services to miro board "Arrow lab architecture facts" table
@@ -20,7 +22,6 @@ See: https://github.com/mglantz/cool-lab/blob/main/communication.md
    both from command line and AAP. Secrets are in secrets.yml, from where they
    are populated to AAP as credentials where needed.
 
-
 ## Development
 
 It is agreed we don't manually do anything. Of course you can play around
@@ -29,9 +30,8 @@ as code. We use
 [github kan-ban table](https://github.com/orgs/RedHatNordicsSA/projects/1)
 to track issues. Definiton of done is that:
 
-* Implementation is automated
-* Anyone can run automation based on instructions here.
-
+- Implementation is automated
+- Anyone can run automation based on instructions here.
 
 ### Git branching
 
@@ -40,7 +40,7 @@ be on your presonal feature branch.
 
 Here's good blog about such
 [better git flow](https://render.com/blog/git-organized-a-better-git-flow).
-Instead of ```git reset``` I prefer ```git rebasei -i origin/main```.
+Instead of `git reset` I prefer `git rebasei -i origin/main`.
 
 ### AAP developement
 
@@ -50,7 +50,6 @@ and add a temporary project to AAP to point there. That gives you opportunity
 to push new playbooks and changes to your branch, and for the time of testing,
 the temporary project pulls from there. Once feature is ready, do PR to main
 and switch the tasks to point to project for main branch.
-
 
 ## Private matters
 
@@ -82,18 +81,39 @@ or
 export ANSIBLE_HOST_KEY_CHECKING=False
 ```
 
-
-We use ansible roles and collections (some of them are from Red Hat Ansible Automation Hub, and hence need subscriptions). When starting work from scratch you need to download dependencies. To be able to download subscription based dependencies/collections from Red Hat Ansible Automation Hub you need to have the auth_server_url, server_url and token in place. The URLs are specified in the example-ansible.cfg file. The token is available in the secrets file in vault. ansible-galaxy client can unfortunately not read vault, but in the secrets.yml file there is a comment line you can copy to export the token as a variable. If you do that, content from ansible automation hub can be used with your ansible command line client. If you don't do this your ansible-galaxy collention install will fail.  
+We use ansible roles and collections (some of them are from Red Hat Ansible Automation Hub, and hence need subscriptions). When starting work from scratch you need to download dependencies. To be able to download subscription based dependencies/collections from Red Hat Ansible Automation Hub you need to have the auth_server_url, server_url and token in place. The URLs are specified in the example-ansible.cfg file. The token is available in the secrets file in vault. ansible-galaxy client can unfortunately not read vault, but in the secrets.yml file there is a comment line you can copy to export the token as a variable. If you do that, content from ansible automation hub can be used with your ansible command line client. If you don't do this your ansible-galaxy collention install will fail.
 
 To get collections and roles to your workstation, do:
 
 ```
 ansible-galaxy role install -r roles/requirements.yml -p roles
-ansible-galaxy collection install -r collections/requirements.txt -p collections
+ansible-galaxy collection install -r collections/requirements.yml -p collections
 ```
 
 This will download you the requirements.
 
+Should you end up having an error message similar to this:
+
+```
+ERROR! Failed to resolve the requested dependencies map. Could not satisfy the following requirements:
+* redhat.rhel_system_roles:* (direct request)
+```
+
+You are probably having issues with authentication to Red Hat Automation Hub.
+Follow this [documentation](https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/1.2/html-single/getting_started_with_red_hat_ansible_automation_hub/index) to generate a `token`for you and and that to your `ansible.cfg` file.
+
+```
+...
+
+[galaxy_server.automation_hub_saas]
+url=https://console.redhat.com/api/automation-hub/
+auth_url=https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
+# use variable ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_SAAS_TOKEN from vault
+
+token = <your-personal-token>
+
+...
+```
 
 ## Building of RHEL base image with Packer
 
@@ -108,16 +128,20 @@ To build a new template one needs to do:
 1. Download RHEL install DVD
 2. Put the value into
    [build-rhel-template-packer-vmware.yml](build-rhel-template-packer-vmware.yml)
-  ```
-  iso:
-    rhel_8_5:
-      url: "file:///home/itengval/VirtualMachines/rhel-8.5-x86_64-dvd.iso"
-      checksum: sha256:1f78e705cd1d8897a05afa060f77d81ed81ac141c2465d4763c0382aa96cadd0
-  ```
+
+```
+iso:
+  rhel_8_5:
+    url: "file:///home/itengval/VirtualMachines/rhel-8.5-x86_64-dvd.iso"
+    checksum: sha256:1f78e705cd1d8897a05afa060f77d81ed81ac141c2465d4763c0382aa96cadd0
+```
+
 3. Run the playbook:
-  ```
-  ansible-playbook -i localhost, -c local -e do_cleanup=false build-rhel-template-packer-vmware.yml
-  ```
+
+```
+ansible-playbook -i localhost, -c local -e do_cleanup=false build-rhel-template-packer-vmware.yml
+```
+
 4. Wait for it....
 
 Ten points for someone who figures out how to avoid the upload. There should
@@ -163,7 +187,7 @@ ansible-playbook -i localhost, -c local -e vm_state=poweredoff -e short_name=rh-
 And to delete it nicely, unregistering from all places like subs and idm:
 
 ```
-ansible-playbook  -u root -e "short_name=rh-test-01" -l rh-idm-01.cool.lab  nuke-vm.yml 
+ansible-playbook  -u root -e "short_name=rh-test-01" -l rh-idm-01.cool.lab  nuke-vm.yml
 ```
 
 And bluntly just delete VM, leave subscriptions, insights and idm think it still exists:
@@ -186,7 +210,7 @@ VMWARE_VALIDATE_CERTS=no ansible-playbook -e @../private-lab/secrets.yml \
 
 This playbook finds the above created empty disk from VM, and creates PV to it and
 extends the given LV to include the new PV. E.g. if you have LV for logs, extend the
-logs space by giving ```vm_lv_name=logs```.
+logs space by giving `vm_lv_name=logs`.
 
 ```
 VMWARE_VALIDATE_CERTS=no ansible-playbook -e @../private-lab/secrets.yml \
@@ -209,11 +233,11 @@ vm_attach_unused_disk_as_lv.yml
 We control identity by using Red Hat Identity Manager. We have it in
 replication mode. It manages the following
 
-* Users and Groups
-* Sudo rules
-* Host groups and RBAC
-* SSH key management
-* Certificate management
+- Users and Groups
+- Sudo rules
+- Host groups and RBAC
+- SSH key management
+- Certificate management
 
 ## Setup IdM hosts
 
@@ -303,17 +327,20 @@ To add configuration files, see examples from
 [examples](https://github.com/redhat-cop/tower_configuration/tree/devel/examples/configs)
 
 Once you create or change the configs, do run the following playbook:
+
 ```
 ansible-playbook aap_configure_controller.yml
 ```
+
 ### Adding community execution environment for AAP
 
 I had to add some community modules and python libraries to my env. So I
-created an EE for AAP. To rebuild it, get token from 
+created an EE for AAP. To rebuild it, get token from
 [https://console.redhat.com/ansible/automation-hub/token](automation hub)
 and add it to [./aap_ee_community/ansible.cfg](EE ansible config).
 
 Make sure you have podman, and then build image:
+
 ```
 pip install ansible-builder
 podman login registry.redhat.io
@@ -329,9 +356,9 @@ Better to upload it to some registry, now I manually loaded it into AAP.
 Satellite will be installed on fixed IP address. Installation takes run of
 three playbooks:
 
-  1. Create or verify satellite VM exists according to minimum requirements
-  2. Set up the VM to IdM management
-  3. Install and configure the satellite
+1. Create or verify satellite VM exists according to minimum requirements
+2. Set up the VM to IdM management
+3. Install and configure the satellite
 
 ```
 ansible-playbook -e @../private-lab/secrets.yml -e "short_name=rh-satellite-01" -e ansible_python_interpreter=/usr/bin/python3 ensure-satellite.yml
