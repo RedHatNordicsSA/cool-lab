@@ -188,6 +188,18 @@ enabled_users:
     # yamllint disable-line rule:line-length
     sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCMeCQ/mpzMpapDaP17Ja6SW//nWH3vUqQbkizWjZiTIZOGT41sNbsuREcw02a56n/2VCcO0yE2LykbXFTFx0hf6x7Fk0j+RGop19laReR5U0WRNK7lK76aomxrPIgKLxs/ReS5QBNX1UUnsfw/LW0nvEq4So3eVhNePVS3RJchNjPcOLrorAvj7mW+RLURczQIJLHeR99PJVRD/tEwaaKr43aGu/RKHrmJl/3dZ1E6N2D89hZP/Mf3li0fFOSCNHS4bJ8uMAp5Z6Bs8/1QvRYCy+JVix+VxX5dNc+NS2r3D0EidHxvvsvef7PvE/s7j2Z28vdptLgSPYaOcc6klxHGJxQIxGpI42m/0kM7TzlBzkPaOM70dyt3FegYFNB0UYYVUF5UGVFHYfIOStZAnWDdf8CVwkR1z71haYAy7qAitVL3/4zJMttCm8o7nYPVGEK2T8717XAA+ghvjcPjhNMyAZF5v0bvT4OUYcQ8vNtQmZbiOK3qeB3kaCd8iU84PL8= elajoie@redhat.home.lab
 
+  #
+  # Enfo users
+  #
+  - name: mikaheim
+    first: Marko
+    last: Ikäheimo
+    password: "coolpw"
+    uid: 20101
+    gid: 20101
+    # yamllint disable-line rule:line-length
+    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDiF65drhVyDUqG378depjyNoTDn27MogcARYeCSfb/QZX3VuRu3DHaldkmF5YM+qpiN1mIGSmbeGtHQ4V6IGxNRqI3fbxCLPV874szpdAqs/V2sSrltIbYpBnJCPz2+eAyG+Fl6fXOeUZ14eKrqGtAc3KqFlQaEho72UrUSjbSOyGus4Tz21zP+bz+wj+iZBKUHW9d7rU4b5NmQhKmigFjAaW+WyESIyDLSb5AIz2j/ysfH+nA2lO0O767pG6IiVrCfvUR0d467iBehtW1pACkZhR/p34v5NKjtQ4tRW5RTzFl1mcCOWE09Y0L7jPz725rIgsL4dMdFm5bn+dSoEh1
+
 idm_admins:
   - jwesterl
   - ikke
@@ -247,3 +259,10 @@ developers:
   - teli
   - sara
   - mmurakam
+  - mikaheim
+
+enfo:
+  - mikaheim
+
+partners:
+  - mikaheim

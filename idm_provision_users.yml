@@ -72,6 +72,36 @@
         user: "{{ arrow }}"
       tags: groups
 
+    - name: ensure group enfo with gid 2110
+      freeipa.ansible_freeipa.ipagroup:
+        ipaadmin_password: "{{ ipaadmin_password }}"
+        name: enfo
+        gidnumber: 2110
+      tags: groups
+
+    - name: ensure members in group enfo
+      freeipa.ansible_freeipa.ipagroup:
+        ipaadmin_password: "{{ ipaadmin_password }}"
+        name: enfo
+        action: member
+        user: "{{ arrow }}"
+      tags: groups
+
+    - name: ensure group partners with gid 3000
+      freeipa.ansible_freeipa.ipagroup:
+        ipaadmin_password: "{{ ipaadmin_password }}"
+        name: partners
+        gidnumber: 3000
+      tags: groups
+
+    - name: ensure members in group partners
+      freeipa.ansible_freeipa.ipagroup:
+        ipaadmin_password: "{{ ipaadmin_password }}"
+        name: partners
+        action: member
+        user: "{{ arrow }}"
+      tags: groups
+
     - name: ensure group ODH admins (odh_admins) with gid 2103
       freeipa.ansible_freeipa.ipagroup:
         ipaadmin_password: "{{ ipaadmin_password }}"
