@@ -167,6 +167,16 @@ enabled_users:
     # yamllint disable-line rule:line-length
     sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDNrNa+UNpjBO0jBpt3iBz3Zfs0/g2wymqlHxRRP2//hUrN/nuivm82zMHFSufkkDj2HQgSzElmfwd+hurV9y7COkq8erFOgoYnr88113Iuav5gD/wTvqNe8YVPxvvk45heFOL78nYe6F/bLLNId2R9m5g/z7iM+LZ6lYatK0ttZ1/zhgZQV7e15T5ecdY1BJ9TQlkZnGqrc1840iJk+vmzEP990og3FoW81GxDqM3ut6t6sQ0Wp3u6mFoFZ1T7SYgJg+YHz0Ha+6qezj0QSGrVgP1VY0mIqbGcl1zVzKHGxv+E7A9FnUeEN0vHqEUKh6vbA77mH7mCvDtFDJgpr8X9 susinths@localhost.localdomain
 
+  - name: cbucur
+    first: Codrin
+    last: Bucur
+    password: "coolpw"
+    userauthtype: password
+    uid: 581200011
+    gid: 581200011
+    # yamllint disable-line rule:line-length
+    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7gkUGINLdY4QZcckWNYNGE4u9S+k/zHBz04qTl8iwM4BH643NVkKe8WJUhTuCmn62H6LcCTeEEZbhuJRY849kzUtjU5GBfwsPDlqln0j9YduwaIczDbJZdyFTY6nJ41+pSeDi+YALwHh1GuiwWbjNBHlmDxcSoHVH5lau4I7ayjwLdtgPFza1nks9TwI7KK+YwgsTu29aX+tO6FNjOt5BYcwCQRLVovCv7EXqjqkAGWe0w/gzdvO7zGFxswR7o7fPgcVzaSufyb2w0vet2eaW+hDeFWdocAl8uE5ElcdN5pQqMN7EbcqaKzKVPHoeGVe8C3CTBGE8ZOZcJVtroaRH cbucur@redhat.com
+
   #
   # Arrow users
   #
@@ -213,6 +223,7 @@ idm_admins:
   - mbengtss
   - teli
   - sunathan
+  - cbucur
 
 aap_admins:
   - jwesterl
@@ -226,6 +237,7 @@ aap_admins:
   - tsohlber
   - mbengtss
   - sunathan
+  - cbucur
 
 rh_ops:
   - ikke
@@ -240,6 +252,7 @@ rh_ops:
   - luferrar
   - rschaert
   - sunathan
+  - cbucur
 
 arrow:
   - teli
@@ -253,6 +266,7 @@ odh_admins:
   - teli
   - sara
   - mmurakam
+  - cbucur
 
 developers:
   - ikke
