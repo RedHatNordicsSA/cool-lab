@@ -213,50 +213,50 @@ enabled_users:
  #
  # Generic users for workshops
  #
- - name: eripley
-   first: Ellen
-   last: Ripley
-   password: "coolpw"
-   userauthtype: password
-   uid: 30001
-   gid: 30001
-   # yamllint disable-line rule:line-length
+  - name: eripley
+    first: Ellen
+    last: Ripley
+    password: "coolpw"
+    userauthtype: password
+    uid: 30001
+    gid: 30001
+    # yamllint disable-line rule:line-length
 
- - name: tkane
-   first: Thomas
-   last: Kane
-   password: "coolpw"
-   userauthtype: password
-   uid: 30002
-   gid: 30002
-   # yamllint disable-line rule:line-length
+  - name: tkane
+    first: Thomas
+    last: Kane
+    password: "coolpw"
+    userauthtype: password
+    uid: 30002
+    gid: 30002
+    # yamllint disable-line rule:line-length
  
- - name: adallas
-   first: Arthur
-   last: Dallas
-   password: "coolpw"
-   userauthtype: password
-   uid: 30003
-   gid: 30003 
-   # yamllint disable-line rule:line-length
+  - name: adallas
+    first: Arthur
+    last: Dallas
+    password: "coolpw"
+    userauthtype: password
+    uid: 30003
+    gid: 30003 
+    # yamllint disable-line rule:line-length
 
- - name: jlambert
-   first: Joan
-   last: Lambert
-   password: "coolpw"
-   userauthtype: password
-   uid: 30004
-   gid: 30004
-   # yamllint disable-line rule:line-length
+  - name: jlambert
+    first: Joan
+    last: Lambert
+    password: "coolpw"
+    userauthtype: password
+    uid: 30004
+    gid: 30004
+    # yamllint disable-line rule:line-length
 
- - name: dparker
-   first: Dennis 
-   last: Parker
-   password: "coolpw" 
-   userauthtype: password
-   uid: 30005
-   gid: 30005
-   # yamllint disable-line rule:line-length
+  - name: dparker
+    first: Dennis 
+    last: Parker
+    password: "coolpw" 
+    userauthtype: password
+    uid: 30005
+    gid: 30005
+    # yamllint disable-line rule:line-length
 
 
 idm_admins:
