@@ -209,54 +209,54 @@ enabled_users:
     gid: 20101
     # yamllint disable-line rule:line-length
     sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDiF65drhVyDUqG378depjyNoTDn27MogcARYeCSfb/QZX3VuRu3DHaldkmF5YM+qpiN1mIGSmbeGtHQ4V6IGxNRqI3fbxCLPV874szpdAqs/V2sSrltIbYpBnJCPz2+eAyG+Fl6fXOeUZ14eKrqGtAc3KqFlQaEho72UrUSjbSOyGus4Tz21zP+bz+wj+iZBKUHW9d7rU4b5NmQhKmigFjAaW+WyESIyDLSb5AIz2j/ysfH+nA2lO0O767pG6IiVrCfvUR0d467iBehtW1pACkZhR/p34v5NKjtQ4tRW5RTzFl1mcCOWE09Y0L7jPz725rIgsL4dMdFm5bn+dSoEh1
- 
+
  #
  # Generic users for workshops
  #
- - name: eripley
-   first: Ellen
-   last: Ripley
-   password: "coolpw"
-   userauthtype: password
-   uid: 30001
-   gid: 30001
-   # yamllint disable-line rule:line-length
+  - name: eripley
+    first: Ellen
+    last: Ripley
+    password: "coolpw"
+    userauthtype: password
+    uid: 30001
+    gid: 30001
+    # yamllint disable-line rule:line-length
 
- - name: tkane
-   first: Thomas
-   last: Kane
-   password: "coolpw"
-   userauthtype: password
-   uid: 30002
-   gid: 30002
-   # yamllint disable-line rule:line-length
- 
- - name: adallas
-   first: Arthur
-   last: Dallas
-   password: "coolpw"
-   userauthtype: password
-   uid: 30003
-   gid: 30003 
-   # yamllint disable-line rule:line-length
+  - name: tkane
+    first: Thomas
+    last: Kane
+    password: "coolpw"
+    userauthtype: password
+    uid: 30002
+    gid: 30002
+    # yamllint disable-line rule:line-length
 
- - name: jlambert
-   first: Joan
-   last: Lambert
-   password: "coolpw"
-   userauthtype: password
-   uid: 30004
-   gid: 30004
-   # yamllint disable-line rule:line-length
+  - name: adallas
+    first: Arthur
+    last: Dallas
+    password: "coolpw"
+    userauthtype: password
+    uid: 30003
+    gid: 30003
+    # yamllint disable-line rule:line-length
 
- - name: dparker
-   first: Dennis 
-   last: Parker
-   password: "coolpw" 
-   userauthtype: password
-   uid: 30005
-   gid: 30005
-   # yamllint disable-line rule:line-length
+  - name: jlambert
+    first: Joan
+    last: Lambert
+    password: "coolpw"
+    userauthtype: password
+    uid: 30004
+    gid: 30004
+    # yamllint disable-line rule:line-length
+
+  - name: dparker
+    first: Dennis
+    last: Parker
+    password: "coolpw"
+    userauthtype: password
+    uid: 30005
+    gid: 30005
+    # yamllint disable-line rule:line-length
 
 
 idm_admins:
