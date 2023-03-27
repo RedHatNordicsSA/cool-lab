@@ -9,7 +9,7 @@
       automationcontroller:
         rh-ansiblecontroller-01.cool.lab:
       #execution_nodes:
-        #rh-exnode-01.cool.la:
+        #rh-exnode-01.cool.lab:
       database:
         rh-ansibledatabase-01.cool.lab:
 

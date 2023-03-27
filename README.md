@@ -291,29 +291,65 @@ ansible-playbook -i hosts -u root  idm_ensure_host_groups.yml
 
 For future, we want this to be in add/remove host functionality
 
-## Install Ansible Automation Platform 2.1
+## Install (and update) Ansible Automation Platform 2.3+
 
-You need to have an inventory file with information on the machines you would like to run AAP on.
-You need to have:
+### Controllers, database, execution nodes
 
-[ansibleautomationplatform:children]
-automationcontroller
-database
-execution_nodes
-
-[automationcontroller]
-rh-ansiblecontroller-01.cool.lab ansible_host=10.128.1.12 short_name=rh-ansiblecontroller-01
-
-[database]
-rh-ansibledatabase-01.cool.lab ansible_host=10.128.1.13 short_name=rh-ansibledatabase-01
-
-[execution_nodes]
-rh-exnode-01.cool.lab ansible_host=10.128.1.14 short_name=rh-exnode-01
-
-and run:
+1. Make sure you have the `infra.aap_utilities` collection installed
 
 ```
-ansible-playbook -i hosts setup-ansible.yml -e @../private-lab/secrets.yml -e "rh_subs_username=$subs_username rh_subs_password=$subs_pw" -l "ansibleautomationplatform, localhost" -u root --ask-pass
+ansible-galaxy collection install -r collections/requirements.yml
+```
+
+2. Configure the variables in playbook `install-aap-controller.yml`
+
+```yaml
+---
+- name: Install Automation Controller(s)
+  hosts: bastions
+  vars:
+    aap_setup_down_version: "2.3"
+    aap_setup_down_type: "setup-bundle"
+
+    aap_setup_prep_inv_nodes:
+      automationcontroller:
+        rh-ansiblecontroller-01.cool.lab:
+      execution_nodes:
+        rh-exnode-01.cool.lab:
+      database:
+        rh-ansibledatabase-01.cool.lab:
+
+    aap_setup_prep_inv_vars:
+      all:
+        ansible_become: true
+        admin_password: "{{ aap_admin_password }}"
+
+        pg_host: "rh-ansibledatabase-01.cool.lab"
+        pg_port: "5432"
+        pg_database: "awx"
+        pg_username: "awx"
+        pg_password: "{{ aap_database_password }}"
+        pg_sslmode: "prefer"  # set to 'verify-full' for client-side enforced SSL
+
+        registry_username: "{{ vault_rh_subs_username }}"
+        registry_password: "{{ vault_rh_subs_password }}"
+
+        receptor_listener_port: 27199
+      automationcontroller:
+        peers: execution_nodes
+
+  roles:
+    - infra.aap_utilities.aap_setup_download
+    - infra.aap_utilities.aap_setup_prepare
+    - infra.aap_utilities.aap_setup_install
+```
+
+3. Run the playbook
+
+If running from bastion, use local connection.
+
+```
+ansible-playbook -i hosts -c local -e @../private-lab/secrets.yml install-aap-controller.yml
 ```
 
 ### Configuring AAP platofrm post install
@@ -350,6 +386,16 @@ podman save localhost/community -o community.img
 ```
 
 Better to upload it to some registry, now I manually loaded it into AAP.
+
+### Install (and update) Automation Hub 2.3+
+
+1. Create an offline token at https://access.redhat.com/management/api/
+
+2. Configure variables in playbook `install-aap-automationhub.yml` and run it.
+
+```
+ansible-playbook -i hosts -l rh-automation-hub-01.cool.lab -e aap_setup_down_offline_token="<token>" -e @../private-lab/secrets.yml install-aap-automationhub.yml
+```
 
 ## Install Satellite
 
