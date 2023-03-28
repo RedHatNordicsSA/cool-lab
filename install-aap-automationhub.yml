@@ -21,6 +21,20 @@
         automationhub_pg_password: "{{ aap_database_password }}"
         automationhub_pg_sslmode: "prefer"  # set to 'verify-full' for client-side enforced SSL
 
+        automationhub_authentication_backend: ldap
+        automationhub_ldap_server_uri: ldaps://rh-idm-01.cool.lab
+        automationhub_ldap_bind_dn: "uid={{ aap_ldap_username }},cn=sysaccounts,cn=etc,dc=cool,dc=lab"
+        automationhub_ldap_bind_password: "{{ aap_ldap_password }}"
+        automationhub_ldap_user_search_base_dn: "CN=users,CN=accounts,DC=cool,DC=lab"
+        automationhub_ldap_group_search_base_dn: "CN=groups,CN=accounts,DC=cool,DC=lab"
+        automationhub_ldap_group_search_filter: "(objectClass=ipausergroup)"
+
+        ldap_extra_settings:
+          AUTH_LDAP_USER_ATTR_MAP: '{"first_name": "givenName", "last_name": "sn", "email": "mail"}'
+          AUTH_LDAP_USER_FLAGS_BY_GROUP:
+            is_superuser:
+              - "CN=aap_admins,CN=groups,CN=accounts,DC=cool,DC=lab"
+
         registry_username: "{{ vault_rh_subs_username }}"
         registry_password: "{{ vault_rh_subs_password }}"
 
