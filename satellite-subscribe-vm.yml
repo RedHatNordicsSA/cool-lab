@@ -11,6 +11,12 @@
       org_id: Red_Hat_Cool_Lab
   tasks:
 
+    - name: Get the short hostname from inventory
+      # Normally there is dot in fqdn, vmware inventory has _ as separator
+      set_fact:
+        short_name: "{{ inventory_hostname | regex_search('^[^_.]*') }}"
+      when: use_inventory_for_hostname
+
     - name: clean all previous subscriptions
       include_role:
         name: myllynen.rhel_ansible_roles.system_unregister

@@ -309,6 +309,79 @@ controller_templates:
         - name: machine-creds-rhops-admin
         - name: IdM
 
+  - name: Add hosts to Satellite
+    description: >
+      Clears up any previous subscriptions and connects the host to Satellite.
+    execution_environment: Default execution environment
+    use_fact_cache: true
+    extra_vars:
+      use_inventory_for_hostname: true
+    forks: 15
+    inventory:
+      name: vmware-rh
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_slice_count: 1
+    job_type: run
+    limit: make_sure_to_name_hosts
+    ask_limit_on_launch: true
+    playbook: satellite-subscribe-vm.yml
+    project:
+      name: Cool-Lab
+      organization:
+        name: rhops
+        type: organization
+      type: project
+    related:
+      credentials:
+        - name: machine-creds-rhops-admin
+      survey_spec:
+        description: 'Select the activation key for subscribing the host'
+        name: 'activation key'
+        spec:
+          - choices: 'RHEL9
+
+              RHEL8'
+            default: RHEL9
+            new_question: true
+            question_description: Select activation key for the subscriptions
+            question_name: Activation key
+            required: true
+            type: multiplechoice
+            variable: repository_setup_rhsm_parameters.activationkey
+    survey_enabled: true
+
+  - name: Add new hosts to Satellite
+    description: >
+      This task is for the workflow of creating new hosts. It clears up any
+      previous subscriptions and connects the host to Satellite.
+    execution_environment: Default execution environment
+    use_fact_cache: true
+    extra_vars:
+      use_inventory_for_hostname: true
+    forks: 15
+    inventory:
+      name: Temporary Inventory
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    limit: new_vms
+    job_slice_count: 1
+    job_type: run
+    playbook: satellite-subscribe-vm.yml
+    project:
+      name: Cool-Lab
+      organization:
+        name: rhops
+        type: organization
+      type: project
+    related:
+      credentials:
+        - name: machine-creds-rhops-admin
+
   - name: Remove host from temp inventory
     description: Removes host from temporary inventory
     execution_environment: Default execution environment
