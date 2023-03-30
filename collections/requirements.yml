@@ -35,3 +35,5 @@ collections:
     type: git
   - name: redhat.satellite
     version: 3.7.0
+  - name: infra.aap_utilities
+    version: 2.2.4

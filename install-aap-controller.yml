@@ -1,0 +1,38 @@
+---
+- name: Install Automation Controller(s)
+  hosts: bastions
+  vars:
+    aap_setup_down_version: "2.3"
+    aap_setup_down_type: "setup-bundle"
+
+    aap_setup_prep_inv_nodes:
+      automationcontroller:
+        rh-ansiblecontroller-01.cool.lab:
+      #execution_nodes:
+        #rh-exnode-01.cool.lab:
+      database:
+        rh-ansibledatabase-01.cool.lab:
+
+    aap_setup_prep_inv_vars:
+      all:
+        ansible_become: true
+        admin_password: "{{ aap_admin_password }}"
+
+        pg_host: "rh-ansibledatabase-01.cool.lab"
+        pg_port: "5432"
+        pg_database: "awx"
+        pg_username: "awx"
+        pg_password: "{{ aap_database_password }}"
+        pg_sslmode: "prefer"  # set to 'verify-full' for client-side enforced SSL
+
+        registry_username: "{{ vault_rh_subs_username }}"
+        registry_password: "{{ vault_rh_subs_password }}"
+
+        receptor_listener_port: 27199
+      #automationcontroller:
+      #peers: execution_nodes
+
+  roles:
+    - infra.aap_utilities.aap_setup_download
+    - infra.aap_utilities.aap_setup_prepare
+    - infra.aap_utilities.aap_setup_install
