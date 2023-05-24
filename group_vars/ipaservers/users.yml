@@ -177,6 +177,16 @@ enabled_users:
     # yamllint disable-line rule:line-length
     sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7gkUGINLdY4QZcckWNYNGE4u9S+k/zHBz04qTl8iwM4BH643NVkKe8WJUhTuCmn62H6LcCTeEEZbhuJRY849kzUtjU5GBfwsPDlqln0j9YduwaIczDbJZdyFTY6nJ41+pSeDi+YALwHh1GuiwWbjNBHlmDxcSoHVH5lau4I7ayjwLdtgPFza1nks9TwI7KK+YwgsTu29aX+tO6FNjOt5BYcwCQRLVovCv7EXqjqkAGWe0w/gzdvO7zGFxswR7o7fPgcVzaSufyb2w0vet2eaW+hDeFWdocAl8uE5ElcdN5pQqMN7EbcqaKzKVPHoeGVe8C3CTBGE8ZOZcJVtroaRH cbucur@redhat.com
 
+  - name: jstrahle
+    first: Jarkko
+    last: Strahle
+    password: "coolpw"
+    userauthtype: password
+    uid: 10020
+    gid: 10020
+    # yamllint disable-line rule:line-length
+    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDgdaeZtUN0aYmgX2k9a+qH1U0cl8gE8GW/FsWoEMZskpZVffc4CVYLepv7RqjhONJPqD8uNNccEUka039dfmQkIQKkZgu9tXApazYbMzGBwb3GSrpx67VBcebiCnUmKOefnnOQz7vL5ZCFsLwylhENmUYFNZBvl/ufg2PemIbofvHUwByFcpEoJ7eMltAGyz1Yh6MVFR1/Gf4tCkqm02XeOXIq0nbqAujNh6Sk0AeHWbvu2p9UlvFBwFtJ70i9+87vadnfR+v3aLEXMqF9yslNaIZG5XiZPjbKzPd2as/DyQaLeDABjC7p29Ce+se/eHis2lvDiMo3y5BaM2XJeZk6iQqQaRYCcFDIqHDkl01wf22OPrMixPgAjO9ZDVFlW6QrFlUleitrl8Di1G9YwCo2VQiSZ6ruMxknfnOeTJg+4SQ0upSyVdmV0kZ7WgDcmEkbunbQxco72HMGGgPkjDLLSasmu/smRMRjkWaW3til1gJqGtzHuqMPNpENuGWl1IiZt9dugDLi8lcz3zcudb9R0ttAQy2q89+d5dq0+PdQ/+vXiO/CSNK+Jj1KhgD698fAEX9eVOcXQvA3O8qj/49ZQzfUrsdUY2DG6Rxxxich+zF7xlqv0GOvaMLUUVL0w/sZO69qTQgp+yeEhlmOFhy4pE5hr63rVUUo65WhIdLv0Q== jstrahle-mac
+
   #
   # Arrow users
   #
@@ -264,6 +274,7 @@ idm_admins:
   - ikke
   - mbang
   - jboivie
+  - jstrahle
   - mglantz
   - jwennerb
   - codell
@@ -279,6 +290,7 @@ aap_admins:
   - ikke
   - mbang
   - jboivie
+  - jstrahle
   - mglantz
   - jwennerb
   - codell
@@ -292,6 +304,7 @@ rh_ops:
   - ikke
   - mbang
   - jboivie
+  - jstrahle
   - tsohlber
   - earvonen
   - suvmitra
