@@ -6,7 +6,7 @@ metadata:
   namespace: ldap-sync
   labels:
     {{- include "ldap.labels" . | nindent 4 }}
-spec:                                                                                
+spec:
   schedule: "*/30 * * * *"
   concurrencyPolicy: Forbid
   jobTemplate:
@@ -16,11 +16,14 @@ spec:
         spec:
           containers:
             - name: ldap-group-sync
+              securityContext:
+                allowPrivilegeEscalation: false
+                runAsNonRoot: true
               image: "registry.redhat.io/openshift4/ose-cli:latest"
               command:
                 - "/bin/bash"
                 - "-c"
-                - "oc adm groups sync --sync-config=/etc/config/sync.yaml --confirm" 
+                - "oc adm groups sync --sync-config=/etc/config/sync.yaml --confirm"
               volumeMounts:
                 - mountPath: "/etc/config"
                   name: "ldap-sync-volume"
@@ -34,10 +37,10 @@ spec:
                 name: "ldap-group-syncer"
             - name: "ldap-bind-password"
               secret:
-                secretName: "ldap-secret"                                            
+                secretName: "ldap-secret"
             - name: "ldap-ca"
               configMap:
-                name: "ca-config-map"                                                
+                name: "ca-config-map"
           restartPolicy: "Never"
           terminationGracePeriodSeconds: 30
           activeDeadlineSeconds: 500

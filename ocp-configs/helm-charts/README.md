@@ -25,6 +25,8 @@ This chart adds LDAP authentication the cluster. Red Hat IdM iss used as the
 source.
 
 ```
+oc label oauth cluster "app.kubernetes.io/managed-by"=Helm
+oc annotate oauth cluster "meta.helm.sh/release-name"="ldap-sync" "meta.helm.sh/release-namespace"="ldap-sync"
 helm install -f helm-values-secret.yaml --namespace=ldap-sync --create-namespace \
   ldap-sync ./ldap-sync
 ```
