@@ -57,14 +57,14 @@
         user: "{{ arrow_ops }}"
       tags: groups
 
-    - name: ensure group arrow (arrow) with gid 2101
+    - name: Ensure group arrow (arrow) with gid 2101
       freeipa.ansible_freeipa.ipagroup:
         ipaadmin_password: "{{ ipaadmin_password }}"
         name: arrow
         gidnumber: 2101
       tags: groups
 
-    - name: ensure members in group arrow (arrow)
+    - name: Ensure members in group arrow (arrow)
       freeipa.ansible_freeipa.ipagroup:
         ipaadmin_password: "{{ ipaadmin_password }}"
         name: arrow
@@ -72,44 +72,59 @@
         user: "{{ arrow }}"
       tags: groups
 
-    - name: ensure group enfo with gid 2110
+    - name: Ensure group enfo with gid 2110
       freeipa.ansible_freeipa.ipagroup:
         ipaadmin_password: "{{ ipaadmin_password }}"
         name: enfo
         gidnumber: 2110
       tags: groups
 
-    - name: ensure members in group enfo
+    - name: Ensure members in group enfo
       freeipa.ansible_freeipa.ipagroup:
         ipaadmin_password: "{{ ipaadmin_password }}"
         name: enfo
         action: member
-        user: "{{ arrow }}"
+        user: "{{ enfo }}"
       tags: groups
 
-    - name: ensure group partners with gid 3000
+    - name: Ensure group devikone with gid 2210
+      freeipa.ansible_freeipa.ipagroup:
+        ipaadmin_password: "{{ ipaadmin_password }}"
+        name: devikone
+        gidnumber: 2210
+      tags: groups
+
+    - name: Ensure members in group devikone
+      freeipa.ansible_freeipa.ipagroup:
+        ipaadmin_password: "{{ ipaadmin_password }}"
+        name: devikone
+        action: member
+        user: "{{ devikone }}"
+      tags: groups
+
+    - name: Ensure group partners with gid 3000
       freeipa.ansible_freeipa.ipagroup:
         ipaadmin_password: "{{ ipaadmin_password }}"
         name: partners
         gidnumber: 3000
       tags: groups
 
-    - name: ensure members in group partners
+    - name: Ensure members in group partners
       freeipa.ansible_freeipa.ipagroup:
         ipaadmin_password: "{{ ipaadmin_password }}"
         name: partners
         action: member
-        user: "{{ arrow }}"
+        user: "{{ partners }}"
       tags: groups
 
-    - name: ensure group ODH admins (odh_admins) with gid 2103
+    - name: Ensure group ODH admins (odh_admins) with gid 2103
       freeipa.ansible_freeipa.ipagroup:
         ipaadmin_password: "{{ ipaadmin_password }}"
         name: odh-admins
         gidnumber: 2103
       tags: groups
 
-    - name: ensure members in group ODH admins (odh_admins)
+    - name: Ensure members in group ODH admins (odh_admins)
       freeipa.ansible_freeipa.ipagroup:
         ipaadmin_password: "{{ ipaadmin_password }}"
         name: odh-admins
@@ -117,14 +132,14 @@
         user: "{{ odh_admins }}"
       tags: groups
 
-    - name: ensure group developers with gid 2104
+    - name: Ensure group developers with gid 2104
       freeipa.ansible_freeipa.ipagroup:
         ipaadmin_password: "{{ ipaadmin_password }}"
         name: developers
         gidnumber: 2104
       tags: groups
 
-    - name: ensure members in group developers
+    - name: Ensure members in group developers
       freeipa.ansible_freeipa.ipagroup:
         ipaadmin_password: "{{ ipaadmin_password }}"
         name: developers
