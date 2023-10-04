@@ -31,9 +31,10 @@ rh-ansiblecontroller-01.cool.lab ansible_host=10.128.1.12 short_name=rh-ansiblec
 rh-ansibledatabase-01.cool.lab ansible_host=10.128.1.13 short_name=rh-ansibledatabase-01
 
 [execution_nodes]
-rh-exnode-01.cool.lab ansible_host=10.128.1.14 short_name=rh-exnode-01
+rh-ansibleexnode-01.cool.lab ansible_host=10.128.2.49 short_name=rh-ansibleexnode-01
 
 [automationhub]
 rh-automation-hub-01.cool.lab ansible_host=10.128.1.24 short_name=rh-automation-hub-01
 
-       
+[eda]
+rh-ansibleeda-01.cool.lab ansible_host=10.128.1.173 short_name=rh-ansibleeda-01
