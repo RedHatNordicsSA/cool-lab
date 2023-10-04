@@ -12,7 +12,7 @@ collections:
   - name: community.vmware
     version: 2.2.0
   - name: freeipa.ansible_freeipa
-    version: 1.6.2
+    version: 1.11.1
   - name: microsoft.sql
     version: 1.1.0
   - name: redhat_cop.controller_configuration
