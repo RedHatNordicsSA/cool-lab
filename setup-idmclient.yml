@@ -49,6 +49,6 @@
         state: present
         ipasssd_enable_dns_updates: true
         ipaclient_domain: "{{ ipaserver_domain }}"
-        # ipaclient_force: true
+        ipaclient_force_join: true
       include_role:
         name: freeipa.ansible_freeipa.ipaclient
