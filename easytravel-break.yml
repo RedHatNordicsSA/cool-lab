@@ -1,0 +1,21 @@
+---
+
+- name: break easytravel demo
+  hosts: localhost
+  gather_facts: false
+  connection: local
+  vars:
+    - easytravel_url: 'http://rh-dynatrace-08.cool.lab:8091'
+  tasks:
+
+    - name: call easytravel API to break purchase button
+      ansible.builtin.uri:
+        url: "{{ easytravel_url }}/services/ConfigurationService/setPluginEnabled?name=CreditCardCheckError500&enabled=true"
+        return_content: true
+        status_code: 202
+      register: url_return
+
+    - name: print result
+      debug:
+        var: url_return
+
