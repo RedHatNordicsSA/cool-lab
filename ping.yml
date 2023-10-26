@@ -2,7 +2,7 @@
 
 - name: Debug playbook to ping hosts
   hosts: all
-  gather_facts: false
+  gather_facts: true
   tasks:
     - name: ping host
       ping:
