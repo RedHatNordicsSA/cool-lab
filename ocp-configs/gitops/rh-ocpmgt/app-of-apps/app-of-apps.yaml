@@ -1,0 +1,18 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rh-ocpmgt-setup
+  namespace: openshift-gitops
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/RedHatNordicsSA/cool-lab.git
+    targetRevision: HEAD
+    path: ocp-configs/gitops/rh-ocpmgt/argocd-applications
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: openshift-gitops
+  syncPolicy:
+    automated:
+      allowEmpty: true
