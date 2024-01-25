@@ -1,0 +1,17 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: group-sync-operator
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/RedHatNordicsSA/cool-lab.git
+    targetRevision: HEAD
+    path: ocp-configs/gitops/rh-ocpmgt/group-sync-operator/overlays/alpha
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      allowEmpty: true
