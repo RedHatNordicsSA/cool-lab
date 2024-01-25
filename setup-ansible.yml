@@ -5,13 +5,14 @@
 
   vars:
     rh_aap_controller: rh-ansiblecontroller-01.cool.lab
+    rh_aap_edanode: rh-edanode-01.cool.lab
     rh_aap_exnode: rh-exnode-01.cool.lab
     rh_aap_database: rh-ansibledatabase-01.cool.lab
 
   roles:
     - role: vm-machine-coollab
       # The ansible-controller-01
-      memory_mb: 16384 
+      memory_mb: 16384
       num_cpus: 2
       vm_state: poweredon
       net_name: RH-seg-2991
@@ -50,13 +51,32 @@
         - ansibleautomationplatform
       # net_name: vlan1010  
 
+    - role: vm-machine-coollab
+      # The edanode-01
+      memory_mb: 16384
+      num_cpus: 2
+      vm_state: poweredon
+      net_name: RH-seg-2991
+      net_type: static
+      ip: "{{ hostvars[ rh_aap_edanode ].ansible_host }}"
+      netmask: 255.255.255.0
+      gateway: "{{ ipaserver_gw }}"
+      vm_name: rh-ansibleeda-01
+      domain: "{{ ipaserver_domain }}"
+      dns_servers:
+        - "{{ dns_forwarder1_ip }}"
+        - "{{ dns_forwarder2_ip }}"
+      update_inventory: false
+      inventory_groups:
+        - aapnodes
+        - ansibleautomationplatform
 
     - role: vm-machine-coollab
       # The exnode-01
       memory_mb: 16384
       num_cpus: 2
       vm_state: poweredon
-      net_name: RH-seg-2991
+      net_name: RH-seg-2992
       net_type: static
       ip: "{{ hostvars[ rh_aap_exnode ].ansible_host }}"
       netmask: 255.255.255.0
@@ -70,8 +90,6 @@
       inventory_groups:
         - aapnodes
         - ansibleautomationplatform
-      # net_name: vlan1010  
-
 
 # - import_playbook: ensure-vm-state.yml
 #   vars:
@@ -157,7 +175,7 @@
 - name: create a temporary private key file from vault
   hosts:
     automationcontroller
-    
+
   tasks:
   - name: delete temporary private key
     ansible.builtin.file:
