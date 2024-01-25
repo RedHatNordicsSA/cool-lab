@@ -1,7 +1,7 @@
 - op: add
   path: /spec/identityProviders/-
   value:
-    name: ldap
+    name: Red Hat IdM
     mappingMethod: claim
     type: LDAP
     ldap:
@@ -14,10 +14,10 @@
           - cn
         preferredUsername:
           - uid
-      bindDN: ""
+      bindDN: "uid=aap_ldap,cn=sysaccounts,cn=etc,dc=cool,dc=lab"
       bindPassword:
         name: ldap-secret
       ca:
         name: ca-config-map
       insecure: false
-      url: "ldap://ldap.example.com/ou=users,dc=acme,dc=com?uid"
+      url: "ldaps://rh-idm-01.cool.lab/cn=users,cn=accounts,dc=cool,dc=lab?uid"
