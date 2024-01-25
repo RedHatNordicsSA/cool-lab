@@ -19,7 +19,7 @@
 
         packer_builder: vmware
         # packer_target: rhel_8_7
-        packer_target: rhel_9_1
+        packer_target: rhel_9_2
         packer_binary: packer
         vcenter_insecure_connection: true
         boot_password: "{{ cloud_user_password }}"
@@ -50,7 +50,7 @@
         root_permit_local: true
 
         # security_profile: cis_server_l1
-        image_name: rhel_9_1_image
+        image_name: rhel_9_2_image
         # image_name: rhel_8_7_image
         root_ssh_key: >
           ssh-ed25519
@@ -58,11 +58,11 @@
           admin@coollab
         # disk_size: 4096
         iso:
-          rhel_9_1:
+          rhel_9_2:
             # yamllint disable-line rule:line-length
-            url: "file:///home/itengval/VirtualMachines/rhel-baseos-9.1-x86_64-dvd.iso"
+            url: "file:///home/itengval/VirtualMachines/rhel-9.2-x86_64-dvd.iso"
             # yamllint disable-line rule:line-length
-            checksum: sha256:d9dcae2b6e760d0f9dcf4a517bddc227d5fa3f213a8323592f4a07a05aa542a2
+            checksum: sha256:a18bf014e2cb5b6b9cee3ea09ccfd7bc2a84e68e09487bb119a98aa0e3563ac2
           rhel_8_7:
             # yamllint disable-line rule:line-length
             url: "file:///home/itengval/VirtualMachines/rhel-8.7-x86_64-dvd.iso"
