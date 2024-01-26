@@ -10,6 +10,12 @@ patches:
       - op: replace
         path: /spec/channel
         value: 'alpha'
+      - op: add
+        path: /spec/config
+        value:
+          env:
+            - name: WATCH_NAMESPACE
+              value: openshift-config,group-sync-operator
     target:
       kind: Subscription
       name: group-sync-operator

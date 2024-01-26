@@ -1,0 +1,35 @@
+- op: add
+  path: /spec/providers
+  value:
+    - ldap:
+        credentialsSecret:
+          name: ldap-secret
+          namespace: openshift-config
+        caSecret:
+          name: ca-config-map
+          namespace: openshift-config
+          kind: ConfigMap
+          key: ca.crt
+        insecure: false
+        rfc2307:
+          groupMembershipAttributes:
+            - member
+          groupNameAttributes:
+            - cn
+          groupUIDAttribute: dn
+          groupsQuery:
+            baseDN: 'cn=groups,cn=accounts,dc=cool,dc=lab'
+            derefAliases: never
+            filter: (objectClass=ipausergroup)
+            scope: sub
+          tolerateMemberNotFoundErrors: true
+          tolerateMemberOutOfScopeErrors: true
+          userUIDAttribute: dn
+          userNameAttributes:
+            - uid
+          usersQuery:
+            baseDN: 'cn=users,cn=accounts,dc=cool,dc=lab'
+            derefAliases: never
+            scope: sub
+        url: ldaps://rh-idm-01.cool.lab
+      name: ldap
