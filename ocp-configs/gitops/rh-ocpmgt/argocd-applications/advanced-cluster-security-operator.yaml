@@ -1,0 +1,17 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: advanced-cluster-security-operator
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/RedHatNordicsSA/cool-lab.git
+    targetRevision: HEAD
+    path: ocp-configs/gitops/rh-ocpmgt/advanced-cluster-security-operator/operator/overlays/latest
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: rhacs-operator
+  syncPolicy:
+    automated:
+      allowEmpty: true
