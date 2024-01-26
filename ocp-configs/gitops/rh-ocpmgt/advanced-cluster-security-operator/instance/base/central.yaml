@@ -6,6 +6,10 @@ metadata:
     argocd.argoproj.io/sync-wave: "1"
   name: central
 spec:
+  tolerations:
+    - key: "node-role.kubernetes.io/infra"
+      operator: "Exists"
+      effect: "NoSchedule"
   central:
     exposure:
       loadBalancer:
