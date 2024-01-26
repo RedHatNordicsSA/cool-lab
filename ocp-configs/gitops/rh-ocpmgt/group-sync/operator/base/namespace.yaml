@@ -7,3 +7,4 @@ metadata:
     openshift.io/description: "Operator that synchronizes groups from external providers"
   labels:
     openshift.io/cluster-monitoring: 'true'
+    argocd.argoproj.io/managed-by: openshift-gitops
