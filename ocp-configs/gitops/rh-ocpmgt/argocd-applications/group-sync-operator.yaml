@@ -8,10 +8,10 @@ spec:
   source:
     repoURL: https://github.com/RedHatNordicsSA/cool-lab.git
     targetRevision: HEAD
-    path: ocp-configs/gitops/rh-ocpmgt/group-sync-operator/overlays/alpha
+    path: ocp-configs/gitops/rh-ocpmgt/group-sync/operator/overlays/alpha
   destination:
     server: https://kubernetes.default.svc
-    namespace: default
+    namespace: group-sync-operator
   syncPolicy:
     automated:
       allowEmpty: true
