@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/RedHatNordicsSA/cool-lab.git
     targetRevision: HEAD
-    path: ocp-configs/gitops/rh-ocpmgt/advanced-cluster-security-operator/operator/overlays/latest
+    path: ocp-configs/gitops/rh-ocpmgt/advanced-cluster-security-operator/operator/overlays/stable
   destination:
     server: https://kubernetes.default.svc
     namespace: rhacs-operator
