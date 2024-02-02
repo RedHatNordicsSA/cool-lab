@@ -27,10 +27,6 @@ spec:
     persistence:
       persistentVolumeClaim:
         claimName: stackrox-db
-    tolerations:
-      - key: "node-role.kubernetes.io/infra"
-        operator: "Exists"
-        effect: "NoSchedule"
   egress:
     connectivityPolicy: Online
   scanner:
