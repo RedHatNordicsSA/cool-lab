@@ -3,4 +3,4 @@ kind: Namespace
 metadata:
   name: openshift-nmstate
   labels:
-    argocd.argoproj.io/managed-by: openshift-gitop
+    argocd.argoproj.io/managed-by: openshift-gitops
