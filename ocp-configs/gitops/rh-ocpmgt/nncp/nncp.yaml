@@ -1,0 +1,440 @@
+apiVersion: nmstate.io/v1
+kind: NodeNetworkConfigurationPolicy
+metadata:
+  name: rh-ocpmgt-hw5kr-worker-0-gwfnz-iscsi-int
+spec:
+  nodeSelector:
+    kubernetes.io/hostname: rh-ocpmgt-hw5kr-worker-0-gwfnz
+  desiredState:
+    interfaces:
+      - name: ens224
+        type: ethernet
+        mtu: 9000
+        ipv4:
+          dhcp: false
+        ipv6:
+          enabled: false
+      - name: ens224.1000
+        description: VLAN 1000 ens224
+        type: vlan
+        state: up
+        mtu: 9000
+        vlan:
+          base-iface: ens224
+          id: 1000
+        ipv4:
+          dhcp: false
+          address:
+            - ip: 10.0.100.90
+              prefix-length: 25
+          enabled: true
+        ipv6:
+          enabled: false
+      - name: ens224.1040
+        description: VLAN 1040 ens224
+        type: vlan
+        state: up
+        mtu: 9000
+        vlan:
+          base-iface: ens224
+          id: 1040
+        ipv4:
+          dhcp: false
+          address:
+            - ip: 10.0.100.190
+              prefix-length: 25
+          enabled: true
+        ipv6:
+          enabled: false
+---
+apiVersion: nmstate.io/v1
+kind: NodeNetworkConfigurationPolicy
+metadata:
+  name: rh-ocpmgt-hw5kr-worker-0-hsxrw-iscsi-int
+spec:
+  nodeSelector:
+    kubernetes.io/hostname: rh-ocpmgt-hw5kr-worker-0-hsxrw
+  desiredState:
+    interfaces:
+      - name: ens224
+        type: ethernet
+        mtu: 9000
+        ipv4:
+          dhcp: false
+        ipv6:
+          enabled: false
+      - name: ens224.1000
+        description: VLAN 1000 ens224
+        type: vlan
+        state: up
+        mtu: 9000
+        vlan:
+          base-iface: ens224
+          id: 1000
+        ipv4:
+          dhcp: false
+          address:
+            - ip: 10.0.100.91
+              prefix-length: 25
+          enabled: true
+        ipv6:
+          enabled: false
+      - name: ens224.1040
+        description: VLAN 1040 ens224
+        type: vlan
+        state: up
+        mtu: 9000
+        vlan:
+          base-iface: ens224
+          id: 1040
+        ipv4:
+          dhcp: false
+          address:
+            - ip: 10.0.100.191
+              prefix-length: 25
+          enabled: true
+        ipv6:
+          enabled: false
+---
+apiVersion: nmstate.io/v1
+kind: NodeNetworkConfigurationPolicy
+metadata:
+  name: rh-ocpmgt-hw5kr-worker-0-jdrcf-iscsi-int
+spec:
+  nodeSelector:
+    kubernetes.io/hostname: rh-ocpmgt-hw5kr-worker-0-jdrcf
+  desiredState:
+    interfaces:
+      - name: ens224
+        type: ethernet
+        mtu: 9000
+        ipv4:
+          dhcp: false
+        ipv6:
+          enabled: false
+      - name: ens224.1000
+        description: VLAN 1000 ens224
+        type: vlan
+        state: up
+        mtu: 9000
+        vlan:
+          base-iface: ens224
+          id: 1000
+        ipv4:
+          dhcp: false
+          address:
+            - ip: 10.0.100.92
+              prefix-length: 25
+          enabled: true
+        ipv6:
+          enabled: false
+      - name: ens224.1040
+        description: VLAN 1040 ens224
+        type: vlan
+        state: up
+        mtu: 9000
+        vlan:
+          base-iface: ens224
+          id: 1040
+        ipv4:
+          dhcp: false
+          address:
+            - ip: 10.0.100.192
+              prefix-length: 25
+          enabled: true
+        ipv6:
+          enabled: false
+---
+apiVersion: nmstate.io/v1
+kind: NodeNetworkConfigurationPolicy
+metadata:
+  name: rh-ocpmgt-hw5kr-worker-0-kzhfp-iscsi-int
+spec:
+  nodeSelector:
+    kubernetes.io/hostname: rh-ocpmgt-hw5kr-worker-0-kzhfp
+  desiredState:
+    interfaces:
+      - name: ens224
+        type: ethernet
+        mtu: 9000
+        ipv4:
+          dhcp: false
+        ipv6:
+          enabled: false
+      - name: ens224.1000
+        description: VLAN 1000 ens224
+        type: vlan
+        state: up
+        mtu: 9000
+        vlan:
+          base-iface: ens224
+          id: 1000
+        ipv4:
+          dhcp: false
+          address:
+            - ip: 10.0.100.93
+              prefix-length: 25
+          enabled: true
+        ipv6:
+          enabled: false
+      - name: ens224.1040
+        description: VLAN 1040 ens224
+        type: vlan
+        state: up
+        mtu: 9000
+        vlan:
+          base-iface: ens224
+          id: 1040
+        ipv4:
+          dhcp: false
+          address:
+            - ip: 10.0.100.193
+              prefix-length: 25
+          enabled: true
+        ipv6:
+          enabled: false
+---
+apiVersion: nmstate.io/v1
+kind: NodeNetworkConfigurationPolicy
+metadata:
+  name: rh-ocpmgt-hw5kr-worker-0-mbp5n-iscsi-int
+spec:
+  nodeSelector:
+    kubernetes.io/hostname: rh-ocpmgt-hw5kr-worker-0-mbp5n
+  desiredState:
+    interfaces:
+      - name: ens224
+        type: ethernet
+        mtu: 9000
+        ipv4:
+          dhcp: false
+        ipv6:
+          enabled: false
+      - name: ens224.1000
+        description: VLAN 1000 ens224
+        type: vlan
+        state: up
+        mtu: 9000
+        vlan:
+          base-iface: ens224
+          id: 1000
+        ipv4:
+          dhcp: false
+          address:
+            - ip: 10.0.100.94
+              prefix-length: 25
+          enabled: true
+        ipv6:
+          enabled: false
+      - name: ens224.1040
+        description: VLAN 1040 ens224
+        type: vlan
+        state: up
+        mtu: 9000
+        vlan:
+          base-iface: ens224
+          id: 1040
+        ipv4:
+          dhcp: false
+          address:
+            - ip: 10.0.100.194
+              prefix-length: 25
+          enabled: true
+        ipv6:
+          enabled: false
+---
+apiVersion: nmstate.io/v1
+kind: NodeNetworkConfigurationPolicy
+metadata:
+  name: rh-ocpmgt-hw5kr-worker-0-mmp8v-iscsi-int
+spec:
+  nodeSelector:
+    kubernetes.io/hostname: rh-ocpmgt-hw5kr-worker-0-mmp8v
+  desiredState:
+    interfaces:
+      - name: ens224
+        type: ethernet
+        mtu: 9000
+        ipv4:
+          dhcp: false
+        ipv6:
+          enabled: false
+      - name: ens224.1000
+        description: VLAN 1000 ens224
+        type: vlan
+        state: up
+        mtu: 9000
+        vlan:
+          base-iface: ens224
+          id: 1000
+        ipv4:
+          dhcp: false
+          address:
+            - ip: 10.0.100.95
+              prefix-length: 25
+          enabled: true
+        ipv6:
+          enabled: false
+      - name: ens224.1040
+        description: VLAN 1040 ens224
+        type: vlan
+        state: up
+        mtu: 9000
+        vlan:
+          base-iface: ens224
+          id: 1040
+        ipv4:
+          dhcp: false
+          address:
+            - ip: 10.0.100.195
+              prefix-length: 25
+          enabled: true
+        ipv6:
+          enabled: false
+---
+apiVersion: nmstate.io/v1
+kind: NodeNetworkConfigurationPolicy
+metadata:
+  name: rh-ocpmgt-hw5kr-infra-55msq-iscsi-int
+spec:
+  nodeSelector:
+    kubernetes.io/hostname: rh-ocpmgt-hw5kr-infra-55msq
+  desiredState:
+    interfaces:
+      - name: ens224
+        type: ethernet
+        mtu: 9000
+        ipv4:
+          dhcp: false
+        ipv6:
+          enabled: false
+      - name: ens224.1000
+        description: VLAN 1000 ens224
+        type: vlan
+        state: up
+        mtu: 9000
+        vlan:
+          base-iface: ens224
+          id: 1000
+        ipv4:
+          dhcp: false
+          address:
+            - ip: 10.0.100.96
+              prefix-length: 25
+          enabled: true
+        ipv6:
+          enabled: false
+      - name: ens224.1040
+        description: VLAN 1040 ens224
+        type: vlan
+        state: up
+        mtu: 9000
+        vlan:
+          base-iface: ens224
+          id: 1040
+        ipv4:
+          dhcp: false
+          address:
+            - ip: 10.0.100.196
+              prefix-length: 25
+          enabled: true
+        ipv6:
+          enabled: false
+---
+apiVersion: nmstate.io/v1
+kind: NodeNetworkConfigurationPolicy
+metadata:
+  name: rh-ocpmgt-hw5kr-infra-ggk2w-iscsi-int
+spec:
+  nodeSelector:
+    kubernetes.io/hostname: rh-ocpmgt-hw5kr-infra-ggk2w
+  desiredState:
+    interfaces:
+      - name: ens224
+        type: ethernet
+        mtu: 9000
+        ipv4:
+          dhcp: false
+        ipv6:
+          enabled: false
+      - name: ens224.1000
+        description: VLAN 1000 ens224
+        type: vlan
+        state: up
+        mtu: 9000
+        vlan:
+          base-iface: ens224
+          id: 1000
+        ipv4:
+          dhcp: false
+          address:
+            - ip: 10.0.100.97
+              prefix-length: 25
+          enabled: true
+        ipv6:
+          enabled: false
+      - name: ens224.1040
+        description: VLAN 1040 ens224
+        type: vlan
+        state: up
+        mtu: 9000
+        vlan:
+          base-iface: ens224
+          id: 1040
+        ipv4:
+          dhcp: false
+          address:
+            - ip: 10.0.100.197
+              prefix-length: 25
+          enabled: true
+        ipv6:
+          enabled: false
+---
+apiVersion: nmstate.io/v1
+kind: NodeNetworkConfigurationPolicy
+metadata:
+  name: rh-ocpmgt-hw5kr-infra-p8bs4-iscsi-int
+spec:
+  nodeSelector:
+    kubernetes.io/hostname: rh-ocpmgt-hw5kr-infra-p8bs4
+  desiredState:
+    interfaces:
+      - name: ens224
+        type: ethernet
+        mtu: 9000
+        ipv4:
+          dhcp: false
+        ipv6:
+          enabled: false
+      - name: ens224.1000
+        description: VLAN 1000 ens224
+        type: vlan
+        state: up
+        mtu: 9000
+        vlan:
+          base-iface: ens224
+          id: 1000
+        ipv4:
+          dhcp: false
+          address:
+            - ip: 10.0.100.98
+              prefix-length: 25
+          enabled: true
+        ipv6:
+          enabled: false
+      - name: ens224.1040
+        description: VLAN 1040 ens224
+        type: vlan
+        state: up
+        mtu: 9000
+        vlan:
+          base-iface: ens224
+          id: 1040
+        ipv4:
+          dhcp: false
+          address:
+            - ip: 10.0.100.198
+              prefix-length: 25
+          enabled: true
+        ipv6:
+          enabled: false
