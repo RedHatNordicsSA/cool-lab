@@ -1,0 +1,136 @@
+---
+# yamllint disable rule:line-length
+#
+# This playbook connects to given cluster and installs some prerequisites
+# for gitops to work. We set secrets from here as we don't use secrets
+# handlers at this point yet.
+#
+# After prerequisites are in place, OpenShift GitOps is setup and initiated.
+#
+# I run this on my f39 laptop like this:
+# sudo dnf install python3-kubernetes
+# ansible-galaxy collection install  kubernetes.core
+# ansible-playbook -i localhost, \
+#   -e ansible_python_interpreter=/usr/bin/python3 \
+#   -e @../private-lab/secrets.yml \
+#   ocp-configs/gitops/rh-ocpmgt/1-setup-nodes.yaml
+#
+- name: prep ocp for ibm storage
+  connection: local
+  hosts: all
+  vars:
+    host: api.rh-ocpmgt.cool.lab:6443
+  tasks:
+
+    - name: Create ibm storage namespace
+      kubernetes.core.k8s:
+        name: ibm-storage
+        api_version: v1
+        kind: Namespace
+        state: present
+
+    - name: Put ibm-storage secret in place
+      kubernetes.core.k8s:
+        definition:
+          kind: Secret
+          apiVersion: v1
+          metadata:
+            name: ibm-csi
+            namespace: ibm-storage
+          data:
+            management_address: "{{ vault_fs5200_address | b64encode }}"
+            password: "{{ vault_fs5200_ocp_passwd | b64encode }}"
+            username: "{{ vault_fs5200_ocp_user | b64encode }}"
+          type: Opaque
+
+    - name: Put ibm-storage in place
+      kubernetes.core.k8s:
+        definition:
+          apiVersion: machineconfiguration.openshift.io/v1
+          kind: MachineConfig
+          metadata:
+            labels:
+              machineconfiguration.openshift.io/role: worker
+            name: 99-ibm-attach
+          spec:
+            config:
+              ignition:
+                version: 2.2.0
+              storage:
+                files:
+                  - path: /etc/multipath.conf
+                    mode: 384
+                    filesystem: root
+                    contents:
+                      source: data:,defaults%20%7B%0A%20%20%20%20path_checker%20tur%0A%20%20%20%20path_selector%20%22round-robin%200%22%0A%20%20%20%20rr_weight%20uniform%0A%20%20%20%20prio%20const%0A%20%20%20%20rr_min_io_rq%201%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20polling_interval%2030%0A%20%20%20%20path_grouping_policy%20multibus%0A%20%20%20%20find_multipaths%20yes%0A%20%20%20%20no_path_retry%20fail%0A%20%20%20%20user_friendly_names%20yes%0A%20%20%20%20failback%20immediate%0A%20%20%20%20checker_timeout%2010%0A%20%20%20%20fast_io_fail_tmo%20off%0A%7D%0A%0Adevices%20%7B%0A%20%20%20%20device%20%7B%0A%20%20%20%20%20%20%20%20path_checker%20tur%0A%20%20%20%20%20%20%20%20product%20%22FlashSystem%22%0A%20%20%20%20%20%20%20%20vendor%20%22IBM%22%0A%20%20%20%20%20%20%20%20rr_weight%20uniform%0A%20%20%20%20%20%20%20%20rr_min_io_rq%204%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20path_grouping_policy%20multibus%0A%20%20%20%20%20%20%20%20path_selector%20%22round-robin%200%22%0A%20%20%20%20%20%20%20%20no_path_retry%20fail%0A%20%20%20%20%20%20%20%20failback%20immediate%0A%20%20%20%20%7D%0A%20%20%20%20device%20%7B%0A%20%20%20%20%20%20%20%20path_checker%20tur%0A%20%20%20%20%20%20%20%20product%20%22FlashSystem-9840%22%0A%20%20%20%20%20%20%20%20vendor%20%22IBM%22%0A%20%20%20%20%20%20%20%20fast_io_fail_tmo%20off%0A%20%20%20%20%20%20%20%20rr_weight%20uniform%0A%20%20%20%20%20%20%20%20rr_min_io_rq%201000%20%20%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20path_grouping_policy%20multibus%0A%20%20%20%20%20%20%20%20path_selector%20%22round-robin%200%22%0A%20%20%20%20%20%20%20%20no_path_retry%20fail%0A%20%20%20%20%20%20%20%20failback%20immediate%0A%20%20%20%20%7D%0A%20%20%20%20device%20%7B%0A%20%20%20%20%20%20%20%20vendor%20%22IBM%22%0A%20%20%20%20%20%20%20%20product%20%222145%22%0A%20%20%20%20%20%20%20%20path_checker%20tur%0A%20%20%20%20%20%20%20%20path_grouping_policy%20group_by_prio%0A%20%20%20%20%20%20%20%20path_selector%20%22service-time%200%22%20%23%20Used%20by%20Red%20Hat%207.x%0A%20%20%20%20%20%20%20%20prio%20alua%0A%20%20%20%20%20%20%20%20rr_min_io_rq%201%0A%20%20%20%20%20%20%20%20rr_weight%20uniform%20%0A%20%20%20%20%20%20%20%20no_path_retry%20%225%22%0A%20%20%20%20%20%20%20%20dev_loss_tmo%20120%0A%20%20%20%20%20%20%20%20failback%20immediate%0A%20%20%20%7D%0A%7D%0A
+                      verification: {}
+                  - path: /etc/udev/rules.d/99-ibm-2145.rules
+                    mode: 420
+                    filesystem: root
+                    contents:
+                      source: data:,%23%20Set%20SCSI%20command%20timeout%20to%20120s%20%28default%20%3D%3D%2030%20or%2060%29%20for%20IBM%202145%20devices%0ASUBSYSTEM%3D%3D%22block%22%2C%20ACTION%3D%3D%22add%22%2C%20ENV%7BID_VENDOR%7D%3D%3D%22IBM%22%2CENV%7BID_MODEL%7D%3D%3D%222145%22%2C%20RUN%2B%3D%22/bin/sh%20-c%20%27echo%20120%20%3E/sys/block/%25k/device/timeout%27%22%0A
+                      verification: {}
+              systemd:
+                units:
+                  - name: multipathd.service
+                    enabled: true
+                  - name: iscsid.service
+                    enabled: true
+
+
+    - name: Add infra nodes
+      kubernetes.core.k8s:
+        definition:
+          apiVersion: machine.openshift.io/v1beta1
+          kind: MachineSet
+          metadata:
+            annotations:
+              machine.openshift.io/memoryMb: "32768"
+              machine.openshift.io/vCPU: "16"
+            labels:
+              machine.openshift.io/cluster-api-cluster: rh-ocpmgt-hw5kr
+            name: rh-ocpmgt-hw5kr-infra
+            namespace: openshift-machine-api
+          spec:
+            replicas: 3
+            selector:
+              matchLabels:
+                machine.openshift.io/cluster-api-cluster: rh-ocpmgt-hw5kr
+                machine.openshift.io/cluster-api-machineset: rh-ocpmgt-hw5kr-infra
+            template:
+              metadata:
+                labels:
+                  machine.openshift.io/cluster-api-cluster: rh-ocpmgt-hw5kr
+                  machine.openshift.io/cluster-api-machine-role: infra
+                  machine.openshift.io/cluster-api-machine-type: infra
+                  machine.openshift.io/cluster-api-machineset: rh-ocpmgt-hw5kr-infra
+              spec:
+                metadata:
+                  labels:
+                    node-role.kubernetes.io: infra
+                    node-role.kubernetes.io/infra: ""
+                providerSpec:
+                  value:
+                    apiVersion: vsphereprovider.openshift.io/v1beta1
+                    credentialsSecret:
+                      name: vsphere-cloud-credentials
+                    diskGiB: 120
+                    kind: VSphereMachineProviderSpec
+                    memoryMiB: 32768
+                    metadata:
+                      creationTimestamp: null
+                    network:
+                      devices:
+                        - networkName: RH-seg-2991
+                    numCPUs: 16
+                    numCoresPerSocket: 4
+                    snapshot: ""
+                    template: rh-ocpmgt-hw5kr-rhcos-kista-dc-dc-2
+                    userDataSecret:
+                      name: worker-user-data
+                    workspace:
+                      datacenter: KISTA-DC
+                      datastore: /KISTA-DC/datastore/SVC-LUN-2
+                      folder: /KISTA-DC/vm/rh-ocpmgt-hw5kr
+                      resourcePool: /KISTA-DC/host/ARROWLAB/Resources
+                      server: arw-vcenter-21.arrowdemo.se
