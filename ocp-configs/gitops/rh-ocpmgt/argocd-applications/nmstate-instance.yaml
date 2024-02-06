@@ -1,0 +1,17 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nmstate-instance
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/RedHatNordicsSA/cool-lab.git
+    targetRevision: HEAD
+    path: ocp-configs/gitops/rh-ocpmgt/nmstate/instance/overlays/stable
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: openshift-nmstate
+  syncPolicy:
+    automated:
+      allowEmpty: true
