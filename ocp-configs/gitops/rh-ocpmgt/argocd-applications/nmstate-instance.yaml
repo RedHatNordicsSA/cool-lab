@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/RedHatNordicsSA/cool-lab.git
     targetRevision: HEAD
-    path: ocp-configs/gitops/rh-ocpmgt/nmstate/instance/overlays/stable
+    path: ocp-configs/gitops/rh-ocpmgt/nmstate/instance/overlays/default
   destination:
     server: https://kubernetes.default.svc
     namespace: openshift-nmstate
