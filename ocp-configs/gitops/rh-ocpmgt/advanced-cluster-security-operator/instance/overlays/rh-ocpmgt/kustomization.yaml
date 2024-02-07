@@ -12,3 +12,6 @@ patches:
       - op: replace
         path: /spec/perNode/collector/collection
         value: 'NoCollection'
+    target:
+      kind: SecuredCluster
+      name: local-cluster
