@@ -5,7 +5,7 @@ metadata:
   name: nmstate-clusterrole
 rules:
 - apiGroups: ["nmstate.io"]
-  resources: ["nmstates, nodenetworkconfigurationpolicies"]
+  resources: ["nmstates", "nodenetworkconfigurationpolicies"]
   verbs: ["get", "watch", "list", "patch"]
 
 ---
