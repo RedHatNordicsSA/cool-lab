@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/RedHatNordicsSA/cool-lab.git
     targetRevision: HEAD
-    path: ocp-configs/gitops/rh-ocpmgt/advanced-cluster-security-operator/instance/overlays/default
+    path: ocp-configs/gitops/rh-ocpmgt/advanced-cluster-security-operator/instance/overlays/rh-ocpmgt
   destination:
     server: https://kubernetes.default.svc
     namespace: stackrox
