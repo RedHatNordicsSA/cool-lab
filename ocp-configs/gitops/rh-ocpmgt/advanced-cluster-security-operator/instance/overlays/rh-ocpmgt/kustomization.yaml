@@ -11,4 +11,4 @@ patches:
   - patch: |-
       - op: replace
         path: /spec/perNode/collector/collection
-        value: 'CORE_BPF'
+        value: 'NoCollection'
