@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/RedHatNordicsSA/cool-lab.git
     targetRevision: HEAD
-    path: ocp-configs/gitops/rh-ocpmgt/openshift-data-foundation-operator/operator/overlays/stable-4.14
+    path: ocp-configs/gitops/rh-ocpmgt/openshift-data-foundation-operator/operator/overlays/stable-4.13
   destination:
     server: https://kubernetes.default.svc
     namespace: openshift-storage
