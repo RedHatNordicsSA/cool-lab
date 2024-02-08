@@ -15,7 +15,7 @@ patches:
         value:
           env:
             - name: WATCH_NAMESPACE
-              value: openshift-config,group-sync-operator
+              value: ''
     target:
       kind: Subscription
       name: group-sync-operator
