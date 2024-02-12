@@ -3,8 +3,8 @@
   value:
     - ldap:
         credentialsSecret:
-          name: ldap-secret
-          namespace: openshift-config
+          name: ldap-group-sync
+          namespace: group-sync-operator
         caSecret:
           name: ca-config-map
           namespace: openshift-config
