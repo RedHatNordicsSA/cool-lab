@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/RedHatNordicsSA/cool-lab.git
     targetRevision: HEAD
-    path: ocp-configs/gitops/rh-ocpmgt/openshift-cert-manager-operator/operator/overlays/stable-v1.14
+    path: ocp-configs/gitops/rh-ocpmgt/openshift-cert-manager-operator/operator/overlays/stable-v1.13
   destination:
     server: https://kubernetes.default.svc
     namespace: cert-manager-operator
