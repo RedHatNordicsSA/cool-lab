@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/RedHatNordicsSA/cool-lab.git
     targetRevision: HEAD
-    path: ocp-configs/gitops/rh-ocpmgt/quay-operator/operator/overlays/stable-3.8
+    path: ocp-configs/gitops/rh-ocpmgt/quay-operator/operator/overlays/stable-3.10
   destination:
     server: https://kubernetes.default.svc
     namespace: quay-operator
