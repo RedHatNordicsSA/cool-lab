@@ -92,7 +92,7 @@
             name: rh-ocpmgt-hw5kr-infra
             namespace: openshift-machine-api
           spec:
-            replicas: 3
+            replicas: 4
             selector:
               matchLabels:
                 machine.openshift.io/cluster-api-cluster: rh-ocpmgt-hw5kr
