@@ -3,30 +3,33 @@
 collections:
   - name: amazon.aws
   - name: ansible.eda
-    version: 1.3.8
+    version: 1.4.5
   - name: ansible.posix
-    version: 1.4.0
+    version: 1.5.4
   - name: awx.awx
-    version: 21.4.0
+    version: 23.8.0
   - name: community.crypto
+    version: 2.17.1
   - name: community.general
-    version: 7.4.0
+    version: 8.3.0
   - name: community.vmware
-    version: 3.9.0
+    version: 4.1.0
   - name: containers.podman
+    version: 1.12.0
   - name: freeipa.ansible_freeipa
-    version: 1.11.1
+    version: 1.12.1
   - name: kubernetes.core
+    version: 3.0.0
   - name: microsoft.sql
-    version: 1.1.0
+    version: 2.2.2
   - name: redhat_cop.controller_configuration
-    version: 2.1.3
-  - name: redhat.rhel_system_roles
-    version: 1.19.3
-  - name: redhat.rhel_idm
-    version: 1.8.4
-  - name: vmware.vmware_rest
     version: 2.3.1
+  - name: redhat.rhel_system_roles
+    version: 1.22.0
+  - name: redhat.rhel_idm
+    version: 1.12.1
+  - name: vmware.vmware_rest
+    version: 3.0.0
   - name: myllynen.ansible_packer
     source: https://github.com/myllynen/ansible-packer
     # version: master
@@ -40,7 +43,8 @@ collections:
     # version: master
     type: git
   - name: redhat.satellite
-    version: 3.7.0
-  - name: sabre1041.eda
+    version: 4.0.0
+  - name: redhat.satellite_operations
+    version: 2.1.0
   - name: infra.aap_utilities
-    version: 2.2.4
+    version: 2.3.0
