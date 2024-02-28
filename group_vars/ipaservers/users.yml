@@ -247,6 +247,18 @@ enabled_users:
     gid: 20203
     # yamllint disable-line rule:line-length
 
+  #
+  # HiQ users
+  #
+  - name: jhaaja
+    first: Jussi
+    last: Haaja
+    password: "coolpw"
+    uid: 20301
+    gid: 20301
+    # yamllint disable-line rule:line-length
+    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAtYbqSGpUDAXKU0bgrSzUl5b8eHHHpGhy/wCVrXVh6PPmRAXmvSVVxCupTwmDPinlA9RNoS0a4VaWYAY466JWkvO3d3ofD/tDbg38c0m5zJxC2mDvLi1j1JI0Ql9BfBkZNe3pKyrSNNz2UuiT1u2UN4eqS9msxThAuWVjifpmwsyHTgOOydCnl+EKj1NM7hLjkxdSSRmG5EUWO9U0dZsW7tCLL2SM77Zn5L3UNkD/do+g5oDqVYGa9GF707QRbW4uHsoDpBh4vgaYTSdUUuBwf4TBqqBxjXZ4viP5qT2eA0zj6rhp54NbYGwUxljZ6rIq/PP2WJmwRKYTycrv0MJHYQ== jussi.haaja@ambientia.fi
+
  #
  # Generic users for workshops
  #
@@ -329,6 +341,7 @@ aap_admins:
   - cbucur
   - sara
   - rschaert
+  - jhaaja
 
 rh_ops:
   - ikke
@@ -382,6 +395,9 @@ developers:
 
 enfo:
   - mikaheim
+
+hiq:
+  - jhaaja
 
 partners:
   - mikaheim

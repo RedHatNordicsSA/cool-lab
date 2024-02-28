@@ -102,6 +102,20 @@
         user: "{{ devikone }}"
       tags: groups
 
+    - name: Ensure group hiq with gid 2120
+      freeipa.ansible_freeipa.ipagroup:
+        ipaadmin_password: "{{ ipaadmin_password }}"
+        name: hiq
+        gidnumber: 2120
+
+    - name: Ensure members in group hiq
+      freeipa.ansible_freeipa.ipagroup:
+        ipaadmin_password: "{{ ipaadmin_password }}"
+        name: hiq
+        action: member
+        user: "{{ hiq }}"
+      tags: groups
+
     - name: Ensure group partners with gid 3000
       freeipa.ansible_freeipa.ipagroup:
         ipaadmin_password: "{{ ipaadmin_password }}"
