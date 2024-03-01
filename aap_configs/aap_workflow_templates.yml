@@ -38,10 +38,10 @@ controller_workflows:
             required: true
             type: text
             variable: short_name
-          - choices: 'rhel_9_1_image
+          - choices: 'rhel_9_3_image
 
             rhel_8_7_image'
-            default: rhel_9_1_image
+            default: rhel_9_3_image
             new_question: true
             question_description: Select the RHEL version template
             question_name: RHEL template
