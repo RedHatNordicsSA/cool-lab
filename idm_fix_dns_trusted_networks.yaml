@@ -1,0 +1,43 @@
+---
+
+- name: Allow IDM DNS trust all lab networks
+  hosts:
+    - ipaservers
+    - ipareplicas
+  # serial so that replication will keep one working all times.
+  serial: 1
+  tasks:
+    - name: Make sure the allowed additional networks are in trusted list
+      ansible.builtin.copy:
+        dest: /etc/named/ipa-ext.conf
+        owner: root
+        group: named
+        mode: '0640'
+        content: |
+          acl "trusted_network" {
+            localnets;
+            localhost;
+            10.128.2.0/24;
+            10.128.3.0/24;
+            10.128.4.0/24;
+            192.168.1.0/24;
+            10.1.102.0/24;
+            10.254.251.0/24;
+          };
+      register: nets
+
+    - name: Make sure the allowed networks are in read by options
+      ansible.builtin.lineinfile:
+        path: /etc/named/ipa-options-ext.conf
+        line: "{{ item }}"
+      with_items:
+        - allow-recursion { trusted_network; };
+        - allow-query-cache { trusted_network; };
+      register: options
+
+    - name: Restart service ipa
+      ansible.builtin.systemd_service:
+        name: ipa
+        state: restarted
+      when:
+        - nets.changed or options.changed
