@@ -259,54 +259,6 @@ enabled_users:
     # yamllint disable-line rule:line-length
     sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAtYbqSGpUDAXKU0bgrSzUl5b8eHHHpGhy/wCVrXVh6PPmRAXmvSVVxCupTwmDPinlA9RNoS0a4VaWYAY466JWkvO3d3ofD/tDbg38c0m5zJxC2mDvLi1j1JI0Ql9BfBkZNe3pKyrSNNz2UuiT1u2UN4eqS9msxThAuWVjifpmwsyHTgOOydCnl+EKj1NM7hLjkxdSSRmG5EUWO9U0dZsW7tCLL2SM77Zn5L3UNkD/do+g5oDqVYGa9GF707QRbW4uHsoDpBh4vgaYTSdUUuBwf4TBqqBxjXZ4viP5qT2eA0zj6rhp54NbYGwUxljZ6rIq/PP2WJmwRKYTycrv0MJHYQ== jussi.haaja@ambientia.fi
 
- #
- # Generic users for workshops
- #
-  - name: eripley
-    first: Ellen
-    last: Ripley
-    password: "coolpw"
-    userauthtype: password
-    uid: 30001
-    gid: 30001
-    # yamllint disable-line rule:line-length
-
-  - name: tkane
-    first: Thomas
-    last: Kane
-    password: "coolpw"
-    userauthtype: password
-    uid: 30002
-    gid: 30002
-    # yamllint disable-line rule:line-length
-
-  - name: adallas
-    first: Arthur
-    last: Dallas
-    password: "coolpw"
-    userauthtype: password
-    uid: 30003
-    gid: 30003
-    # yamllint disable-line rule:line-length
-
-  - name: jlambert
-    first: Joan
-    last: Lambert
-    password: "coolpw"
-    userauthtype: password
-    uid: 30004
-    gid: 30004
-    # yamllint disable-line rule:line-length
-
-  - name: dparker
-    first: Dennis
-    last: Parker
-    password: "coolpw"
-    userauthtype: password
-    uid: 30005
-    gid: 30005
-    # yamllint disable-line rule:line-length
-
 
 idm_admins:
   - jwesterl
@@ -362,11 +314,6 @@ rh_ops:
 
 arrow:
   - teli
-  - eripley
-  - tkane
-  - adallas
-  - jlambert
-  - dparker
 
 arrow_ops:
   - teli
@@ -384,11 +331,6 @@ developers:
   - sara
   - mmurakam
   - mikaheim
-  - eripley
-  - tkane
-  - adallas
-  - jlambert
-  - dparker
   - asalonen
   - tpalenius
   - jalare
