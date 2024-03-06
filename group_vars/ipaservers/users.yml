@@ -196,6 +196,16 @@ enabled_users:
     # yamllint disable-line rule:line-length
     sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDgdaeZtUN0aYmgX2k9a+qH1U0cl8gE8GW/FsWoEMZskpZVffc4CVYLepv7RqjhONJPqD8uNNccEUka039dfmQkIQKkZgu9tXApazYbMzGBwb3GSrpx67VBcebiCnUmKOefnnOQz7vL5ZCFsLwylhENmUYFNZBvl/ufg2PemIbofvHUwByFcpEoJ7eMltAGyz1Yh6MVFR1/Gf4tCkqm02XeOXIq0nbqAujNh6Sk0AeHWbvu2p9UlvFBwFtJ70i9+87vadnfR+v3aLEXMqF9yslNaIZG5XiZPjbKzPd2as/DyQaLeDABjC7p29Ce+se/eHis2lvDiMo3y5BaM2XJeZk6iQqQaRYCcFDIqHDkl01wf22OPrMixPgAjO9ZDVFlW6QrFlUleitrl8Di1G9YwCo2VQiSZ6ruMxknfnOeTJg+4SQ0upSyVdmV0kZ7WgDcmEkbunbQxco72HMGGgPkjDLLSasmu/smRMRjkWaW3til1gJqGtzHuqMPNpENuGWl1IiZt9dugDLi8lcz3zcudb9R0ttAQy2q89+d5dq0+PdQ/+vXiO/CSNK+Jj1KhgD698fAEX9eVOcXQvA3O8qj/49ZQzfUrsdUY2DG6Rxxxich+zF7xlqv0GOvaMLUUVL0w/sZO69qTQgp+yeEhlmOFhy4pE5hr63rVUUo65WhIdLv0Q== jstrahle-mac
 
+  - name: mmyllyne
+    first: Marko
+    last: Myllynen
+    password: "coolpw"
+    userauthtype: password
+    uid: 10021
+    gid: 10021
+    # yamllint disable-line rule:line-length
+    sshpubkey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDnS0Gyx8gdnWW6JuG027CA5akTww959vE50ITMuu/Se
+
   #
   # Arrow users
   #
@@ -276,6 +286,7 @@ idm_admins:
   - sunathan
   - cbucur
   - sara
+  - mmyllyne
 
 aap_admins:
   - jwesterl
@@ -294,6 +305,7 @@ aap_admins:
   - sara
   - rschaert
   - jhaaja
+  - mmyllyne
 
 rh_ops:
   - ikke
@@ -311,6 +323,7 @@ rh_ops:
   - sunathan
   - cbucur
   - sara
+  - mmyllyne
 
 arrow:
   - teli
