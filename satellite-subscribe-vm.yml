@@ -5,7 +5,7 @@
     repository_setup_install_katello_rpm: true
     repository_setup_rhsm_subscribe: true
     repository_setup_rhsm_parameters:
-      activationkey: RHEL9
+      activationkey: "{{ activation_key | default('RHEL9') }}"
       server_insecure: true
       rhsm_baseurl: https://rh-satellite-01.cool.lab
       org_id: Red_Hat_Cool_Lab

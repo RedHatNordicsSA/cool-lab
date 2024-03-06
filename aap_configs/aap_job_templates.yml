@@ -350,7 +350,7 @@ controller_templates:
             question_name: Activation key
             required: true
             type: multiplechoice
-            variable: repository_setup_rhsm_parameters.activationkey
+            variable: activation_key
     survey_enabled: true
 
   - name: Add new hosts to Satellite
