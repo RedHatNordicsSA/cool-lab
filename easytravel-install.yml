@@ -1,0 +1,98 @@
+---
+#
+# This playbook sets up dynatrace demo on RHEL8 or RHEL9.
+# After you run this, browse to the control page at http://<hostname>:8094
+# and start given scenario.
+#
+# The customer fronteds are e.g. http://<hostname>:9080
+# depending on scenario. Could be also ports 8079,8080,9080
+#
+# Setup requires host is subscribed to Red Hat. If you run CentOS stream
+# or deriatives, it is not needed.
+#
+# I wrote this for Red Hat Summit labs 2024
+# Ilkka Tengvall <itengval@redhat.com>
+#
+# See guide at: https://community.dynatrace.com/t5/Start-with-Dynatrace/easyTravel-Documentation-and-Download/m-p/181271
+#
+
+- name: Install easytravel demo webshop
+  hosts: all
+  vars:
+    install_jar_name: dynatrace-easytravel-linux-x86_64.jar
+    install_jar_url: "https://etinstallers.demoability.dynatracelabs.com/latest/{{ install_jar_name }}"
+  tasks:
+
+    - name: Add the user 'dt'
+      ansible.builtin.user:
+        name: dt
+        comment: dynatrace web app
+
+    - name: Check if installer exists already
+      ansible.builtin.stat:
+        path: "/home/dt/{{ install_jar_name }}"
+      register: installer
+
+    - name: Download the install package
+      ansible.builtin.get_url:
+        url: "{{ install_jar_url }}"
+        dest: "/home/dt/{{ install_jar_name }}"
+        mode: '0644'
+      when:
+        not installer.stat.exists
+
+    - name: Ensure utils are installed on host
+      vars:
+        pkgs:
+          - firewalld
+          - java-11-openjdk-headless.x86_64
+          - python3-psutil
+
+      ansible.builtin.package:
+        name: "{{ pkgs }}"
+        state: present
+      loop:
+
+    - name: Ensure open firewall for ports
+      ansible.posix.firewalld:
+        port: "{{ item }}"
+        permanent: true
+        immediate: true
+        state: enabled
+      with_items:
+        - 8021/tcp
+        - 8079/tcp
+        - 8080/tcp
+        - 8091/tcp
+        - 8094/tcp
+        - 8095/tcp
+        - 9079/tcp
+        - 9080/tcp
+
+    - name: Run the java installer
+      ansible.builtin.command: "java -jar {{ install_jar_name }} -y"
+      become: true
+      become_user: dt
+      args:
+        chdir: /home/dt/
+        creates: easytravel-2.0.0-x64
+
+    - name: Check if weblauncher is already running
+      community.general.pids:
+        pattern: java.*easytravel
+      register: pids_of_easytravel
+
+    - name: List of found webshow pids
+      ansible.builtin.debug:
+        msg: "Found PIDs: {{ pids_of_easytravel.pids | join(',') }}"
+
+    - name: Run the weblauncher
+      become: true
+      become_user: dt
+      ansible.builtin.shell: |
+        nohup weblauncher/weblauncher.sh </dev/null >/dev/null 2>&1 &
+      args:
+        chdir: /home/dt/easytravel-2.0.0-x64
+      when:
+        - pids_of_easytravel is defined
+        - pids_of_easytravel.pids | length == 0
