@@ -1,0 +1,31 @@
+version: 3
+# This Event Driven Ansible decision environment is for connecting to
+# dynatrce instance. This grabs the given version of dynatrace collection
+# if you feel official lags behind. If you just want the latest, change
+# version -tag to 'main'.
+#
+# There is image built from this at https://quay.io/repository/ikke/de-dynatrace
+#
+
+images:
+  base_image:
+    name: 'registry.redhat.io/ansible-automation-platform-24/de-minimal-rhel8:latest'
+
+dependencies:
+  galaxy:
+    collections:
+      - ansible.eda
+      - name: https://github.com/Dynatrace/Dynatrace-EventDrivenAnsible.git
+        type: git
+        version: '4620c3f'
+        # version: main
+  python_interpreter:
+    package_system: "python39"
+  system:
+    - pkgconf-pkg-config [platform:rpm]
+    - systemd-devel [platform:rpm]
+    - gcc [platform:rpm]
+    - python39-devel [platform:rpm]
+
+options:
+  package_manager_path: /usr/bin/microdnf
