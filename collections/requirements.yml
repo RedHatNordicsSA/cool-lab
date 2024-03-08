@@ -16,6 +16,8 @@ collections:
     version: 4.1.0
   - name: containers.podman
     version: 1.12.0
+  - name: dynatrace.oneagent
+    version: 1.0.3
   - name: freeipa.ansible_freeipa
     version: 1.12.1
   - name: kubernetes.core
