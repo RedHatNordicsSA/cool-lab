@@ -206,6 +206,16 @@ enabled_users:
     # yamllint disable-line rule:line-length
     sshpubkey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDnS0Gyx8gdnWW6JuG027CA5akTww959vE50ITMuu/Se
 
+  - name: hlovborg
+    first: Henrik
+    last: Løvborg
+    password: coolpw
+    userauthtype: password
+    uid: 10022
+    gid: 10022
+    # yamllint disable-line rule:line-length
+    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCkwoXnPKH7buqksyXK2BcCHPxBysktw8okL96Jrc4ZdtB5hnWjpb5QZTgtALDfpwDTv9ut5vNBy/EzQ3a8SBI0WasA4DApV9nMGCIJwMSUEcgKeeuhdpWkmN5Qe+9VrT/WOGfx85rHopI2scMvIiCNhB5xdZQtBLLwIk+SODIS2HKEoHnkFM6vm7R0z1E2wo1O01Y4qu5cO0dHKf9B5XgbUxYvF6yvqpMAgYaIWy44UZ/M/9fO3MPQ1MaQgU02aZJbATQHj8UJ8pAQusdduK73/va/UPfGZfk/KsMOxWM6NfPIprL9dXQR3Ckow2MDSn/3+WVamLFNRUKHb82GbLWiY0Q0J5+lxXLObVWNIM5gBTPZTxYscHwBipbz8/S9hskWfYlRLv1KYmYxhTlF7JVRmvkKw4GFs8VsZLkbmNFhDVDWxM7z9qERUT4w6iUseht7zF+a47UGRpER
+
   #
   # Arrow users
   #
@@ -287,6 +297,7 @@ idm_admins:
   - cbucur
   - sara
   - mmyllyne
+  - hlovborg
 
 aap_admins:
   - jwesterl
@@ -306,6 +317,7 @@ aap_admins:
   - rschaert
   - jhaaja
   - mmyllyne
+  - hlovborg
 
 rh_ops:
   - ikke
@@ -324,6 +336,7 @@ rh_ops:
   - cbucur
   - sara
   - mmyllyne
+  - hlovborg
 
 arrow:
   - teli
