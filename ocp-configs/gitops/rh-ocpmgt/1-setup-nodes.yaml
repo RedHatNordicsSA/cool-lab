@@ -88,22 +88,22 @@
               machine.openshift.io/memoryMb: "32768"
               machine.openshift.io/vCPU: "16"
             labels:
-              machine.openshift.io/cluster-api-cluster: rh-ocpmgt-hw5kr
-            name: rh-ocpmgt-hw5kr-infra
+              machine.openshift.io/cluster-api-cluster: rh-ocpmgt-jgqv2
+            name: rh-ocpmgt-jgqv2-infra
             namespace: openshift-machine-api
           spec:
             replicas: 4
             selector:
               matchLabels:
-                machine.openshift.io/cluster-api-cluster: rh-ocpmgt-hw5kr
-                machine.openshift.io/cluster-api-machineset: rh-ocpmgt-hw5kr-infra
+                machine.openshift.io/cluster-api-cluster: rh-ocpmgt-jgqv2
+                machine.openshift.io/cluster-api-machineset: rh-ocpmgt-jgqv2-infra
             template:
               metadata:
                 labels:
-                  machine.openshift.io/cluster-api-cluster: rh-ocpmgt-hw5kr
+                  machine.openshift.io/cluster-api-cluster: rh-ocpmgt-jgqv2
                   machine.openshift.io/cluster-api-machine-role: infra
                   machine.openshift.io/cluster-api-machine-type: infra
-                  machine.openshift.io/cluster-api-machineset: rh-ocpmgt-hw5kr-infra
+                  machine.openshift.io/cluster-api-machineset: rh-ocpmgt-jgqv2-infra
               spec:
                 metadata:
                   labels:
@@ -125,12 +125,12 @@
                     numCPUs: 16
                     numCoresPerSocket: 4
                     snapshot: ""
-                    template: rh-ocpmgt-hw5kr-rhcos-kista-dc-dc-2
+                    template: rh-ocpmgt-jgqv2-rhcos-kista-dc-dc-2
                     userDataSecret:
                       name: worker-user-data
                     workspace:
                       datacenter: KISTA-DC
                       datastore: /KISTA-DC/datastore/SVC-LUN-2
-                      folder: /KISTA-DC/vm/rh-ocpmgt-hw5kr
+                      folder: /KISTA-DC/vm/rh-ocpmgt-jgqv2
                       resourcePool: /KISTA-DC/host/ARROWLAB/Resources
                       server: arw-vcenter-21.arrowdemo.se
