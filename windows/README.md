@@ -34,8 +34,8 @@ qemu-img create -f qcow2 ~/VirtualMachines/win2k22-test.qcow2 80G
 
 # TODO
 
-~~1. Fix install on OCP
+1. Fix install on OCP
 Check why the windows installer complains for disk setup on OCP. You find the
 autounattended.xml content from ConfigMap in the same project, with a name
-like: sysprep-win2k22-exuberant-gerbil-1kshj9.~~ 
+like: sysprep-win2k22-exuberant-gerbil-1kshj9. <-- DONE
 2. Create example playbook for Ansible
