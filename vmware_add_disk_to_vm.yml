@@ -27,7 +27,7 @@
         - vcenter_credentials.vcenter_password is undefined
     - name: debug vcenter
       debug:
-        var: vcenter_credentials
+        var: vcenter_credentials.vcenter_server
     - name: >
         Use vmware credentials from vault if set there, and not set in params
       set_fact:
