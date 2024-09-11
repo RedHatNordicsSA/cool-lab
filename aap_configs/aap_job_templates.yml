@@ -518,10 +518,10 @@ controller_templates:
         name: ''
         spec:
           - question_name: LV size
-            variable: lv_size
-            default: +100%FREE
+            variable: vm_disksize
+            default: 100%
             new_question: true
-            question_description: Disk size, e.g. 20GB or +100%FREE
+            question_description: Disk size, e.g. 20GB or 100%
             required: true
             type: text
           - question_name: Volume group name to which disk is added
