@@ -1,8 +1,7 @@
 ---
-
 controller_templates:
   - name: Ensure VM State
-    description: 'Creates of deletes a VM, or sets power state'
+    description: Creates of deletes a VM, or sets power state
     execution_environment: Default execution environment
     ask_variables_on_launch: true
     use_fact_cache: true
@@ -37,19 +36,13 @@ controller_templates:
             max: 1024
             min: 1
             new_question: true
-            question_description: Short name for the hostname. Use format
-              rh-<whatever>-<number>, e.g. rh-ikketest-10. No domain part.
+            question_description: Short name for the hostname. Use format rh-<whatever>-<number>,
+              e.g. rh-ikketest-10. No domain part.
             question_name: Host Name
             required: true
             type: text
             variable: short_name
-          - choices: 'RH-seg-2990
-
-              RH-seg-2991
-
-              RH-seg-2992
-
-              RH-seg-2993'
+          - choices: "RH-seg-2990\nRH-seg-2991\nRH-seg-2992\nRH-seg-2993"
             default: RH-seg-2991
             max: 1024
             min: 0
@@ -59,21 +52,7 @@ controller_templates:
             required: true
             type: multiplechoice
             variable: net_name
-          - choices: '512
-
-              1024
-
-              2048
-
-              4096
-
-              8192
-
-              16384
-
-              32768
-
-              65536'
+          - choices: "512\n1024\n2048\n4096\n8192\n16384\n32768\n65536"
             default: '4096'
             max: 65536
             min: 512
@@ -83,15 +62,7 @@ controller_templates:
             required: true
             type: multiplechoice
             variable: memory_mb
-          - choices: '1
-
-              2
-
-              4
-
-              8
-
-              16'
+          - choices: "1\n2\n4\n8\n16"
             default: '2'
             max: 1024
             min: 0
@@ -101,11 +72,7 @@ controller_templates:
             required: true
             type: multiplechoice
             variable: num_cpu
-          - choices: 'poweredon
-
-              poweredoff
-
-              absent'
+          - choices: "poweredon\npoweredoff\nabsent"
             default: poweredon
             max: 1024
             min: 0
@@ -116,7 +83,6 @@ controller_templates:
             type: multiplechoice
             variable: vm_state
     survey_enabled: true
-
   - name: Prepare RHEL host
     description: >
       Subscribes a RHEL to Red Hat subscription management and
@@ -171,7 +137,6 @@ controller_templates:
             name: rhops
             type: organization
           type: credential
-
   - name: Prepare new RHEL hosts
     description: >
       Subscribes RHEL to Red Hat subscription management and
@@ -225,7 +190,6 @@ controller_templates:
             name: rhops
             type: organization
           type: credential
-
   - name: Add host to IdM
     description: >
       Adds hosts to IdM control including things like DNS name and user
@@ -278,7 +242,6 @@ controller_templates:
             type: text
             variable: short_name
     survey_enabled: true
-
   - name: Add new hosts to IdM
     description: >
       Adds hosts in new_vms group to IdM control including things like DNS
@@ -308,7 +271,6 @@ controller_templates:
       credentials:
         - name: machine-creds-rhops-admin
         - name: IdM
-
   - name: Add hosts to Satellite
     description: >
       Clears up any previous subscriptions and connects the host to Satellite.
@@ -338,12 +300,10 @@ controller_templates:
       credentials:
         - name: machine-creds-rhops-admin
       survey_spec:
-        description: 'Select the activation key for subscribing the host'
-        name: 'activation key'
+        description: Select the activation key for subscribing the host
+        name: activation key
         spec:
-          - choices: 'RHEL9
-
-              RHEL8'
+          - choices: "RHEL9\nRHEL8"
             default: RHEL9
             new_question: true
             question_description: Select activation key for the subscriptions
@@ -352,7 +312,6 @@ controller_templates:
             type: multiplechoice
             variable: activation_key
     survey_enabled: true
-
   - name: Add new hosts to Satellite
     description: >
       This task is for the workflow of creating new hosts. It clears up any
@@ -381,7 +340,6 @@ controller_templates:
     related:
       credentials:
         - name: machine-creds-rhops-admin
-
   - name: Remove host from temp inventory
     description: Removes host from temporary inventory
     execution_environment: Default execution environment
@@ -413,7 +371,7 @@ controller_templates:
           type: credential
       survey_spec:
         description: Host to be removed from inventory
-        name: 'Removed host'
+        name: Removed host
         spec:
           - question_name: Host name
             default: i forgot to fill hostname
@@ -426,7 +384,6 @@ controller_templates:
             type: text
             variable: short_name
     survey_enabled: true
-
   - name: Delete VM from VMware
     description: Deletes the host from VMware
     limit: localhost
@@ -447,7 +404,7 @@ controller_templates:
         name: ''
         spec:
           - choices: ''
-            default: 'I forgot to set hostname in nuke vm'
+            default: I forgot to set hostname in nuke vm
             new_question: true
             question_description: First part of hostname
             question_name: Short hostname
@@ -455,7 +412,6 @@ controller_templates:
             type: text
             variable: short_name
     survey_enabled: true
-
   - name: Unsubscribe host
     description: Unsubscribes IdM, subs and insights
     ask_limit_on_launch: true
@@ -478,7 +434,7 @@ controller_templates:
         name: ''
         spec:
           - choices: ''
-            default: 'I forgot to set hostname in nuke vm'
+            default: I forgot to set hostname in nuke vm
             new_question: true
             question_description: First part of hostname
             question_name: Short hostname
@@ -486,9 +442,8 @@ controller_templates:
             type: text
             variable: short_name
     survey_enabled: true
-
   - name: Add disk to VM
-    description: 'Adds new disk to virtual machine.'
+    description: Adds new disk to virtual machine.
     execution_environment: Default execution environment
     use_fact_cache: true
     ask_variables_on_launch: true
@@ -518,13 +473,13 @@ controller_templates:
         spec:
           - question_name: Disk size
             variable: vm_disksize
-            default: '20GB'
+            default: 20GB
             new_question: true
             question_description: Disk size, e.g. 20GB
             required: true
             type: text
           - question_name: Host name to which disk is added
-            default: 'my-vm'
+            default: my-vm
             new_question: true
             question_description: >
               To which host do you want to attach the disk to? In vmware
@@ -533,9 +488,8 @@ controller_templates:
             type: text
             variable: short_name
     survey_enabled: true
-
   - name: Create LV to empty disk on VM
-    description: 'Creates logical volume from extra disk in VM.'
+    description: Creates logical volume from extra disk in VM.
     execution_environment: Default execution environment
     use_fact_cache: true
     ask_variables_on_launch: true
@@ -565,13 +519,13 @@ controller_templates:
         spec:
           - question_name: LV size
             variable: vm_disksize
-            default: '100%FREE'
+            default: +100%FREE
             new_question: true
-            question_description: Disk size, e.g. 20GB or 100%FREE
+            question_description: Disk size, e.g. 20GB or +100%FREE
             required: true
             type: text
           - question_name: Volume group name to which disk is added
-            default: 'my-vg'
+            default: my-vg
             new_question: true
             question_description: >
               To which volume group do you want to attach the disk to?
@@ -580,7 +534,7 @@ controller_templates:
             type: text
             variable: vm_new_vg
           - question_name: Logical volume to which disk is added
-            default: 'my-lv'
+            default: my-lv
             new_question: true
             question_description: >
               To which logical volume do you want to use the disk for?
@@ -588,7 +542,7 @@ controller_templates:
             type: text
             variable: vm_new_lv
           - question_name: Mount point for the volume
-            default: '/my-volume'
+            default: /my-volume
             new_question: true
             question_description: >
               What is the mount point for the volume? E.g. /database
@@ -596,7 +550,6 @@ controller_templates:
             type: text
             variable: vm_new_mount_point
     survey_enabled: true
-
   - name: Extend LV in VM by extra disk
     description: >
       Uses and extra disk to extend an existing logical volume in VM.
@@ -629,14 +582,14 @@ controller_templates:
         spec:
           - question_name: Volume Group name
             variable: vm_vg_name
-            default: 'my-vg'
+            default: my-vg
             new_question: true
             question_description: >
               Which volume group holds the logical volume to be extended?
             required: true
             type: text
           - question_name: Logical Volume to extend
-            default: 'my-lv'
+            default: my-lv
             new_question: true
             question_description: >
               To which logical volume do you want to attach the disk to?
@@ -644,7 +597,6 @@ controller_templates:
             type: text
             variable: vm_lv_name
     survey_enabled: true
-
   - name: Remove host from IdM
     description: >
       Removes host details from IdM config
@@ -675,7 +627,7 @@ controller_templates:
         name: ''
         spec:
           - question_name: Host name to remove
-            default: 'my-vm'
+            default: my-vm
             new_question: true
             question_description: >
               Which host do you want remove from IdM?
@@ -683,7 +635,6 @@ controller_templates:
             type: text
             variable: short_name
     survey_enabled: true
-
   - name: Update IdM users
     description: >
       Run this to verify IdM users match to what is in git.
