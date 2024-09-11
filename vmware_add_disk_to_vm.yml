@@ -26,7 +26,7 @@
         - vcenter_credentials.vcenter_username is undefined
         - vcenter_credentials.vcenter_password is undefined
     - name: debug vcenter
-      debub:
+      debug:
         var: vcenter_credentials
     - name: >
         Use vmware credentials from vault if set there, and not set in params
@@ -43,7 +43,7 @@
         - vcenter_username is undefined
         - vcenter_password is undefined
     - name: debug vcenter
-      debub:
+      debug:
         var: vcenter_hostname
     - name: Look up the VM called {{ short_name }} in the inventory
       register: search_result
