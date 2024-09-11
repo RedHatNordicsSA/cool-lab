@@ -6,6 +6,7 @@
   vars:
     - vm_lv_name: "home"
     - vm_vg_name: "rvg"
+    - lv_size: '+100%FREE'
 
   collections:
     - redhat.rhel_system_roles
@@ -45,5 +46,5 @@
       lvol:
         vg: "{{ vm_vg_name }}"
         lv: "{{ vm_lv_name }}"
-        size: +100%FREE
+        size: "{{ lv_size }}"
         resizefs: true
