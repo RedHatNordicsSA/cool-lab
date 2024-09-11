@@ -17,7 +17,7 @@
         from AAP credentials
       set_fact:
         vcenter_credentials:
-          vcenter_hostname: '{{ lookup("env", "VMWARE_HOST") }}'
+          vcenter_server: '{{ lookup("env", "VMWARE_HOST") }}'
           vcenter_username: '{{ lookup("env", "VMWARE_USER") }}'
           vcenter_password: '{{ lookup("env", "VMWARE_PASSWORD") }}'
       when:
@@ -42,7 +42,7 @@
         - vcenter_hostname is undefined
         - vcenter_username is undefined
         - vcenter_password is undefined
-    - name: debug vcenter
+    - name: debug vcenter hostname
       debug:
         var: vcenter_hostname
     - name: Look up the VM called {{ short_name }} in the inventory
