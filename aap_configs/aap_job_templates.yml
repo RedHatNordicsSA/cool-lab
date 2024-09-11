@@ -518,7 +518,7 @@ controller_templates:
         name: ''
         spec:
           - question_name: LV size
-            variable: vm_disksize
+            variable: lv_size
             default: +100%FREE
             new_question: true
             question_description: Disk size, e.g. 20GB or +100%FREE
