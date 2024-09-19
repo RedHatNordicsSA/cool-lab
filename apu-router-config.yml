@@ -1,0 +1,110 @@
+---
+- name: Fix APU gateway box networking at edge lab
+  hosts: apu.cool.lab
+  gather_facts: false
+  vars:
+    cool_lab_ntp_server: 10.0.102.6
+    cool_lab_idm_1: 10.128.1.10
+    cool_lab_idm_2: 10.128.1.11
+    ocp_mirror_host: 10.128.1.193
+  tasks:
+    - name: Setup the firewall
+      include_role:
+        name: redhat.rhel_system_roles.firewall
+      vars:
+        firewall:
+          - previous: replaced
+
+          - ipset: rh-ocpag-01-hosts
+            ipset_type: hash:ip
+            short: OCP hosts
+            description: set of ip addresses for airgapped ocp
+            ipset_entries: [172.21.1.10, 172.21.1.12, 172.21.1.13]
+            state: present
+            permanent: true
+
+          - service: cool-lab-ntp
+            description: Cool-lab NTP service
+            port: 123/udp
+            destination: '{{ cool_lab_ntp_server }}'
+            state: present
+            permanent: true
+          - service: cool-lab-dns1
+            description: Cool-lab DNS1 service
+            port: 53/udp
+            destination: '{{ cool_lab_idm_1 }}'
+            state: present
+            permanent: true
+          - service: cool-lab-dns2
+            description: Cool-lab DNS2 service
+            port: 53/udp
+            destination: '{{ cool_lab_idm_2 }}'
+            state: present
+            permanent: true
+          - service: cool-lab-ocpmirror
+            description: Cool-lab OCP mirror
+            port: 8443/tcp
+            destination: '{{ ocp_mirror_host }}'
+            state: present
+            permanent: true
+
+          - zone: airgapped
+            permanent: true
+            state: present
+          - zone: airgapped
+            forward: true
+            service:
+              - cool-lab-ntp
+              - cool-lab-dns1
+              - cool-lab-dns2
+              - cool-lab-ocpmirror
+            target: DROP
+            permanent: true
+            state: enabled
+
+    - name: setup airgapped interface
+      include_role:
+        name: redhat.rhel_system_roles.network
+      vars:
+        network_provider: nm
+        persistent_state: present
+        network_connections:
+          - name: enp2s0
+            # airgapped
+            type: ethernet
+            state: up
+            zone: airgapped
+            autoconnect: true
+            ip:
+              dhcp4: false
+              auto6: false
+              address: [10.192.100.1/24]
+
+          - name: enp1s0
+            # edge-lab
+            type: ethernet
+            state: up
+            zone: internal
+            autoconnect: true
+            ip:
+              dhcp4: false
+              auto6: false
+              address: [192.168.1.1/24]
+
+          - name: enp3s0
+            # WAN
+            type: ethernet
+            state: up
+            zone: public
+            autoconnect: true
+            ip:
+              dhcp4: true
+              auto6: true
+              # address: [192.168.2.1/24]
+
+          # - name: cool-lab
+          #  # WIREGUARD (do not enable, breaks stuff)
+          #   type: vpn
+          #   state: up
+          #   zone: internal
+          #   autoconnect: true
