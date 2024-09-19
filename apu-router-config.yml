@@ -19,7 +19,7 @@
             ipset_type: hash:ip
             short: OCP hosts
             description: set of ip addresses for airgapped ocp
-            ipset_entries: [172.21.1.10, 172.21.1.12, 172.21.1.13]
+            ipset_entries: [10.192.100.51, 10.192.100.53, 10.192.100.53]
             state: present
             permanent: true
 
