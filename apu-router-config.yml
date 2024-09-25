@@ -58,7 +58,7 @@
               - cool-lab-dns1
               - cool-lab-dns2
               - cool-lab-ocpmirror
-            target: DROP
+            target: '%%REJECT%%'
             permanent: true
             state: enabled
 
@@ -108,3 +108,34 @@
           #   state: up
           #   zone: internal
           #   autoconnect: true
+
+# Commands here until we figure out the way to ansible policies.
+# sudo firewall-cmd --add-interface  enp1s0 --zone trusted
+# sudo firewall-cmd --add-interface  cool-lab --zone trusted
+# sudo firewall-cmd --zone external --change-interface enp3s0
+# sudo firewall-cmd --zone external --remove-service ssh
+#
+# sudo firewall-cmd --new-zone airgapped --permanent
+# sudo firewall-cmd --zone airgapped --set-target REJECT --permanent
+#
+# sudo firewall-cmd --zone airgapped --add-service ntp
+#
+# sudo firewall-cmd --permanent --new-policy AirgappedToTrusted
+# sudo firewall-cmd --permanent --policy AirgappedToTrusted --add-ingress-zone airgapped
+# sudo firewall-cmd --permanent --policy AirgappedToTrusted --add-egress-zone trusted
+# sudo firewall-cmd --permanent --policy AirgappedToTrusted --add-service dns
+# sudo firewall-cmd --permanent --policy AirgappedToTrusted --add-service ntp
+# sudo firewall-cmd --permanent --policy AirgappedToTrusted --add-port 8443/tcp
+# sudo firewall-cmd --permanent --policy AirgappedToTrusted --set-target REJECT
+# sudo firewall-cmd --reload
+#
+#
+# sudo firewall-cmd --permanent --new-policy TrustedToAirgapped
+# sudo firewall-cmd --permanent --policy TrustedToAirgapped --add-ingress-zone trusted
+# sudo firewall-cmd --permanent --policy TrustedToAirgapped --add-egress-zone airgapped
+# sudo firewall-cmd --permanent --policy TrustedToAirgapped --add-service http
+# sudo firewall-cmd --permanent --policy TrustedToAirgapped --add-service https
+# sudo firewall-cmd --permanent --policy TrustedToAirgapped --add-service ssh
+# sudo firewall-cmd --permanent --policy TrustedToAirgapped --add-port 6443/tcp
+# sudo firewall-cmd --permanent --policy TrustedToAirgapped --set-target REJECT
+# sudo firewall-cmd --reload
