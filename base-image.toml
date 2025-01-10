@@ -1,0 +1,142 @@
+# https://www.osbuild.org/guides/blueprint-reference/blueprint-reference.html
+
+#
+# Base definition
+#
+name = "base-image"
+description = "RHEL Base Image"
+version = "2025.1.10"
+distro = "rhel-9"
+
+#
+# Boot parameters
+#
+[customizations.kernel]
+append = "net.ifnames.prefix=net quiet"
+
+#
+# Filesystem
+#
+[[customizations.filesystem]]
+mountpoint = "/boot"
+size = "1 GiB"
+# https://issues.redhat.com/browse/RHEL-4636
+#[[customizations.filesystem]]
+#mountpoint = "swap"
+#size = "2 GiB"
+[[customizations.filesystem]]
+mountpoint = "/"
+size = "8 GiB"
+[[customizations.filesystem]]
+mountpoint = "/home"
+size = "2 GiB"
+[[customizations.filesystem]]
+mountpoint = "/tmp"
+size = "2 GiB"
+[[customizations.filesystem]]
+mountpoint = "/var"
+size = "8 GiB"
+[[customizations.filesystem]]
+mountpoint = "/var/log"
+size = "2 GiB"
+[[customizations.filesystem]]
+mountpoint = "/var/log/audit"
+size = "2 GiB"
+[[customizations.filesystem]]
+mountpoint = "/var/tmp"
+size = "2 GiB"
+
+#
+# Timezone
+#
+[customizations.timezone]
+timezone = "Europe/Stockholm"
+ntpservers = ["time.cloudflare.com"]
+
+#
+# Locale
+#
+[customizations.locale]
+languages = ["C.UTF-8"]
+keyboard = "fi"
+
+#
+# Firewall
+#
+[customizations.firewall.services]
+enabled = ["ssh"]
+
+#
+# Services
+#
+[customizations.services]
+enabled = ["sshd", "tuned"]
+
+#
+# Packages
+#
+[[packages]]
+name = "bash-completion"
+[[packages]]
+name = "bind-utils"
+[[packages]]
+name = "firewalld"
+[[packages]]
+name = "glibc-langpack-en"
+[[packages]]
+name = "glibc-minimal-langpack"
+[[packages]]
+name = "man-pages"
+[[packages]]
+name = "nano"
+#[[packages]]
+#name = "NetworkManager-config-server"
+## https://bugzilla.redhat.com/show_bug.cgi?id=2041424
+## https://issues.redhat.com/browse/RHELPLAN-108305
+#[[packages]]
+#name = "perl-File-Temp"
+[[packages]]
+name = "python3"
+[[packages]]
+name = "setools-console"
+#[[packages]]
+#name = "unzip"
+#[[packages]]
+#name = "vim-enhanced"
+
+#
+# Security compliance
+#
+# Run something like the following for the needed blueprint changes:
+# oscap xccdf generate fix --fix-type blueprint --profile cis \
+#   /usr/share/xml/scap/ssg/content/ssg-rhel9-ds.xml
+#[customizations.openscap]
+#datastream = "/usr/share/xml/scap/ssg/content/ssg-rhel9-ds.xml"
+#profile_id = "xccdf_org.ssgproject.content_profile_cis"
+
+#
+# Root
+#
+[[customizations.sshkey]]
+user = "root"
+key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHV4O/qEctm+YmAY/o0aKk+sgxbFhLMsNN1m4j8FNKSF admin@coollab"
+
+#
+# User
+#
+[[customizations.user]]
+name = "admin"
+description = "Admin User"
+password = "$6$fLLc241QUpG0AA4.$DAH7WH6YnNRBJckaIWbSJvf004z3eJMNGGdTzP1xWj/Df4Yffo8Z3rL10DXSq2SIiR6X71.HuFogGxGpUnJBi1"
+key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHV4O/qEctm+YmAY/o0aKk+sgxbFhLMsNN1m4j8FNKSF admin@coollab"
+home = "/home/admin"
+shell = "/bin/bash"
+groups = ["wheel"]
+uid = 4444
+
+[[customizations.files]]
+path = "/etc/sudoers.d/admin"
+mode = "0440"
+data = """
+admin ALL=(ALL) NOPASSWD: ALL
+"""
