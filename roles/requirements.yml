@@ -1,6 +1,2 @@
 ---
 
-roles:
-  - src: https://github.com/ikke-t/rhel-image.git
-    type: git
-    version: onerole
