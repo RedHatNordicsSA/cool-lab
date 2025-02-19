@@ -26,7 +26,7 @@ collections:
   - name: redhat_cop.controller_configuration
     version: 2.3.1
   - name: redhat.rhel_system_roles
-    version: 1.23.0
+    version: 1.88.9
   - name: redhat.rhel_idm
     version: 1.12.1
   - name: vmware.vmware_rest
