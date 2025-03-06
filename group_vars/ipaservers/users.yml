@@ -1,109 +1,35 @@
 ---
 
 enabled_users:
-  - name: ikke
-    first: Ilkka
-    last: Tengvall
-    uid: 10001
-    gid: 10001
+  #
+  # Red Hat users
+  #
+  - name: apelline
+    first: Aki
+    last: Pellinen
     password: "coolpw"
+    userauthtype: password
     # yamllint disable-line rule:line-length
-    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC577GzJaVha0u0byNEFLDbGQhMkPSyXeT9gqIfZMKIxgh9PhOjpHl739lcdbsbgiUVAjZYI7M3PwuGghYTZpk2amJEZXUrul2MQudEc5tUX9wbpdKx9PEhzCywynRN+ZWGK15R5uVyc8mhqbvE0xQnkX0d+/eh+K8reFw451rPJuXrbbk13x/KBs/WqjEGCe6Yto/BotRRadpxTP5gPTxs/MIZ9LZC5EjmuOxDVt1xNROUNdD7gdK8DdpAHK72OoaT5ooc3Zq9uum4sYhCc611IGMNy2yjaYsJWWiVpDFy+APs5u9oK7wdtYFZwhf6B1O3U1X21CoaU8nJsFxJmI1g32IaAfh18sGiTBKKu8vYfF1y2eHa0I/App5WI+H5BS9WV7QyW5s7FQQ9R0okZ3kWbiGj8tVcVdTviwKmNm/7FtED6vPDe9ji+ou56YyzX7sd8ZFZjCX4rG9ZfpCzwsCCRdYHcKEyTIM5is9aggSUVWIkhdD9IKKsJEuW2ZCo8zpVMqSKm4G05tieIAGGr546m1OiTVBFVzuhYuTmwGuVfR0szoDCV6nOc1vcZMLyWYM5zWZRMuCw6NMzMuL+ot0JXyVKtgfFt4q5Q+Ha87jYXsiLOezsTiycgG1c/HmF4NxfWHt8nkDP/hQI0ESb1AKqxqp3++mCciHd1PlE/Y1CaQ==
-  - name: mbang
-    first: Michael
-    last: Bang
-    password: "coolpw"
-    uid: 10002
-    gid: 10002
-    # yamllint disable-line rule:line-length
-    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCkt8oUTzef27LLrMG9ESOJ0qAaheVkoo/nAUG4K2qmE16znvZybBU1ThxGeJwlyeN4/CK0lUcbL01LHONac5di4xIg9lxZGO031mPo/m9GLn+R8PQ6rDUa4T6IfOYYYeupGc2bfPLxHMnqXjUUXaw4B2lY5AEzjMJtvAEeF8rjnJe9Qdukv0SMqbR4nogse450EKyQC9/yfHHHxEkClEFjAtMqqKt1b5GbUodotD/QEcxAna8ewxr0+dyZSWAwoGeDu7J4Gc/yHgXLmVRBorU+nLSWLVXUTQsOcda7UySbr3SAjcmHcxyXMAdhvrZptYhyohDuUpdL/BdFW4Ctb6XU8GZizAgOn07Cs7NPXdO5Dq+ILuoyP4uoNXsZ1lqI9XQxFY3FkOW/L2SDIS89xRDjWCk6YYKJGZOGEMBiQqBPfKdOCpaXWu18Z3s2vIuhn/LiZrlb5/3l/nWXcAMlpCulx7TjgfhWlr2UoZY++7Fku+x5a7aXSM5gE5zU3k9HOgrB+S+QbcjH6op1OVi6u/4VVN7bCpMq5X0gPSw3ngWTAeS+xEehNnD8EnGvkl0GNjPSiD99ZiPhZh8FFc8CKZDFBgxBgFMJ4kBpV17dFjVEo2kFVA/nTVWa+r8qsmteVJJgxkn1zUI536hAVHBlN3BrCdww9fasXGeB+ZOHmZHZCw==
-  - name: jboivie
-    first: Jens
-    last: Boivie
-    password: "coolpw"
-    uid: 10003
-    gid: 10003
-    # yamllint disable-line rule:line-length
-    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDGPBFF8MOdt1lbZKRDzJLNIkFBAiGwfiCUDSm2O2vyG6Q/ytgIe7Vl/VZRYP38H87b3yHC11wQE0COG5BMg3pQ1nrieurkmtmopL9uXtuBnuErPdWDBKfmys0gCwY31XD29zqo0O/1ZLFV44OXFOPcOXqepDJHEoVLyFp4Yirhqi4qImWIlFHcFf/+9klUHVx4TWJsyRA/pg0cCV++xGDE64bX7WkHx5u3yBWPJXLvIVOA1QU6MsA24rblr0i9Njr2DeBEH4emaPvXvgxHK2aKxeagmJW/Y22AD3suR2o1Rw8qcwuen7pw5XirxTIBfOEJitNvM0vywxPNZ0QGRuQ8adRSZduLNJyJ7533/b9NTB8uye88QJ9IC1YbL5Hdyyn26qMSlrw4S/swBRYTJhDTQDw4QluPTMRtbHTyCugwpjfU2T3FvGVFxbt6GLRDWaEEOlzUdgOsCzszVIoRHVkdYt7+knc7sNKAaKCyGT4tPp973H5pfP5aWJp3cLq28bavlNls0r07nS+RtZv4/+Hrsj0VHQjkKS2gBAGDjKNH0NiK1/4TJ5SIp2ah0RjWOtYqMV4bXhrGK/KpceAh790AkYxFpGQf1xtwPfWWFDEGel38m8ZpxwfMnetcmZMZ1VWchFy+GbHTjZjF75kvWMRqYq3PexFKRLKVOYj7D5OCCQ==
-  - name: mglantz
-    first: Magnus
-    last: Glantz
-    password: "coolpw"
-    uid: 10004
-    gid: 10004
-    # yamllint disable-line rule:line-length
-    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCiVpjd30fnTEleLbz37gFykixaQg29LbtG5YSYy6pRxGyFbPPfyTYB+qx3r8+adPOiaBWrOjcU4WKNXZfznQffrH3M1pG7zMsKlmyE5GZw0HYHev3fBh7RkWc2m2Q/gIa9paUa0lce1he/fYCi+7mttA82jNvU78C5MpXts+ZLSBmlKR0T9lWGukXWiprfAeyPXr+WOgQHdEIcQXuUPwV/3MF5eapJcuONxuMCYOfSMKW/921CZVMM2NvA1CO4S3K/GYAYrw1VaVUNu0sl3nCrrBwrxFEWssjacy2MS4SVxeQ6KwNHn0pXpeVPgrxXcQngmichVuJVZZ7hApitURhV
-
-  - name: jwesterl
-    first: Johnny
-    last: Westerlund
-    password: "coolpw"
-    uid: 10005
-    gid: 10005
-    # yamllint disable-line rule:line-length
-    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCuuPjXB3E60BZJNagUbsmMKiQSGfTfigf0z+52sKJq4IUwYw2lKLCta8CGMMhwKM/t0W4GuO5axBKYgky/pVsgh+iyW8Qu6xnpiEkJ40nmI1WiNd+XbzNoP/aSaEDQDCHXpIWQyOPdLO58wPMQtEiAG4VutHEPVquRnu7bNhXayrXE1MNf4a4hX0QMsgIP1aMvgWIPIB6NOK0gFPLkRLMiPct3rpL6iBCJgXLv3MzT3UAL8219AiZmS5chqHjMQymzk+d7IVF/gn4KgHMmU03QSmNgmh79VIHH6ehWDB/QeHWr+ZkP2m4oaZ2B8bU+qdCxrwF87CGowQOV2JmBAh5N jwesterl@jwesterl.csb
-
-  - name: jwennerb
-    first: Johan
-    last: Wennerberg
-    password: "coolpw"
-    uid: 10006
-    gid: 10006
-    # yamllint disable-line rule:line-length
-    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDaET2eh1qcTG8iWfnhcOKdwdcL8kMRfVsZMIiIHwu0rs50CuTaoxenjbuTsP0kWZxvJHswvyZjOXaS3X+rQ/ul4e0L0IF06ONQpDVvP7fqoxDOgouJXbXomhdBFW22+oYdMu6WEtqUr7xhG8W3jPAEa5cHuyf62U7OoLL2fyjxJc1173JeDQGkMN3MhcAz4TSYuDH4N3iPxD13Vg3DJ2CfToUnGsgPqJSHcI6Xc9+IWu4GZ69QWKq2H4YjAGQzO0WAUcQVBMIsu2M8Zhwd3x+ioJLIWpH/CQH/fTR/undL6rn4UmtzgrmXCIEJWfYaVlI8LAzuccX6O9Pu/tZijNG4yvCkQdnLnxLfrSm2DelvCyVWFTcuPskf+RXSTQDkvYsRA3pfBJENkY4jAZ/JFmi9dLRMIclMAetAogLBTWqVRXMJ7s0mjsxMvV/Jh53vZjuyejwjjdFzw7V1Bi7BfIFJKWmHvyjYcnJk7Fd3t7EU1LbLW1/XhDLaf2lhbovxaDefA73ZUa72hrMsx7sC35/ZiiPDWgqlxLSEDjihQqCgVbb3W0N4vzjLkorOaXiZNY3z5V/n0/+ucQT86DiNGVNkpEXFERFNDkr+qfQOTyH8UmJOX95mYKacZJjZtSJdLUoI/7EUGefSPMdE1md6f7i7MkBbQwwLlSH0vFEsCGhoEQ==
+    sshpubkey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOczcHwu8u3ODTNxkNqKR7liLC0BOxNs642fW7qksCJx apelline@redhat.com
 
   - name: earvonen
     first: Eero
     last: Arvonen
     password: "coolpw"
-    uid: 10007
-    gid: 10007
     # yamllint disable-line rule:line-length
     sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDh1I/jpC7E6WyDJYw7LORehpd/50YtmMeE1bQaCX6KG3PfBFdKyu0VtssuevU6WS4zfDRruNNpoukUdbsL7dWQqgXQQB0hbPykDd8iqaC4bqKIYAqYEBv6anHppnr39hvKtLrmNDMAVwMNFdns3dFSUueg1PcdfyNNQ8qnKu1Mq9JmAKsb8WwJ8cdwpRMeGujU5QUAJF7FicHgftLyhKJQbgsN+KNWbwRTSTknjjot2e869mSV9qwo58iZZLt1BUyofVQch7a5h7/PXxXjuYjHmXAgK5fXRqktPqqSB0rqgSApIv5IOfm02zbOt5EopVLijLSTTxWnM+gTHETYBg7nmYdMUztBmbbKeGvsw5UzIMO4qHYaqCWRYn6Oq/Shtb07LrASD2vVthe57qg2MR7QwmoiVXxt+Fpxx4v2nzjMcs2lTWigie4COiS7jatu/rU7JYQEouwmxOy1JFj1p51e7u0fplAx8JhdklQZ1aqgDQcacdC0YOT7yfJ5jiKeIe0=
 
-  - name: codell
-    first: Johan
-    last: Odell
+  - name: ikke
+    first: Ilkka
+    last: Tengvall
     password: "coolpw"
-    uid: 10008
-    gid: 10008
     # yamllint disable-line rule:line-length
-    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDQ1dxXMyaAD1L2H3BgG2pYG0eA3cPNpc6OPD1tQrkNK+irN/NW877Hvgt5mX+V7DSBIqWx05g4mcmscrccnEA4j96QMQFqsjrIjj1sk1URH5GmWPyfmsV1w46VWVtTjgIxf1zbdwgbbEgOYlgdS0DyN1dXOsPpZmnxy4OqCz6lt3Hvx2vdSywHk7mqRLNMn36zf9ZxtBviN8IwLU6ZCIZQfW1/9EULAvjMXft/uqM/211NDVE7yxpsMfoD+6dlk8i8hVjtresKSVqu9WAQ09gQvmbOVEyJun2EiB58pPG1rOdwk7Tmk/raRrro/jnX1zYLwu/tIKZocuFLlFT0hrvp54iCRPR8bLMvjs4kohT4x9RA/PS35rT2YLBqCg2DU1zgCNMEqUqgdyRHKnA/1TFR+VffDdPsFtbBKPwj5WR6aCrmsspyBVahGAZ888hbNMxohxiW8LBupvVGkAVDgtiNHYKCJL3YXoiV2S3qYehgQDRL3Zfm27/SG4EcaOZwOBs=
-
-  - name: pgustafs
-    first: Peter
-    last: Gustafsson
-    password: "coolpw"
-    uid: 10009
-    gid: 10009
-    # yamllint disable-line rule:line-length
-    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDMbO9QKzdNvJtJbCcr8+WA3JhVle9R8TG/Atb4L7LyCIFXsYxqZQOvfdw1sm2O9NFvRFb6Gag0rvNjTqw9O7R5qB+fepu+qkc7a5pwAP7SYcQNXZWblg7KKUd0vAeSLzBSWjAFEJpj/wwYaJBOyyGwNSfzF+mtSQqNVbrqtR0BvMa3ohuq/eHUKZ5Jx4SZP16S5CMjivu8BzMEVvyRB62Y/KtfvTH1/FDEPdPCcbaGzXxgK6zc1hKyIjShPMzRekW6O5kLQ88WaQuWqGp+mOJywYauIz4o2/mjySUeUjQSxL1KCmWEmS7tcNhXRUjmHTvoPPr+2csRGH7LzZOAb8F3
-
-  - name: tsohlber
-    first: Tommi
-    last: Sohlberg
-    password: "coolpw"
-    uid: 10010
-    gid: 10010
-    # yamllint disable-line rule:line-length
-    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDJ2cHjhSVd4KNUYVultbOUtUNqYsdEd+FGW90vbAXdAPt5DJ6+11NWIvSY8BHs0U84zh5MLsGzZYqmpgdYmPUuD0BCvUhoNdaZBxtn1upVl5ep+8qBWnNiSevxmBoK1xnuSexNOiCeV4JBHzBgLRCy92R8kzc8eE6XmsVZn+aFDwC/ZUa3LVvVTwreM1LWYxDMPPla25iq0R8Q0+aerpXX+/8aujevat+EOp9EuJ3J87T1KnBl1yV0s3mbLvwQHtCnBUNDSpCMbRJZmj1JpX4Hf1Qh60lMT0mFiV3d1WUDLGdQB6JciTo/I/J5nUdTxGZ+IQvOaud9/+562mD26z43 tsohlber@MacBook-Pro
-
-  - name: mmurakam
-    first: Max
-    last: Murakami
-    password: "coolpw"
-    uid: 10011
-    gid: 10011
-    # yamllint disable-line rule:line-length
-    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQD5quBk/pj92SPJJNW5Io7AWCmrie5KMXAW5zroUOJfI0D720buQbAIdWIKo+CpBwSHsyn7kpUREKJfOqLVPalhN17YC5X9k9cOzq+CuLAzGYL5zL2YR7TAwzj2v8cFwvTQ/86VLy+TghPf1CMFPxVXkQ8V1V1LGI4hoRhc1eynedGjKv9CBqSNP6HuWpuezUtM3/rHpzmZJE7kqzXmi8eklCSs1twzgibkT7ECbOIZHicRhwbThSQ18Vtb+LAz2XqO7VpKrJQ5I1ZBNlipgZCbcRmbFQLTkiBXFbJSlLH1FSQn5TxlJiT2MXQEz+zQD3CjXclgxyxZWxzZrUoF/rtp8P5TRx3sxoV1LpeCJoH+hM8D2zo/jJwnqIswVC0C5C0a9T4lPBoWCMsd8fJNgjHvUsfUgitr0dyGwczmiAhZukNmqiHKF9tcpYkJDDNf3Aun6QyAnucB7+SvRUExcZ+n/vJKY3vbGXJmY01tht+XdiFQkey204A/pf+fnMXHbQ0= mmurakam@mmurakam.remote.csb
-
+    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC577GzJaVha0u0byNEFLDbGQhMkPSyXeT9gqIfZMKIxgh9PhOjpHl739lcdbsbgiUVAjZYI7M3PwuGghYTZpk2amJEZXUrul2MQudEc5tUX9wbpdKx9PEhzCywynRN+ZWGK15R5uVyc8mhqbvE0xQnkX0d+/eh+K8reFw451rPJuXrbbk13x/KBs/WqjEGCe6Yto/BotRRadpxTP5gPTxs/MIZ9LZC5EjmuOxDVt1xNROUNdD7gdK8DdpAHK72OoaT5ooc3Zq9uum4sYhCc611IGMNy2yjaYsJWWiVpDFy+APs5u9oK7wdtYFZwhf6B1O3U1X21CoaU8nJsFxJmI1g32IaAfh18sGiTBKKu8vYfF1y2eHa0I/App5WI+H5BS9WV7QyW5s7FQQ9R0okZ3kWbiGj8tVcVdTviwKmNm/7FtED6vPDe9ji+ou56YyzX7sd8ZFZjCX4rG9ZfpCzwsCCRdYHcKEyTIM5is9aggSUVWIkhdD9IKKsJEuW2ZCo8zpVMqSKm4G05tieIAGGr546m1OiTVBFVzuhYuTmwGuVfR0szoDCV6nOc1vcZMLyWYM5zWZRMuCw6NMzMuL+ot0JXyVKtgfFt4q5Q+Ha87jYXsiLOezsTiycgG1c/HmF4NxfWHt8nkDP/hQI0ESb1AKqxqp3++mCciHd1PlE/Y1CaQ==
 
   - name: sara
     first: Sara
     last: Banderby
     password: "coolpw"
-    uid: 20002
-    gid: 20002
     # yamllint disable-line rule:line-length
     sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCMeCQ/mpzMpapDaP17Ja6SW//nWH3vUqQbkizWjZiTIZOGT41sNbsuREcw02a56n/2VCcO0yE2LykbXFTFx0hf6x7Fk0j+RGop19laReR5U0WRNK7lK76aomxrPIgKLxs/ReS5QBNX1UUnsfw/LW0nvEq4So3eVhNePVS3RJchNjPcOLrorAvj7mW+RLURczQIJLHeR99PJVRD/tEwaaKr43aGu/RKHrmJl/3dZ1E6N2D89hZP/Mf3li0fFOSCNHS4bJ8uMAp5Z6Bs8/1QvRYCy+JVix+VxX5dNc+NS2r3D0EidHxvvsvef7PvE/s7j2Z28vdptLgSPYaOcc6klxHGJxQIxGpI42m/0kM7TzlBzkPaOM70dyt3FegYFNB0UYYVUF5UGVFHYfIOStZAnWDdf8CVwkR1z71haYAy7qAitVL3/4zJMttCm8o7nYPVGEK2T8717XAA+ghvjcPjhNMyAZF5v0bvT4OUYcQ8vNtQmZbiOK3qeB3kaCd8iU84PL8= elajoie@redhat.home.lab
 
@@ -111,110 +37,15 @@ enabled_users:
     first: Suvendu
     last: Mitra
     password: "coolpw"
-    uid: 10012
-    gid: 10012
     # yamllint disable-line rule:line-length
     sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCuZqgLjI/QB1iI+dVEj8QZg1+Tar/lLDeChmOxQ8DhRuOaEgxSLWf2AMLuiqsVvVkoClFjmTPGAPb2qvfCMYxFf87U8CVzzKyCFXojOqo0jCQXJQQ/DczCtcihjDaXWdoioi01k2WIKecitc+lKKT2FLKimqSvlgBqY6fou+sZP3rCtrrcx0kYqZiXrvD6C9eB2ZyupZtWUBdL5KwGS/mY+749ORkA378YOsHwbZdbQMuepJCVIfdArcIgiYBzVGMf7CtNc1H9VU90A3i6hQrq8GNkWXJMlyi4kpYwsxTAE4MHeRVomYSFgxRb3tFX9tq3AmqPNKz6He10L6TPGHydzZR5RsvdEwbGf2KWFClOvZOLkw5YKrqa9ehQQozkLt/6C05esju25uRMujw2Y5z5DAFyIK/lPSk1HML1Ldp0Mx8fCsq+xQifExzyo/euzgViVCbcrqTHU38+IbD2RwVNFsr6LyW6J9w0nmDK7mMVgBMfDERriZd798xKP3w9prk= suvmitra@MacBook-Pro
 
-  - name: mbengtss
-    first: Magnus
-    last: Bengtsson
+  - name: tsohlber
+    first: Tommi
+    last: Sohlberg
     password: "coolpw"
-    userauthtype: password
-    uid: 10013
-    gid: 10013
     # yamllint disable-line rule:line-length
-    sshpubkey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIcn2qbmAu0O6oPEEoFhPiYWn5oqVrAGOPW1AbsvJMBJ
-
-  - name: apelline
-    first: Aki
-    last: Pellinen
-    password: "coolpw"
-    userauthtype: password
-    uid: 10014
-    gid: 10014
-    # yamllint disable-line rule:line-length
-    sshpubkey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOczcHwu8u3ODTNxkNqKR7liLC0BOxNs642fW7qksCJx apelline@redhat.com
-
-  - name: luferrar
-    first: Luca
-    last: Ferrari
-    password: "coolpw"
-    userauthtype: password
-    uid: 10015
-    gid: 10015
-    # yamllint disable-line rule:line-length
-    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDHN46fhD8gfSUDJzXH0kMyI8GYbUECLuPhD8IcbV7EUtmpj+adTQB1vopgKAwEMuW9T6lFZMeyTn/ToWxoAcIBSPf9hOpb/L9j75mn9n2HoghbD0bP5sjxAd/Tf8VgIY77uru2CR31M546TBF44VGvmlCI2GTjYywEXG9haInQLy+TVQIA+hX6ICqji65H+ri9gRr4ukDf0IZjgaodazT4L+rcdbNkFU1dgh33ZHZ8Fm6+C/fW+j5aKQa1nkqvbma5BIEeiz3IZu5LQoeLbO0URd5zm00r3yDta+VIFJbKrEFfDZIem72lPuQx3Gg+ts4TpWWVNYJH41YrgS3StwulZnFh+MiYbgP9Dp5nK20xvtIWxkpYvOh4tbI5kdJMGK3oso9xXYaC11ETi9e5jHouYm0/f4ZxkobWTg60tVLbnrZi/KBFDgW7eSWxNG7ixt8txno0bhNwC0eIwIImIuUn5+5FWFNbIqCWOQIjYuZ1EsenPLkQN+UG+pPlMp3c6z0= luferrar@x1-lmf
-
-  - name: elajoie
-    first: Eric
-    last: Lajoie
-    password: "coolpw"
-    userauthtype: password
-    uid: 10015
-    gid: 10015
-    # yamllint disable-line rule:line-length
-    sshpubkey:
-
-  - name: rschaert
-    first: Richard
-    last: Schaertel
-    password: "coolpw"
-    userauthtype: password
-    uid: 10018
-    gid: 10018
-    # yamllint disable-line rule:line-length
-    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDsUB2PIDFdEim3Tlb4qGm+K8zpCirV2lQgRF7eegmwNBTg3jWk5f6uFR07W5s1unwkAK2upCm0E9Aj9vT46N7abYAspC2CQojOawSsO9soV2Np++y/EwtW52UVP91hkhcYRuXVQ0RUn4pG7USfdrIScPydez91eBZasQJFdwY+hwwvYzeFnsrhlxZcMF6cyhlZgQl80QoG4hJadmEFVDFHruk+zNMo8qKxKa636FGJX+ZSBqA9RMs+IfCBzs1/hDWL64gDx0LEM2ydE8ae6Oq5bwKiBjLaqE6B7D09wdLzh8jcu3BPLqw2wNo7cFvVRRg+H78ixfc/UW3LicWGJjiR+cDROdkClqQxL8ePMp2btHkQTYk+FhfZD9RG0v+7l1XKgjLEp1UlgBJHYlBd5vzzvu2QXZJv/aP28L9xZ4vMP1u8siJv0DwcPmCG0kFf5+JWa44YUu5VgE5GqUIMr36L7BbRdMM5pQktOO67nUCF1CznJttUZ5QClaWGd+GbmDc= rschaert@rschaert-mac
-
-  - name: sunathan
-    first: Susinthiran
-    last: Sitham
-    password: "coolpw"
-    userauthtype: password
-    uid: 10019
-    gid: 10019
-    # yamllint disable-line rule:line-length
-    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDNrNa+UNpjBO0jBpt3iBz3Zfs0/g2wymqlHxRRP2//hUrN/nuivm82zMHFSufkkDj2HQgSzElmfwd+hurV9y7COkq8erFOgoYnr88113Iuav5gD/wTvqNe8YVPxvvk45heFOL78nYe6F/bLLNId2R9m5g/z7iM+LZ6lYatK0ttZ1/zhgZQV7e15T5ecdY1BJ9TQlkZnGqrc1840iJk+vmzEP990og3FoW81GxDqM3ut6t6sQ0Wp3u6mFoFZ1T7SYgJg+YHz0Ha+6qezj0QSGrVgP1VY0mIqbGcl1zVzKHGxv+E7A9FnUeEN0vHqEUKh6vbA77mH7mCvDtFDJgpr8X9 susinths@localhost.localdomain
-
-  - name: cbucur
-    first: Codrin
-    last: Bucur
-    password: "coolpw"
-    userauthtype: password
-    uid: 581200011
-    gid: 581200011
-    # yamllint disable-line rule:line-length
-    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7gkUGINLdY4QZcckWNYNGE4u9S+k/zHBz04qTl8iwM4BH643NVkKe8WJUhTuCmn62H6LcCTeEEZbhuJRY849kzUtjU5GBfwsPDlqln0j9YduwaIczDbJZdyFTY6nJ41+pSeDi+YALwHh1GuiwWbjNBHlmDxcSoHVH5lau4I7ayjwLdtgPFza1nks9TwI7KK+YwgsTu29aX+tO6FNjOt5BYcwCQRLVovCv7EXqjqkAGWe0w/gzdvO7zGFxswR7o7fPgcVzaSufyb2w0vet2eaW+hDeFWdocAl8uE5ElcdN5pQqMN7EbcqaKzKVPHoeGVe8C3CTBGE8ZOZcJVtroaRH cbucur@redhat.com
-
-  - name: jstrahle
-    first: Jarkko
-    last: Strahle
-    password: "coolpw"
-    userauthtype: password
-    uid: 10020
-    gid: 10020
-    # yamllint disable-line rule:line-length
-    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDgdaeZtUN0aYmgX2k9a+qH1U0cl8gE8GW/FsWoEMZskpZVffc4CVYLepv7RqjhONJPqD8uNNccEUka039dfmQkIQKkZgu9tXApazYbMzGBwb3GSrpx67VBcebiCnUmKOefnnOQz7vL5ZCFsLwylhENmUYFNZBvl/ufg2PemIbofvHUwByFcpEoJ7eMltAGyz1Yh6MVFR1/Gf4tCkqm02XeOXIq0nbqAujNh6Sk0AeHWbvu2p9UlvFBwFtJ70i9+87vadnfR+v3aLEXMqF9yslNaIZG5XiZPjbKzPd2as/DyQaLeDABjC7p29Ce+se/eHis2lvDiMo3y5BaM2XJeZk6iQqQaRYCcFDIqHDkl01wf22OPrMixPgAjO9ZDVFlW6QrFlUleitrl8Di1G9YwCo2VQiSZ6ruMxknfnOeTJg+4SQ0upSyVdmV0kZ7WgDcmEkbunbQxco72HMGGgPkjDLLSasmu/smRMRjkWaW3til1gJqGtzHuqMPNpENuGWl1IiZt9dugDLi8lcz3zcudb9R0ttAQy2q89+d5dq0+PdQ/+vXiO/CSNK+Jj1KhgD698fAEX9eVOcXQvA3O8qj/49ZQzfUrsdUY2DG6Rxxxich+zF7xlqv0GOvaMLUUVL0w/sZO69qTQgp+yeEhlmOFhy4pE5hr63rVUUo65WhIdLv0Q== jstrahle-mac
-
-  - name: mmyllyne
-    first: Marko
-    last: Myllynen
-    password: "coolpw"
-    userauthtype: password
-    uid: 10021
-    gid: 10021
-    # yamllint disable-line rule:line-length
-    sshpubkey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDnS0Gyx8gdnWW6JuG027CA5akTww959vE50ITMuu/Se
-
-  - name: hlovborg
-    first: Henrik
-    last: Løvborg
-    password: coolpw
-    userauthtype: password
-    uid: 10022
-    gid: 10022
-    # yamllint disable-line rule:line-length
-    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCkwoXnPKH7buqksyXK2BcCHPxBysktw8okL96Jrc4ZdtB5hnWjpb5QZTgtALDfpwDTv9ut5vNBy/EzQ3a8SBI0WasA4DApV9nMGCIJwMSUEcgKeeuhdpWkmN5Qe+9VrT/WOGfx85rHopI2scMvIiCNhB5xdZQtBLLwIk+SODIS2HKEoHnkFM6vm7R0z1E2wo1O01Y4qu5cO0dHKf9B5XgbUxYvF6yvqpMAgYaIWy44UZ/M/9fO3MPQ1MaQgU02aZJbATQHj8UJ8pAQusdduK73/va/UPfGZfk/KsMOxWM6NfPIprL9dXQR3Ckow2MDSn/3+WVamLFNRUKHb82GbLWiY0Q0J5+lxXLObVWNIM5gBTPZTxYscHwBipbz8/S9hskWfYlRLv1KYmYxhTlF7JVRmvkKw4GFs8VsZLkbmNFhDVDWxM7z9qERUT4w6iUseht7zF+a47UGRpER
+    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDJ2cHjhSVd4KNUYVultbOUtUNqYsdEd+FGW90vbAXdAPt5DJ6+11NWIvSY8BHs0U84zh5MLsGzZYqmpgdYmPUuD0BCvUhoNdaZBxtn1upVl5ep+8qBWnNiSevxmBoK1xnuSexNOiCeV4JBHzBgLRCy92R8kzc8eE6XmsVZn+aFDwC/ZUa3LVvVTwreM1LWYxDMPPla25iq0R8Q0+aerpXX+/8aujevat+EOp9EuJ3J87T1KnBl1yV0s3mbLvwQHtCnBUNDSpCMbRJZmj1JpX4Hf1Qh60lMT0mFiV3d1WUDLGdQB6JciTo/I/J5nUdTxGZ+IQvOaud9/+562mD26z43 tsohlber@MacBook-Pro
 
   #
   # Arrow users
@@ -223,120 +54,21 @@ enabled_users:
     first: Terje
     last: Lindholm
     password: "coolpw"
-    uid: 20001
-    gid: 20001
     # yamllint disable-line rule:line-length
     sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC/A45JyRp8OOvC95Db42mz7KocV2x/zuOqmuQTSY0A9QhoBlIRJEhb9PaQCLy43u/chBEaqPKgtp7JphXJf6rr6vN5aLofeEGQvb/z+obdFKxobQKmUCm6BJK6HvcK/unvimtb9Ub7c1UGJ+Iy+Hg7HZJGbjrHZCjLjviFsrkMlikvNB+hZO/B56f5ewQVbtPJ9RzDVs3ut/AciEaYRVsRCZWylP4eIDWxqfQhTfC3ER6Xe0CSoIs94Nhtug0wZzIrP+UHtb7ryQaKd9PkLHReBH4nJ+jz+syJAxwZxPvDkQUKofPtxgeSdLp30q8JFYTkStbRx05pw0kvaGmO2qD4V16W1ZApzbg3j64/tDs+P0VjWnZr0SklvBkcY84HMQ+Zq287N3T0SU4yp1CrnFNzMv82kpGJL8z5rBQYe2TrOxt6iJqHSd1Dm8QT47XLenj53khPp+5dJWyo9Dwae3s1MoDio4r8ZT2ASAqmNkntMWMaoEAsdZrYIidx63rY2tk= a91466@C02DN3WNMD6R
 
-  #
-  # Enfo users
-  #
-  - name: mikaheim
-    first: Marko
-    last: Ikäheimo
-    password: "coolpw"
-    uid: 20101
-    gid: 20101
-    # yamllint disable-line rule:line-length
-    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDiF65drhVyDUqG378depjyNoTDn27MogcARYeCSfb/QZX3VuRu3DHaldkmF5YM+qpiN1mIGSmbeGtHQ4V6IGxNRqI3fbxCLPV874szpdAqs/V2sSrltIbYpBnJCPz2+eAyG+Fl6fXOeUZ14eKrqGtAc3KqFlQaEho72UrUSjbSOyGus4Tz21zP+bz+wj+iZBKUHW9d7rU4b5NmQhKmigFjAaW+WyESIyDLSb5AIz2j/ysfH+nA2lO0O767pG6IiVrCfvUR0d467iBehtW1pACkZhR/p34v5NKjtQ4tRW5RTzFl1mcCOWE09Y0L7jPz725rIgsL4dMdFm5bn+dSoEh1
-
-  #
-  # Devikone users
-  #
-  - name: asalonen
-    first: Ari
-    last: Salonen
-    password: "coolpw"
-    uid: 20201
-    gid: 20201
-    # yamllint disable-line rule:line-length
-
-  - name: tpalenius
-    first: Tuomas
-    last: Palenius
-    password: "coolpw"
-    uid: 20202
-    gid: 20202
-    # yamllint disable-line rule:line-length
-
-  - name: jalare
-    first: Jussi
-    last: Alare
-    password: "coolpw"
-    uid: 20203
-    gid: 20203
-    # yamllint disable-line rule:line-length
-
-  #
-  # HiQ users
-  #
-  - name: jhaaja
-    first: Jussi
-    last: Haaja
-    password: "coolpw"
-    uid: 20301
-    gid: 20301
-    # yamllint disable-line rule:line-length
-    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAtYbqSGpUDAXKU0bgrSzUl5b8eHHHpGhy/wCVrXVh6PPmRAXmvSVVxCupTwmDPinlA9RNoS0a4VaWYAY466JWkvO3d3ofD/tDbg38c0m5zJxC2mDvLi1j1JI0Ql9BfBkZNe3pKyrSNNz2UuiT1u2UN4eqS9msxThAuWVjifpmwsyHTgOOydCnl+EKj1NM7hLjkxdSSRmG5EUWO9U0dZsW7tCLL2SM77Zn5L3UNkD/do+g5oDqVYGa9GF707QRbW4uHsoDpBh4vgaYTSdUUuBwf4TBqqBxjXZ4viP5qT2eA0zj6rhp54NbYGwUxljZ6rIq/PP2WJmwRKYTycrv0MJHYQ== jussi.haaja@ambientia.fi
-
-
 idm_admins:
-  - jwesterl
   - ikke
-  - mbang
-  - jboivie
-  - jstrahle
-  - mglantz
-  - jwennerb
-  - codell
-  - pgustafs
-  - tsohlber
-  - mbengtss
   - teli
-  - sunathan
-  - cbucur
-  - sara
-  - mmyllyne
-  - hlovborg
 
 aap_admins:
-  - jwesterl
   - ikke
-  - mbang
-  - jboivie
-  - jstrahle
-  - mglantz
-  - jwennerb
-  - codell
-  - pgustafs
+  - teli
   - tsohlber
-  - mbengtss
-  - sunathan
-  - cbucur
-  - sara
-  - rschaert
-  - jhaaja
-  - mmyllyne
-  - hlovborg
 
 rh_ops:
   - ikke
-  - mbang
-  - jboivie
-  - jstrahle
   - tsohlber
-  - earvonen
-  - suvmitra
-  - mbengtss
-  - apelline
-  - elajoie
-  - luferrar
-  - rschaert
-  - sunathan
-  - cbucur
-  - sara
-  - mmyllyne
-  - hlovborg
 
 arrow:
   - teli
@@ -348,29 +80,10 @@ odh_admins:
   - ikke
   - teli
   - sara
-  - mmurakam
-  - cbucur
 
 developers:
+  - earvonen
   - ikke
-  - teli
   - sara
-  - mmurakam
-  - mikaheim
-  - asalonen
-  - tpalenius
-  - jalare
+  - teli
 
-enfo:
-  - mikaheim
-
-hiq:
-  - jhaaja
-
-partners:
-  - mikaheim
-
-devikone:
-  - asalonen
-  - tpalenius
-  - jalare

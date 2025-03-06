@@ -1,161 +1,102 @@
 ---
 
 - name: Playbook to add users
-  hosts: rh-idm-01.cool.lab
+  hosts: lab-eu-idm-01.arrowdemo.se
   tasks:
 
     - name: Create users
-      freeipa.ansible_freeipa.ipauser:
-        ipaadmin_password: "{{ ipaadmin_password }}"
+      redhat.rhel_idm.ipauser:
+        ipaadmin_password: "{{ vault_ipaadmin_password }}"
         state: present
         update_password: on_create
         users: "{{ enabled_users }}"
       tags: users
 
     - name: Ensure ipa admins group
-      freeipa.ansible_freeipa.ipagroup:
-        ipaadmin_password: "{{ ipaadmin_password }}"
+      redhat.rhel_idm.ipagroup:
+        ipaadmin_password: "{{ vault_ipaadmin_password }}"
         name: admins
         state: present
       tags: groups
 
     - name: Ensure members in ipa admins group
-      freeipa.ansible_freeipa.ipagroup:
-        ipaadmin_password: "{{ ipaadmin_password }}"
+      redhat.rhel_idm.ipagroup:
+        ipaadmin_password: "{{ vault_ipaadmin_password }}"
         name: admins
         action: member
         user: "{{ idm_admins }}"
       tags: groups
 
-    - name: Ensure group Red Hat Ops (rhops) with gid 1100
-      freeipa.ansible_freeipa.ipagroup:
-        ipaadmin_password: "{{ ipaadmin_password }}"
+    - name: Ensure group Red Hat Ops (rhops)
+      redhat.rhel_idm.ipagroup:
+        ipaadmin_password: "{{ vault_ipaadmin_password }}"
         name: rhops
-        gidnumber: 1100
+        # gidnumber: 1100
       tags: groups
 
     - name: Ensure members in group Red Hat Ops (rhops)
-      freeipa.ansible_freeipa.ipagroup:
-        ipaadmin_password: "{{ ipaadmin_password }}"
+      redhat.rhel_idm.ipagroup:
+        ipaadmin_password: "{{ vault_ipaadmin_password }}"
         name: rhops
         action: member
         user: "{{ rh_ops }}"
       tags: groups
 
     - name: Ensure group Arrow Ops (arrowops) with gid 2100
-      freeipa.ansible_freeipa.ipagroup:
-        ipaadmin_password: "{{ ipaadmin_password }}"
+      redhat.rhel_idm.ipagroup:
+        ipaadmin_password: "{{ vault_ipaadmin_password }}"
         name: arrowops
-        gidnumber: 2100
+        # gidnumber: 2100
       tags: groups
 
     - name: Ensure members in group Arrow Ops (arrowops)
-      freeipa.ansible_freeipa.ipagroup:
-        ipaadmin_password: "{{ ipaadmin_password }}"
+      redhat.rhel_idm.ipagroup:
+        ipaadmin_password: "{{ vault_ipaadmin_password }}"
         name: arrowops
         action: member
         user: "{{ arrow_ops }}"
       tags: groups
 
     - name: Ensure group arrow (arrow) with gid 2101
-      freeipa.ansible_freeipa.ipagroup:
-        ipaadmin_password: "{{ ipaadmin_password }}"
+      redhat.rhel_idm.ipagroup:
+        ipaadmin_password: "{{ vault_ipaadmin_password }}"
         name: arrow
-        gidnumber: 2101
+        # gidnumber: 2101
       tags: groups
 
     - name: Ensure members in group arrow (arrow)
-      freeipa.ansible_freeipa.ipagroup:
-        ipaadmin_password: "{{ ipaadmin_password }}"
+      redhat.rhel_idm.ipagroup:
+        ipaadmin_password: "{{ vault_ipaadmin_password }}"
         name: arrow
         action: member
         user: "{{ arrow }}"
       tags: groups
 
-    - name: Ensure group enfo with gid 2110
-      freeipa.ansible_freeipa.ipagroup:
-        ipaadmin_password: "{{ ipaadmin_password }}"
-        name: enfo
-        gidnumber: 2110
-      tags: groups
-
-    - name: Ensure members in group enfo
-      freeipa.ansible_freeipa.ipagroup:
-        ipaadmin_password: "{{ ipaadmin_password }}"
-        name: enfo
-        action: member
-        user: "{{ enfo }}"
-      tags: groups
-
-    - name: Ensure group devikone with gid 2210
-      freeipa.ansible_freeipa.ipagroup:
-        ipaadmin_password: "{{ ipaadmin_password }}"
-        name: devikone
-        gidnumber: 2210
-      tags: groups
-
-    - name: Ensure members in group devikone
-      freeipa.ansible_freeipa.ipagroup:
-        ipaadmin_password: "{{ ipaadmin_password }}"
-        name: devikone
-        action: member
-        user: "{{ devikone }}"
-      tags: groups
-
-    - name: Ensure group hiq with gid 2120
-      freeipa.ansible_freeipa.ipagroup:
-        ipaadmin_password: "{{ ipaadmin_password }}"
-        name: hiq
-        gidnumber: 2120
-
-    - name: Ensure members in group hiq
-      freeipa.ansible_freeipa.ipagroup:
-        ipaadmin_password: "{{ ipaadmin_password }}"
-        name: hiq
-        action: member
-        user: "{{ hiq }}"
-      tags: groups
-
-    - name: Ensure group partners with gid 3000
-      freeipa.ansible_freeipa.ipagroup:
-        ipaadmin_password: "{{ ipaadmin_password }}"
-        name: partners
-        gidnumber: 3000
-      tags: groups
-
-    - name: Ensure members in group partners
-      freeipa.ansible_freeipa.ipagroup:
-        ipaadmin_password: "{{ ipaadmin_password }}"
-        name: partners
-        action: member
-        user: "{{ partners }}"
-      tags: groups
-
     - name: Ensure group ODH admins (odh_admins) with gid 2103
-      freeipa.ansible_freeipa.ipagroup:
-        ipaadmin_password: "{{ ipaadmin_password }}"
+      redhat.rhel_idm.ipagroup:
+        ipaadmin_password: "{{ vault_ipaadmin_password }}"
         name: odh-admins
-        gidnumber: 2103
+        # gidnumber: 2103
       tags: groups
 
     - name: Ensure members in group ODH admins (odh_admins)
-      freeipa.ansible_freeipa.ipagroup:
-        ipaadmin_password: "{{ ipaadmin_password }}"
+      redhat.rhel_idm.ipagroup:
+        ipaadmin_password: "{{ vault_ipaadmin_password }}"
         name: odh-admins
         action: member
         user: "{{ odh_admins }}"
       tags: groups
 
     - name: Ensure group developers with gid 2104
-      freeipa.ansible_freeipa.ipagroup:
-        ipaadmin_password: "{{ ipaadmin_password }}"
+      redhat.rhel_idm.ipagroup:
+        ipaadmin_password: "{{ vault_ipaadmin_password }}"
         name: developers
-        gidnumber: 2104
+        # gidnumber: 2104
       tags: groups
 
     - name: Ensure members in group developers
-      freeipa.ansible_freeipa.ipagroup:
-        ipaadmin_password: "{{ ipaadmin_password }}"
+      redhat.rhel_idm.ipagroup:
+        ipaadmin_password: "{{ vault_ipaadmin_password }}"
         name: developers
         action: member
         user: "{{ developers }}"
@@ -163,18 +104,18 @@
 
     - name: Create LDAP bind user for AAP
       community.general.ldap_entry:
-        server_uri: ldaps://rh-idm-01.cool.lab
+        server_uri: "ldaps://{{ ipaserver_master_fqdn }}"
         bind_dn: cn=Directory Manager
-        bind_pw: "{{ ipadm_password }}"
-        dn: "uid={{ aap_ldap_username }},cn=sysaccounts,cn=etc,dc=cool,dc=lab"
+        bind_pw: "{{ vault_ipadm_password }}"
+        dn: "uid={{ aap_ldap_bind_username }},cn=sysaccounts,cn=etc,dc=eu,dc=arrow,dc=lab"
         validate_certs: false
         objectClass:
           - account
           - simpleSecurityObject
         attributes:
           description: AAP LDAP bind account
-          userPassword: "{{ aap_ldap_password }}"
-          uid: "{{ aap_ldap_username }}"
+          userPassword: "{{ vault_aap_ldap_password }}"
+          uid: "{{ aap_ldap_bind_username }}"
           passwordExpirationTime: 20320101000000Z
           nsIdleTimeout: 0
       tags:
@@ -182,8 +123,8 @@
         - aap
 
     - name: Ensure group AAP admins
-      freeipa.ansible_freeipa.ipagroup:
-        ipaadmin_password: "{{ ipaadmin_password }}"
+      redhat.rhel_idm.ipagroup:
+        ipaadmin_password: "{{ vault_ipaadmin_password }}"
         description: Ansible Automation Platform admins
         name: aap_admins
       tags:
@@ -191,8 +132,8 @@
         - aap
 
     - name: Ensure members in group AAP admins
-      freeipa.ansible_freeipa.ipagroup:
-        ipaadmin_password: "{{ ipaadmin_password }}"
+      redhat.rhel_idm.ipagroup:
+        ipaadmin_password: "{{ vault_ipaadmin_password }}"
         name: aap_admins
         action: member
         user: "{{ aap_admins }}"
@@ -200,22 +141,9 @@
         - groups
         - aap
 
-    # - name: Ensure group Arrow Ops (arrops)
-    #   freeipa.ansible_freeipa.ipagroup:
-    #     name: sysops
-    #     user:
-    #     gidnumber: 1200
-    #   tags: groups
-
-    # - name: Create group Application Developers (appops)
-    #   freeipa.ansible_freeipa.ipagroup:
-    #     name: appops
-    #   tags: groups
-
-
     - name: Ensure self-service rule is present
-      freeipa.ansible_freeipa.ipaselfservice:
-        ipaadmin_password: "{{ ipaadmin_password }}"
+      redhat.rhel_idm.ipaselfservice:
+        ipaadmin_password: "{{ vault_ipaadmin_password }}"
         name: "Users can manage their own name details"
         permission:
           - read
@@ -228,8 +156,8 @@
       tags: selfservice
 
     - name: Ensure sudo rule for gods
-      freeipa.ansible_freeipa.ipasudorule:
-        ipaadmin_password: "{{ ipaadmin_password }}"
+      redhat.rhel_idm.ipasudorule:
+        ipaadmin_password: "{{ vault_ipaadmin_password }}"
         name: rhops_sudo_all_nopasswd
         cmdcategory: all
         description: Red Hat ops allow to ruin everything anywhere freely
