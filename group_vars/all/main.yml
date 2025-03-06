@@ -1,9 +1,9 @@
 ---
 
-vcenter_datacenter: KISTA-DC
-vcenter_cluster: ARROWLAB
-vcenter_folder: KISTA-DC/Redhat
-vcenter_datastore: SVC-LUN-1
+vcenter_datacenter: DC3
+vcenter_cluster: DC3-cl01
+vcenter_folder: EU
+vcenter_datastore: fs5200-LUN0
 
 # RHEL subscriptions
 
@@ -23,21 +23,21 @@ enabled_repos_rhel:
 # see guide here: https://galaxy.ansible.com/freeipa/ansible_freeipa
 dns_forwarder1_ip: 10.1.102.5
 dns_forwarder2_ip: 10.1.102.10
-dns_reverse_zones:
-  - 1.128.10.in-addr.arpa.
-  - 2.128.10.in-addr.arpa.
-  - 3.128.10.in-addr.arpa.
-  - 4.128.10.in-addr.arpa.
+dns_reverse_zones: []
+#   - 1.128.10.in-addr.arpa.
+#   - 2.128.10.in-addr.arpa.
+#   - 3.128.10.in-addr.arpa.
+#   - 4.128.10.in-addr.arpa.
 ipaservers:
-  - rh-idm-01.cool.lab
-  - rh-idm-02.cool.lab
-ipaserver_master_ip: 10.128.1.10
-ipaserver_master_name: rh-idm-01
-ipaserver_replica_ip: 10.128.1.11
-ipaserver_replica_name: rh-idm-02
-ipaserver_domain: cool.lab
-ipaserver_realm: COOL.LAB
-ipaserver_gw: 10.128.1.1
+  - lab-eu-idm-01.arrowdemo.se
+  - arw-eu-idm-02.eu.arrow.lab
+ipaserver_master_ip: 10.0.103.25
+ipaserver_master_fqdn: lab-eu-idm-01.arrowdemo.se
+ipaserver_replica_ip: 10.3.109.25
+ipaserver_replica_name: arw-eu-idm-02.eu.arrow.lab
+ipaserver_domain: eu.arrow.lab
+ipaserver_realm: ARROWDEMO.EU
+ipaserver_gw: 10.0.103.1
 ipaadmin_principal: admin
 ipaclient_ntp_servers: true
 ipaclient_mkhomedir: true
@@ -48,17 +48,17 @@ hostgroups:
   - name: infra
     description: Infrastructure Hosts
     hosts:
-      - rh-idm-01.cool.lab
-      - rh-idm-02.cool.lab
-      - rh-bastion-01.cool.lab
+      - lab-eu-idm-01.arrowdemo.se
+      - arw-eu-idm-02.eu.arrow.lab
+      - arw-eu-bastion-01.arrowdemo.se
   - name: ipaservers
     description: IdM cluster hosts
     hosts:
-      - rh-idm-01.cool.lab
-      - rh-idm-02.cool.lab
+      - arw-eu-idm-01.arrowdemo.eu
+      - arw-eu-idm-02.arrowdemo.eu
 
-aap_ldap_username: aap_ldap
-aap_controller: rh-ansiblecontroller-01.cool.lab
+aap_ldap_bind_username: aap_ldap
+aap_hostname: arrowlab-aap.apps.acm.eu.arrow.lab
 
 ah_hostname: rh-automation-hub-01.cool.lab
 ah_username: "admin"

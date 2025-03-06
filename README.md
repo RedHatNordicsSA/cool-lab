@@ -54,8 +54,8 @@ and switch the tasks to point to project for main branch.
 ## Private matters
 
 Secrets like keys, passwords etc. sensitive stuff get's stored into the
-[private repo](https://github.com/RedHatNordicsSA/private-lab/).
-Ask an admin for the vault key.
+[private repo](https://github.com/RedHatNordicsSA/private-lab/tree/arrowlab).
+Ask an admin for the vault key. Check that you are in the right branch.
 
 ## Ansible preparations
 
