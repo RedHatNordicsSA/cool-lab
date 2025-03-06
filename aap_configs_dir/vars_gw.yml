@@ -68,3 +68,38 @@ gateway_authenticator_maps:
       groups:
         has_or:
           - cn=admins,cn=groups,cn=accounts,dc=eu,dc=arrow,dc=lab
+
+  - name: Red Hat associate
+    authenticator: Red Hat IdM
+    revoke: true
+    map_type: organization
+    organization: Red Hat
+    role: Organization Admin
+    triggers:
+      always: {}
+      never: {}
+      groups:
+        has_or:
+         - cn=rhops,cn=groups,cn=accounts,dc=eu,dc=arrow,dc=lab
+
+  - name: Arrow Ops
+    authenticator: Red Hat IdM
+    revoke: true
+    map_type: organization
+    organization: Arrow
+    role: Organization Admin
+    triggers:
+      groups:
+        has_or:
+         - cn=arrowops,cn=groups,cn=accounts,dc=eu,dc=arrow,dc=lab
+
+  - name: Arrow associate
+    authenticator: Red Hat IdM
+    revoke: true
+    map_type: organization
+    organization: Arrow
+    role: Organization Member
+    triggers:
+      groups:
+        has_or:
+         - cn=arrow,cn=groups,cn=accounts,dc=eu,dc=arrow,dc=lab
