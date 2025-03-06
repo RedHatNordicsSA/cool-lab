@@ -1,0 +1,70 @@
+# Ansible Automation Platform gateway configuration
+
+# aap_configuration_secure_logging: false
+# gateway_settings_secure_logging: false
+# gateway_authenticators_secure_logging: false
+# gateway_authenticator_maps_secure_logging: false
+
+# For available settings and their current default values see:
+# https://gateway.example.com/api/gateway/v1/settings/all/
+gateway_settings:
+  allow_admins_to_set_insecure: false
+  custom_login_info: >-
+    Welcome to Arrow Lab AAP!
+  ## The logo file must use the data URI scheme:
+  ##   convert orig-logo.png -transparent white logo.png
+  ##   echo "data:image/png;base64,$(base64 -w0 < logo.png)" > logo.data
+  #custom_logo: "{{ lookup('file', './logo.data') }}"
+  gateway_basic_auth_enabled: true
+  gateway_proxy_url_ignore_cert: false
+  ALLOW_OAUTH2_FOR_EXTERNAL_USERS: false
+  DEFAULT_PAGE_SIZE: 50
+  MAX_PAGE_SIZE: 200
+  SESSION_COOKIE_AGE: 900
+
+gateway_authenticators:
+  - name: Local Database Authenticator
+    order: 1
+    type: ansible_base.authentication.authenticator_plugins.local
+    slug: local-database-authenticator
+    configuration: {}
+    enabled: true
+    create_objects: true
+    remove_users: false
+  - name: Red Hat IdM
+    order: 2
+    type: ansible_base.authentication.authenticator_plugins.ldap
+    slug: redhat-idm
+    enabled: true
+    configuration:
+      SERVER_URI:
+        - "ldap://{{ ipaserver_master_fqdn }}"
+      START_TLS: false
+      BIND_DN: uid={{ aap_ldap_bind_username }},cn=sysaccounts,cn=etc,dc=eu,dc=arrow,dc=lab
+      BIND_PASSWORD: "{{ vault_aap_ldap_password }}"
+      GROUP_TYPE: "MemberDNGroupType"
+      GROUP_TYPE_PARAMS:
+        name_attr: "cn"
+        member_attr: "member"
+      USER_SEARCH:
+        - 'cn=users,cn=accounts,dc=eu,dc=arrow,dc=lab'
+        - 'SCOPE_SUBTREE'
+        - '(uid=%(user)s)'
+      GROUP_SEARCH:
+        - 'cn=groups,cn=accounts,dc=eu,dc=arrow,dc=lab'
+        - 'SCOPE_SUBTREE'
+        - '(objectClass=posixgroup)'
+      USER_ATTR_MAP:
+        first_name: "givenName"
+        last_name: "sn"
+        email: "mail"
+
+gateway_authenticator_maps:
+  - name: AAP admin
+    authenticator: Red Hat IdM
+    revoke: true
+    map_type: is_superuser
+    triggers:
+      groups:
+        has_or:
+          - cn=admins,cn=groups,cn=accounts,dc=eu,dc=arrow,dc=lab
