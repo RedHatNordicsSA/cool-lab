@@ -19,36 +19,15 @@
         short_name: "{{ inventory_hostname | regex_search('^[^_.]*') }}"
       when: use_inventory_for_hostname
 
-    - name: setup hostname
-      hostname:
-        name: "{{ short_name | mandatory }}.{{ ipaserver_domain }}"
-        use: systemd
-
-    - name: create hosts entry for idm master
-      lineinfile:
-        path: /etc/hosts
-        regexp: ".*{{ ipaserver_master_name }}.*"
-        line: >-
-          {{ ipaserver_master_ip }}
-          {{ ipaserver_master_name }}.{{ ipaserver_domain }}
-          {{ ipaserver_master_name }}
-
-    - name: create hosts entry for idm replica
-      lineinfile:
-        path: /etc/hosts
-        regexp: ".*{{ ipaserver_replica_name }}.*"
-        line: >-
-          {{ ipaserver_replica_ip }}
-          {{ ipaserver_replica_name }}.{{ ipaserver_domain }}
-          {{ ipaserver_replica_name }}
-
     - name: add to IdM
       vars:
         ipaclients:
           - "{{ short_name | mandatory }}.{{ ipaserver_domain }}"
         state: present
         ipasssd_enable_dns_updates: true
+        ipaclient_domain: eu.arrow.lab
         ipaclient_domain: "{{ ipaserver_domain }}"
+        ipaclient_realm: "{{ ipaserver_realm }}"
         ipaclient_force_join: true
       include_role:
-        name: freeipa.ansible_freeipa.ipaclient
+        name: redhat.rhel_idm.ipaclient
