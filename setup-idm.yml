@@ -5,12 +5,12 @@
     memory_mb: 4096
     num_cpus: 2
     state: poweredon
-    net_name: RH-seg-2991
+    net_name: coollab-2991
     net_type: static
     ip: "{{ ipaserver_master_ip }}"
     netmask: 255.255.255.0
     gateway: "{{ ipaserver_gw }}"
-    name: "{{ ipaserver_master_name }}"
+    short_name: "{{ ipaserver_master_name }}"
     domain: "{{ ipaserver_domain }}"
     dns_servers:
       - "{{ dns_forwarder1_ip }}"
@@ -22,12 +22,12 @@
     memory_mb: 4096
     num_cpus: 2
     state: poweredon
-    net_name: RH-seg-2991
+    net_name: coollab-2991
     net_type: static
     ip: "{{ ipaserver_replica_ip }}"
     netmask: 255.255.255.0
     gateway: "{{ ipaserver_gw }}"
-    name: "{{ ipaserver_replica_name }}"
+    short_name: "{{ ipaserver_replica_name }}"
     domain: "{{ ipaserver_domain }}"
     dns_servers:
       - "{{ dns_forwarder1_ip }}"
@@ -48,40 +48,6 @@
     - ipareplicas
   tasks:
 
-    - name: set yum module
-      command:
-        cmd: yum module enable -y idm:DL1
-        warn: false
-      tags: yum
-
-    - name: sync new yum stream
-      command:
-        cmd: yum distro-sync -y
-        warn: false
-      tags: yum
-
-    - name: check ipv6 is enabled
-      replace:
-        path: /etc/default/grub
-        regexp: 'ipv6.disable=1'
-      register: ipv6
-
-    - name: re-generate grub
-      command: grub2-mkconfig -o /boot/grub2/grub.cfg
-      when: ipv6 is changed
-
-    - name: re-generate initramd
-      command: dracut -f
-      when: ipv6 is changed
-
-    - name: create hosts entry for ipv6
-      lineinfile:
-        path: /etc/hosts
-        regexp: '^::1.*'
-        line: >-
-          ::1         localhost localhost.localdomain
-          localhost6 localhost6.localdomain6
-
     - name: create hosts entry for idm master
       lineinfile:
         path: /etc/hosts
@@ -100,11 +66,6 @@
           {{ ipaserver_replica_name }}.{{ ipaserver_domain }}
           {{ ipaserver_replica_name }}
 
-    - name: reboot to get ipv6
-      reboot:
-        reboot_timeout: 120
-      when: ipv6 is changed
-
 - name: setup IdM server
   hosts:
     - ipaservers
@@ -117,7 +78,7 @@
 
     - name: apply freeipa role
       include_role:
-        name: freeipa.ansible_freeipa.ipaserver
+        name: redhat.rhel_idm.ipaserver
       vars:
         state: present
 
@@ -145,7 +106,7 @@
 
     - name: apply freeipa role
       include_role:
-        name: freeipa.ansible_freeipa.ipareplica
+        name: redhat.rhel_idm.ipareplica
       vars:
         state: present
 
@@ -167,7 +128,7 @@
   tasks:
 
     - name: setup dns zone
-      freeipa.ansible_freeipa.ipadnszone:
+      redhat.rhel_idm.ipadnszone:
         ipaadmin_password: "{{ ipaadmin_password }}"
         name: "{{ ipaserver_domain }}"
         allow_sync_ptr: true
@@ -175,7 +136,7 @@
         state: present
 
     - name: setup reverse zone
-      freeipa.ansible_freeipa.ipadnszone:
+      redhat.rhel_idm.ipadnszone:
         ipaadmin_password: "{{ ipaadmin_password }}"
         name: "{{ item }}"
         allow_sync_ptr: true
