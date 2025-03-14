@@ -57,13 +57,22 @@ enabled_users:
     # yamllint disable-line rule:line-length
     sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC/A45JyRp8OOvC95Db42mz7KocV2x/zuOqmuQTSY0A9QhoBlIRJEhb9PaQCLy43u/chBEaqPKgtp7JphXJf6rr6vN5aLofeEGQvb/z+obdFKxobQKmUCm6BJK6HvcK/unvimtb9Ub7c1UGJ+Iy+Hg7HZJGbjrHZCjLjviFsrkMlikvNB+hZO/B56f5ewQVbtPJ9RzDVs3ut/AciEaYRVsRCZWylP4eIDWxqfQhTfC3ER6Xe0CSoIs94Nhtug0wZzIrP+UHtb7ryQaKd9PkLHReBH4nJ+jz+syJAxwZxPvDkQUKofPtxgeSdLp30q8JFYTkStbRx05pw0kvaGmO2qD4V16W1ZApzbg3j64/tDs+P0VjWnZr0SklvBkcY84HMQ+Zq287N3T0SU4yp1CrnFNzMv82kpGJL8z5rBQYe2TrOxt6iJqHSd1Dm8QT47XLenj53khPp+5dJWyo9Dwae3s1MoDio4r8ZT2ASAqmNkntMWMaoEAsdZrYIidx63rY2tk= a91466@C02DN3WNMD6R
 
+    name: thomar
+    first: Thomas
+    last: Marko
+    password: "coolpw"
+    # yamllint disable-line rule:line-length
+    sshpubkey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID9iOvCQWkwvRR4vZu7OFN7jtaBg/+gp9yt8PwA3eQPf
+
 idm_admins:
   - ikke
   - teli
+  - thomar
 
 aap_admins:
   - ikke
   - teli
+  - thomar
   - tsohlber
 
 rh_ops:
@@ -72,13 +81,16 @@ rh_ops:
 
 arrow:
   - teli
+  - thomar
 
 arrow_ops:
   - teli
+  - thomar
 
 odh_admins:
   - ikke
   - teli
+  - thomar
   - sara
 
 developers:
@@ -86,4 +98,4 @@ developers:
   - ikke
   - sara
   - teli
-
+  - thomar
