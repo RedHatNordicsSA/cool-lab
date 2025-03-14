@@ -6,11 +6,11 @@
   vars:
     name: delete_this_machine_anytime
     vm_state: poweredon
-    memory_mb: 2048
+    memory_mb: 4096
     num_cpus: 2
     num_cpu_cores_per_socket: 1
-    template: rhel_8_5_image
-    net_name: RH-seg-2991
+    template: rhel-9.4-template
+    net_name: coollab-2991
     net_type: dhcp       # dhcp vs. static. If static, fix below values
     # ip: 10.128.1.256
     # netmask: 255.255.255.0
