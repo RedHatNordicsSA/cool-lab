@@ -1,5 +1,7 @@
 ---
 
+lab_admin_ssh_pubkey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHV4O/qEctm+YmAY/o0aKk+sgxbFhLMsNN1m4j8FNKSF admin@coollab
+
 vcenter_datacenter: DC3
 vcenter_cluster: DC3-cl01
 vcenter_folder: EU
