@@ -1,0 +1,13 @@
+---
+# Ansible Automation Platform access configuration - orgs
+
+aap_configuration_secure_logging: false
+gateway_organizations_secure_logging: false
+
+aap_organizations:
+  - name: ArrowAiLab
+    description: AI Lab automations
+  - name: Arrow
+    description: Arrow internal automations
+  - name: Red Hat
+    description: Red Hat demo automations
