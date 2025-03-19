@@ -1,0 +1,151 @@
+# Ansible Automation Platform automation hub configuration
+
+aap_configuration_secure_logging: false
+
+hub_configuration_collection_remote_secure_logging: false
+hub_configuration_collection_repository_secure_logging: false
+hub_configuration_collection_repository_sync_secure_logging: false
+
+hub_configuration_namespace_secure_logging: false
+hub_configuration_publish_secure_logging: false
+
+hub_configuration_ee_registry_secure_logging: false
+hub_configuration_ee_repository_secure_logging: false
+
+redhat_auth_url: https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
+redhat_auth_token: "{{ vault_aap_automationhub_token }}"
+
+ah_auto_approve: true
+ah_request_timeout: 5
+ah_overwrite_existing: true
+
+
+hub_collection_remotes:
+  - name: rh-certified
+    url: https://console.redhat.com/api/automation-hub/content/published/
+    auth_url: "{{ redhat_auth_url if redhat_auth_token is defined else omit }}"
+    token: "{{ redhat_auth_token | default(omit) }}"
+    tls_validation: true
+    download_concurrency: 10
+    max_retries: 1
+    rate_limit: 8
+    signed_only: true
+    policy: immediate
+    sync_dependencies: true
+    requirements:
+      - name: ansible.controller
+      - name: ansible.eda
+      - name: ansible.eda
+      - name: ansible.hub
+      - name: ansible.platform
+      - name: ansible.posix
+      - name: ansible.utils
+      - name: ansible.windows
+      - name: azure.azcollection
+      - name: chocolatey.chocolatey
+      - name: dynatrace.oneagent
+      - name: kubernetes.core
+      - name: microsoft.ad
+      - name: microsoft.sql
+      - name: redhat.rhel_idm
+      - name: redhat.rhel_system_roles
+      - name: redhat.satellite
+      - name: redhat.satellite_operations
+      - name: vmware.vmware
+      - name: vmware.vmware_rest
+
+  - name: validated
+    url: https://console.redhat.com/api/automation-hub/content/validated/
+    auth_url: "{{ redhat_auth_url if redhat_auth_token is defined else omit }}"
+    token: "{{ redhat_auth_token | default(omit) }}"
+    tls_validation: true
+    download_concurrency: 10
+    max_retries: 1
+    rate_limit: 8
+    signed_only: true
+    policy: immediate
+    sync_dependencies: true
+    requirements:
+      - name: infra.aap_configuration
+      - name: infra.aap_utilities
+      - name: infra.ee_utilities
+      - name: infra.leapp
+
+  - name: community
+    url: https://galaxy.ansible.com/api/
+    tls_validation: true
+    download_concurrency: 10
+    max_retries: 1
+    rate_limit: 8
+    signed_only: false
+    policy: immediate
+    sync_dependencies: false
+    requirements:
+      - name: amazon.aws
+        version: 9.3.0
+      - name: awx.awx
+        version: 9.1.0
+      - name: community.crypto
+        version: 2.26.0
+      - name: community.general
+        version: 10.4.0
+      - name: community.windows
+        version: 2.4.0
+      - name: containers.podman
+        version: 1.16.3
+
+hub_collection_repositories:
+  - name: rh-certified
+    remote: rh-certified
+    retain_repo_versions: 3
+    wait: false
+  - name: validated
+    remote: validated
+    retain_repo_versions: 3
+    wait: false
+  - name: community
+    remote: community
+    retain_repo_versions: 3
+    wait: false
+
+hub_namespaces:
+  - name: myllynen
+    company: myllynen
+    email: myllynen@redhat.com
+    avatar_url: https://avatars.githubusercontent.com/u/24413632
+    description: Collections from myllynen's GitHub repositories
+
+hub_collections:
+  - collection_name: myllynen.rhel_ansible_roles
+    git_url: https://github.com/myllynen/rhel-ansible-roles
+    version: v2.0.4
+
+hub_ee_registries:
+  - name: redhat
+    url: https://registry.redhat.io
+    username: "{{ vault_rh_subs_username }}"
+    password: "{{ vault_rh_subs_password }}"
+    tls_validation: true
+    download_concurrency: 100
+    rate_limit: 5
+    index: true
+    sync: true
+    wait: true
+
+hub_ee_repositories:
+  - name: ansible-automation-platform/ee-minimal-rhel8
+    registry: redhat
+    upstream_name: ansible-automation-platform/ee-minimal-rhel8
+    include_tags:
+      - 2.18
+    sync: true
+    wait: false
+
+  - name: ansible-automation-platform/ee-minimal-rhel9
+    registry: redhat
+    upstream_name: ansible-automation-platform/ee-minimal-rhel9
+    include_tags:
+      - 2.17
+      - 2.18
+    sync: true
+    wait: false
