@@ -80,7 +80,7 @@ gateway_authenticator_maps:
       never: {}
       groups:
         has_or:
-         - cn=rhops,cn=groups,cn=accounts,dc=eu,dc=arrow,dc=lab
+          - cn=rhops,cn=groups,cn=accounts,dc=eu,dc=arrow,dc=lab
 
   - name: Arrow Ops
     authenticator: Red Hat IdM
@@ -91,7 +91,7 @@ gateway_authenticator_maps:
     triggers:
       groups:
         has_or:
-         - cn=arrowops,cn=groups,cn=accounts,dc=eu,dc=arrow,dc=lab
+          - cn=arrowops,cn=groups,cn=accounts,dc=eu,dc=arrow,dc=lab
 
   - name: Arrow associate
     authenticator: Red Hat IdM
@@ -102,4 +102,4 @@ gateway_authenticator_maps:
     triggers:
       groups:
         has_or:
-         - cn=arrow,cn=groups,cn=accounts,dc=eu,dc=arrow,dc=lab
+          - cn=arrow,cn=groups,cn=accounts,dc=eu,dc=arrow,dc=lab
