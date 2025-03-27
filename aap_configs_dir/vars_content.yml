@@ -1,0 +1,741 @@
+# Ansible Automation Platform controller configuration - content
+
+aap_configuration_secure_logging: false
+controller_configuration_organizations_secure_logging: false
+controller_configuration_credential_types_secure_logging: false
+controller_configuration_credentials_secure_logging: false
+controller_configuration_execution_environments_secure_logging: false
+controller_configuration_projects_secure_logging: false
+controller_configuration_inventories_secure_logging: false
+
+
+controller_inventories:
+  - name: RH-IdM
+    organization: Red Hat
+    description: Sourced from IdM
+  - name: Temporary Inventory
+    organization: Default
+    description: Temporary inventory for hosts to be created
+  - name: vmware-rh
+    organization: Red Hat
+    description: Red Hat VMs sourced from vmware
+
+
+controller_inventory_sources:
+  - name: RH-IdM
+    source: scm
+    source_project: Cool-Lab
+    source_path: aap_ldap.py
+    inventory: RH-IdM
+    organization: Red Hat
+    credential: aap-idm-ldap
+    overwrite: true
+    update_on_launch: true
+    update_cache_timeout: 0
+    # wait: true
+
+  - name: VMware-RH
+    description: Pull all rh- vms from VMware
+    source: vmware
+    inventory: vmware-rh
+    organization: Red Hat
+    credential: vcenter-32
+    host_filter: ^rh-
+    overwrite: true
+    update_on_launch: true
+    update_cache_timeout: 0
+    # wait: true
+    source_vars:
+      hostnames:
+        - config.name
+
+controller_projects:
+  - name: Cool-Lab
+    description: Red Hat Nordics SA Cool Lab project
+    organization: Red Hat
+    scm_type: git
+    scm_url: https://github.com/RedHatNordicsSA/cool-lab.git
+    scm_branch: arrowlab
+    scm_clean: true
+    scm_update_on_launch: false
+    wait: true
+    update_project: true
+
+controller_templates:
+  - name: Ensure VM State
+    description: Creates of deletes a VM, or sets power state
+    execution_environment: Default execution environment
+    ask_variables_on_launch: true
+    use_fact_cache: true
+    extra_vars:
+      use_aap_inventory: false
+    inventory:
+      name: Demo Inventory
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_slice_count: 1
+    job_type: run
+    limit: localhost
+    playbook: ensure-vm-state.yml
+    project:
+      name: Cool-Lab
+      organization:
+        name: Red Hat
+        type: organization
+      type: project
+    related:
+      credentials:
+        - name: vcenter-31
+        - name: aap-admin
+      survey_spec:
+        description: ''
+        name: ''
+        spec:
+          - choices: ''
+            default: ''
+            max: 1024
+            min: 1
+            new_question: true
+            question_description: Short name for the hostname. Use format rh-<whatever>-<number>,
+              e.g. rh-ikketest-10. No domain part.
+            question_name: Host Name
+            required: true
+            type: text
+            variable: short_name
+          - choices: "vlan3109"
+            default: vlan3109
+            max: 1024
+            min: 0
+            new_question: true
+            question_description: Into which VLAN the VM goes into?
+            question_name: VLAN name
+            required: true
+            type: multiplechoice
+            variable: net_name
+          - choices: "512\n1024\n2048\n4096\n8192\n16384\n32768\n65536"
+            default: '4096'
+            max: 65536
+            min: 512
+            new_question: true
+            question_description: How much RAM in megabytes
+            question_name: Memory MB
+            required: true
+            type: multiplechoice
+            variable: memory_mb
+          - choices: "1\n2\n4\n8\n16"
+            default: '2'
+            max: 1024
+            min: 0
+            new_question: true
+            question_description: How many CPU
+            question_name: CPU
+            required: true
+            type: multiplechoice
+            variable: num_cpu
+          - choices: "poweredon\npoweredoff\nabsent"
+            default: poweredon
+            max: 1024
+            min: 0
+            new_question: true
+            question_description: VM state is poweredon/off/absent
+            question_name: VM state
+            required: true
+            type: multiplechoice
+            variable: vm_state
+    survey_enabled: true
+
+  - name: Prepare RHEL host
+    description: >
+      Subscribes a RHEL to Red Hat subscription management and
+      Insights. Adds repositories and installs basic set of
+      packages.
+    execution_environment: Default execution environment
+    use_fact_cache: true
+    forks: 15
+    ask_inventory_on_launch: true
+    inventory:
+      name: vmware-rh
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_slice_count: 1
+    job_type: run
+    ask_limit_on_launch: true
+    playbook: prepare-rhel.yml
+    project:
+      name: Cool-Lab
+      organization:
+        name: Red Hat
+        type: organization
+      type: project
+    related:
+      credentials:
+        - credential_type:
+            kind: cloud
+            name: Red Hat Subscription
+            type: credential_type
+          name: rh-subs
+          organization:
+            name: Red Hat
+            type: organization
+          type: credential
+        - credential_type:
+            kind: net
+            name: Network
+            type: credential_type
+          name: ikkedemo
+          organization:
+            name: Red Hat
+            type: organization
+          type: credential
+        - credential_type:
+            kind: ssh
+            name: Machine
+            type: credential_type
+          name: machine-creds-rhops-admin
+          organization:
+            name: Red Hat
+            type: organization
+          type: credential
+
+  - name: Prepare new RHEL hosts
+    description: >
+      Subscribes RHEL to Red Hat subscription management and
+      Insights. Adds repositories and installs basic set of
+      packages.
+    execution_environment: Default execution environment
+    use_fact_cache: true
+    forks: 15
+    inventory:
+      name: Temporary Inventory
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_slice_count: 1
+    job_type: run
+    limit: new_vms
+    playbook: prepare-rhel.yml
+    project:
+      name: Cool-Lab
+      organization:
+        name: Red Hat
+        type: organization
+      type: project
+    related:
+      credentials:
+        - credential_type:
+            kind: cloud
+            name: Red Hat Subscription
+            type: credential_type
+          name: rh-subs
+          organization:
+            name: Red Hat
+            type: organization
+          type: credential
+        - credential_type:
+            kind: net
+            name: Network
+            type: credential_type
+          name: ikkedemo
+          organization:
+            name: Red Hat
+            type: organization
+          type: credential
+        - credential_type:
+            kind: ssh
+            name: Machine
+            type: credential_type
+          name: machine-creds-rhops-admin
+          organization:
+            name: Red Hat
+            type: organization
+          type: credential
+
+  - name: Add host to IdM
+    description: >
+      Adds hosts to IdM control including things like DNS name and user
+      management.
+    execution_environment: Default execution environment
+    use_fact_cache: true
+    extra_vars:
+      use_inventory_for_hostname: true
+    forks: 15
+    inventory:
+      name: Temporary Inventory
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_slice_count: 1
+    job_type: run
+    limit: new_vms
+    playbook: setup-idmclient.yml
+    project:
+      name: Cool-Lab
+      organization:
+        name: Red Hat
+        type: organization
+      type: project
+    related:
+      credentials:
+        - credential_type:
+            kind: ssh
+            name: Machine
+            type: credential_type
+          name: machine-creds-rhops-admin
+          organization:
+            name: Red Hat
+            type: organization
+          type: credential
+        - name: IdM
+      survey_spec:
+        description: ''
+        name: ''
+        spec:
+          - choices: ''
+            default: ''
+            max: 1024
+            min: 1
+            new_question: true
+            question_description: first part of FQDN
+            question_name: Short name
+            required: true
+            type: text
+            variable: short_name
+    survey_enabled: true
+
+  - name: Add new hosts to IdM
+    description: >
+      Adds hosts in new_vms group to IdM control including things like DNS
+      name and user management.
+    execution_environment: Default execution environment
+    use_fact_cache: true
+    extra_vars:
+      use_inventory_for_hostname: true
+    forks: 15
+    inventory:
+      name: Temporary Inventory
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_slice_count: 1
+    job_type: run
+    limit: new_vms
+    playbook: setup-idmclient.yml
+    project:
+      name: Cool-Lab
+      organization:
+        name: Red Hat
+        type: organization
+      type: project
+    related:
+      credentials:
+        - name: machine-creds-rhops-admin
+        - name: IdM
+
+  - name: Add hosts to Satellite
+    description: >
+      Clears up any previous subscriptions and connects the host to Satellite.
+    execution_environment: Default execution environment
+    use_fact_cache: true
+    extra_vars:
+      use_inventory_for_hostname: true
+    forks: 15
+    inventory:
+      name: vmware-rh
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_slice_count: 1
+    job_type: run
+    limit: make_sure_to_name_hosts
+    ask_limit_on_launch: true
+    playbook: satellite-subscribe-vm.yml
+    project:
+      name: Cool-Lab
+      organization:
+        name: Red Hat
+        type: organization
+      type: project
+    related:
+      credentials:
+        - name: machine-creds-rhops-admin
+      survey_spec:
+        description: Select the activation key for subscribing the host
+        name: activation key
+        spec:
+          - choices: "RHEL9\nRHEL8"
+            default: RHEL9
+            new_question: true
+            question_description: Select activation key for the subscriptions
+            question_name: Activation key
+            required: true
+            type: multiplechoice
+            variable: activation_key
+    survey_enabled: true
+
+  - name: Add new hosts to Satellite
+    description: >
+      This task is for the workflow of creating new hosts. It clears up any
+      previous subscriptions and connects the host to Satellite.
+    execution_environment: Default execution environment
+    use_fact_cache: true
+    extra_vars:
+      use_inventory_for_hostname: true
+    forks: 15
+    inventory:
+      name: Temporary Inventory
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    limit: new_vms
+    job_slice_count: 1
+    job_type: run
+    playbook: satellite-subscribe-vm.yml
+    project:
+      name: Cool-Lab
+      organization:
+        name: Red Hat
+        type: organization
+      type: project
+    related:
+      credentials:
+        - name: machine-creds-rhops-admin
+
+  - name: Remove host from temp inventory
+    description: Removes host from temporary inventory
+    execution_environment: Default execution environment
+    inventory:
+      name: Demo Inventory
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_type: run
+    limit: localhost
+    playbook: remove-host-from-inventory.yml
+    project:
+      name: Cool-Lab
+      organization:
+        name: Red Hat
+        type: organization
+      type: project
+    related:
+      credentials:
+        - credential_type:
+            kind: cloud
+            name: Red Hat Ansible Automation Platform
+            type: credential_type
+          name: aap-creds-rhops-admin
+          organization:
+            name: Red Hat
+            type: organization
+          type: credential
+      survey_spec:
+        description: Host to be removed from inventory
+        name: Removed host
+        spec:
+          - question_name: Host name
+            default: i forgot to fill hostname
+            max: 1024
+            min: 0
+            new_question: true
+            question_description: >
+              The first part of FQDN, leave out the domain part
+            required: true
+            type: text
+            variable: short_name
+    survey_enabled: true
+
+  - name: Delete VM from VMware
+    description: Deletes the host from VMware
+    limit: localhost
+    job_type: run
+    playbook: nuke-vm.yml
+    project:
+      name: Cool-Lab
+      organization:
+        name: Red Hat
+    inventory:
+      name: Temporary Inventory
+    execution_environment: Default execution environment
+    related:
+      credentials:
+        - name: vcenter-32
+      survey_spec:
+        description: ''
+        name: ''
+        spec:
+          - choices: ''
+            default: I forgot to set hostname in nuke vm
+            new_question: true
+            question_description: First part of hostname
+            question_name: Short hostname
+            required: true
+            type: text
+            variable: short_name
+    survey_enabled: true
+
+  - name: Unsubscribe host
+    description: Unsubscribes IdM, subs and insights
+    ask_limit_on_launch: true
+    limit:
+    job_type: run
+    playbook: unsubscribe-vm.yml
+    project:
+      name: Cool-Lab
+      organization:
+        name: Red Hat
+    inventory:
+      name: vmware-rh
+    execution_environment: Default execution environment
+    related:
+      credentials:
+        - name: machine-creds-rhops-admin
+        - name: IdM
+      survey_spec:
+        description: ''
+        name: ''
+        spec:
+          - choices: ''
+            default: I forgot to set hostname in nuke vm
+            new_question: true
+            question_description: First part of hostname
+            question_name: Short hostname
+            required: true
+            type: text
+            variable: short_name
+    survey_enabled: true
+
+  - name: Add disk to VM
+    description: Adds new disk to virtual machine.
+    execution_environment: Default execution environment
+    use_fact_cache: true
+    ask_variables_on_launch: true
+    inventory:
+      name: Demo Inventory
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_slice_count: 1
+    job_type: run
+    limit: localhost
+    playbook: vmware_add_disk_to_vm.yml
+    project:
+      name: Cool-Lab
+      organization:
+        name: Red Hat
+        type: organization
+      type: project
+    related:
+      credentials:
+        - name: vcenter-32
+        - name: aap-admin
+      survey_spec:
+        description: ''
+        name: ''
+        spec:
+          - question_name: Disk size
+            variable: vm_disksize
+            default: 20GB
+            new_question: true
+            question_description: Disk size, e.g. 20GB
+            required: true
+            type: text
+          - question_name: Host name to which disk is added
+            default: my-vm
+            new_question: true
+            question_description: >
+              To which host do you want to attach the disk to? In vmware
+              inventory format.
+            required: true
+            type: text
+            variable: short_name
+    survey_enabled: true
+
+  - name: Create LV to empty disk on VM
+    description: Creates logical volume from extra disk in VM.
+    execution_environment: Default execution environment
+    use_fact_cache: true
+    ask_variables_on_launch: true
+    inventory:
+      name: vmware-rh
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_slice_count: 1
+    job_type: run
+    limit: some_host_name_here_please
+    ask_limit_on_launch: true
+    playbook: vm_attach_unused_disk_as_lv.yml
+    project:
+      name: Cool-Lab
+      organization:
+        name: Red Hat
+        type: organization
+      type: project
+    related:
+      credentials:
+        - name: machine-creds-rhops-admin
+      survey_spec:
+        description: ''
+        name: ''
+        spec:
+          - question_name: LV size
+            variable: vm_disksize
+            default: 100%
+            new_question: true
+            question_description: Disk size, e.g. 20GB or 100%
+            required: true
+            type: text
+          - question_name: Volume group name to which disk is added
+            default: my-vg
+            new_question: true
+            question_description: >
+              To which volume group do you want to attach the disk to?
+              This could be an existing one or new one.
+            required: true
+            type: text
+            variable: vm_new_vg
+          - question_name: Logical volume to which disk is added
+            default: my-lv
+            new_question: true
+            question_description: >
+              To which logical volume do you want to use the disk for?
+            required: true
+            type: text
+            variable: vm_new_lv
+          - question_name: Mount point for the volume
+            default: /my-volume
+            new_question: true
+            question_description: >
+              What is the mount point for the volume? E.g. /database
+            required: true
+            type: text
+            variable: vm_new_mount_point
+    survey_enabled: true
+
+  - name: Extend LV in VM by extra disk
+    description: >
+      Uses and extra disk to extend an existing logical volume in VM.
+    execution_environment: Default execution environment
+    use_fact_cache: true
+    ask_variables_on_launch: true
+    inventory:
+      name: vmware-rh
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_slice_count: 1
+    job_type: run
+    limit: some_host_name_here_please
+    ask_limit_on_launch: true
+    playbook: vm_extend_lv_with_new_disk.yml
+    project:
+      name: Cool-Lab
+      organization:
+        name: Red Hat
+        type: organization
+      type: project
+    related:
+      credentials:
+        - name: machine-creds-rhops-admin
+      survey_spec:
+        description: ''
+        name: ''
+        spec:
+          - question_name: Volume Group name
+            variable: vm_vg_name
+            default: my-vg
+            new_question: true
+            question_description: >
+              Which volume group holds the logical volume to be extended?
+            required: true
+            type: text
+          - question_name: Logical Volume to extend
+            default: my-lv
+            new_question: true
+            question_description: >
+              To which logical volume do you want to attach the disk to?
+            required: true
+            type: text
+            variable: vm_lv_name
+    survey_enabled: true
+
+  - name: Remove host from IdM
+    description: >
+      Removes host details from IdM config
+    execution_environment: Default execution environment
+    use_fact_cache: true
+    ask_variables_on_launch: true
+    inventory:
+      name: vmware-rh
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_slice_count: 1
+    job_type: run
+    ask_limit_on_launch: true
+    playbook: idm_remove_host.yml
+    project:
+      name: Cool-Lab
+      organization:
+        name: Red Hat
+        type: organization
+      type: project
+    related:
+      credentials:
+        - name: machine-creds-rhops-admin
+      survey_spec:
+        description: ''
+        name: ''
+        spec:
+          - question_name: Host name to remove
+            default: my-vm
+            new_question: true
+            question_description: >
+              Which host do you want remove from IdM?
+            required: true
+            type: text
+            variable: short_name
+    survey_enabled: true
+
+  - name: Update IdM users
+    description: >
+      Run this to verify IdM users match to what is in git.
+    execution_environment: Default execution environment
+    use_fact_cache: true
+    ask_variables_on_launch: false
+    inventory:
+      name: vmware-rh
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_slice_count: 1
+    job_type: run
+    ask_limit_on_launch: false
+    limit: lab-eu-idm-01.arrowdemo.se
+    playbook: idm_provision_users.yml
+    project:
+      name: Cool-Lab
+      organization:
+        name: Red Hat
+        type: organization
+      type: project
+    related:
+      credentials:
+        - name: machine-creds-rhops-admin
+    survey_enabled: false
+
