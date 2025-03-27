@@ -1,0 +1,143 @@
+# Ansible Automation Platform controller configuration - content
+
+aap_configuration_secure_logging: false
+controller_configuration_organizations_secure_logging: false
+controller_configuration_credential_types_secure_logging: false
+controller_configuration_credentials_secure_logging: false
+controller_configuration_execution_environments_secure_logging: false
+controller_configuration_projects_secure_logging: false
+controller_configuration_inventories_secure_logging: false
+
+controller_credential_types:
+
+  - name: Red Hat IdM
+    description: >
+      Red Hat Identity Management Adminstrator account
+    kind: cloud
+    inputs:
+      fields:
+        - id: username
+          type: string
+          label: Administrator Principa/Username
+        - id: password
+          type: string
+          label: Administrator Password
+          secret: true
+      required:
+        - username
+        - password
+    injectors:
+      extra_vars:
+        ipaadmin_principal: "{% raw %}{  { username }}{% endraw %}"
+        ipaadmin_password: "{% raw %}{  { password }}{% endraw %}"
+
+  - name: Red Hat Subscription
+    description: >
+      Red Hat Subscription Credential for subscribing hosts for support
+      services
+    kind: cloud
+    inputs:
+      fields:
+        - id: username
+          type: string
+          label: Subscription Username
+        - id: password
+          type: string
+          label: Subscription Password
+          secret: true
+      required:
+        - username
+        - password
+    injectors:
+      extra_vars:
+        rh_subs_username: "{% raw %}{  { username }}{% endraw %}"
+        rh_subs_password: "{% raw %}{  { password }}{% endraw %}"
+
+
+controller_credentials:
+
+  - name: aap-admin
+    organization: Red Hat
+    credential_type: Red Hat Ansible Automation Platform
+    description: This credential can be used with AAP API.
+    inputs:
+      username: admin
+      password: "{{ vault_aap_admin_password }}"
+      host: "{{ aap_hostname }}"
+
+  - name: machine-creds-rhops-admin
+    organization: Red Hat
+    credential_type: Machine
+    description: This credential can be used with any vm.
+    inputs:
+      username: root
+      ssh_key_data: "{{ admin_ssh_private_key }}"
+
+  - name: aap-idm-ldap
+    organization: Red Hat
+    credential_type: Network
+    description: Used for IdM LDAP binding
+    inputs:
+      username: "uid={{ aap_ldap_bind_username }},cn=sysaccounts,cn=etc,dc=eu,dc=arrow,dc=lab"
+      password: "{{ vault_aap_ldap_password }}"
+
+  - name: IdM
+    organization: Red Hat
+    credential_type: Red Hat IdM
+    description: IdM admin
+    inputs:
+      username: "{{ ipaadmin_principal }}"
+      password: "{{ vault_ipaadmin_password }}"
+
+  - name: rh-subs
+    organization: Red Hat
+    credential_type: Red Hat Subscription
+    description: Used for subscribing hosts to Red Hat services
+    inputs:
+      username: "{{ vault_rh_subs_username }}"
+      password: "{{ vault_rh_subs_password }}"
+
+  - name: cool-lab-vault
+    organization: Red Hat
+    credential_type: Vault
+    description: Cool-lab vault secret
+    inputs:
+      vault_password: "{{ cool_lab_vault_pw }}"
+
+  - name: vcenter-32
+    organization: Red Hat
+    credential_type: VMware vCenter
+    description: Used for lab vCenter
+    inputs:
+      host: "{{ vcenter_credentials.vcenter_server }}"
+      username: "{{ vcenter_credentials.vcenter_username }}"
+      password: "{{ vcenter_credentials.vcenter_password }}"
+
+  - name: cool-lab automationhub published
+    organization: Red Hat
+    credential_type: Ansible Galaxy/Automation Hub API Token
+    description: token for cool-lab demo user @ published ansible automation hub
+    inputs:
+      auth_url: https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
+      token: "{{ vault_aap_automationhub_token }}"
+      url: https://console.redhat.com/api/automation-hub/content/published/
+
+  - name: cool-lab automationhub validated
+    organization: Red Hat
+    credential_type: Ansible Galaxy/Automation Hub API Token
+    description: token for cool-lab demo user @ validated ansible automation hub
+    inputs:
+      auth_url: https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
+      token: "{{ vault_aap_automationhub_token }}"
+      url: https://console.redhat.com/api/automation-hub/content/validated/
+
+  - name: ocp-virt-mgt
+    organization: Red Hat
+    credential_type: OpenShift or Kubernetes API Bearer Token
+    description: OCPv MGT
+    inputs:
+      host: https://api.acm.eu.arrow.lab:6443
+      bearer_token: 
+      verify_ssl: false
+      ssl_ca_cert:
+
