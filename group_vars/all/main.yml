@@ -66,7 +66,10 @@ aap_hostname: arrowlab-aap.apps.acm.eu.arrow.lab
 ah_hostname: rh-automation-hub-01.cool.lab
 ah_username: "admin"
 ah_password: "{{ aap_admin_password }}"
-ah_oauthtoken: ""
+# redhat automatin hub
+ah_oauthtoken: "{{ vault_aap_automationhub_token }}"
+# local private aap automatin hub
+pah_oauthtoken: "{{ vault_aap_private_automationhub_token }}"
 ah_validate_certs: false
 
 satellite_ip: 10.128.1.17
