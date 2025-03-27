@@ -32,7 +32,7 @@ controller_inventory_sources:
     overwrite: true
     update_on_launch: true
     update_cache_timeout: 0
-    # wait: true
+    wait: true
 
   - name: VMware-RH
     description: Pull all rh- vms from VMware
@@ -87,7 +87,7 @@ controller_templates:
       type: project
     related:
       credentials:
-        - name: vcenter-31
+        - name: vcenter-32
         - name: aap-admin
       survey_spec:
         description: ''
@@ -183,15 +183,6 @@ controller_templates:
             type: organization
           type: credential
         - credential_type:
-            kind: net
-            name: Network
-            type: credential_type
-          name: ikkedemo
-          organization:
-            name: Red Hat
-            type: organization
-          type: credential
-        - credential_type:
             kind: ssh
             name: Machine
             type: credential_type
@@ -232,15 +223,6 @@ controller_templates:
             name: Red Hat Subscription
             type: credential_type
           name: rh-subs
-          organization:
-            name: Red Hat
-            type: organization
-          type: credential
-        - credential_type:
-            kind: net
-            name: Network
-            type: credential_type
-          name: ikkedemo
           organization:
             name: Red Hat
             type: organization
@@ -428,16 +410,16 @@ controller_templates:
         type: organization
       type: project
     related:
-      credentials:
-        - credential_type:
-            kind: cloud
-            name: Red Hat Ansible Automation Platform
-            type: credential_type
-          name: aap-creds-rhops-admin
-          organization:
-            name: Red Hat
-            type: organization
-          type: credential
+      # credentials:
+      #   - credential_type:
+      #       kind: cloud
+      #       name: Red Hat Ansible Automation Platform
+      #       type: credential_type
+      #     name: aap-creds-rhops-admin
+      #     organization:
+      #       name: Red Hat
+      #       type: organization
+      #     type: credential
       survey_spec:
         description: Host to be removed from inventory
         name: Removed host
