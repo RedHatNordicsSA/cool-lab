@@ -102,6 +102,24 @@
               auto6: true
               # address: [192.168.2.1/24]
 
+    - name: setup dhcp server
+      include_role:
+        name: robertdebock.dhcpd
+      vars:
+        dhcpd_ipv4_interface: enp1s0
+        dhcpd_subnet_mask: "255.255.255.0"
+        dhcpd_broadcast_address: "10.0.2.255"
+        dhcpd_routers: "192.168.1.1"
+        dhcpd_domain_name_servers:
+          - "10.128.1.10"
+          - "10.128.1.11"
+        dhcpd_domain_search: cool.lab
+        dhcpd_subnets:
+          - network: "192.168.1.0"
+            netmask: "255.255.255.0"
+            range_start: "192.168.1.50"
+            range_end: "192.168.1.200"
+
           # - name: cool-lab
           #  # WIREGUARD (do not enable, breaks stuff)
           #   type: vpn
