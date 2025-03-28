@@ -20,7 +20,6 @@
         state: present
         username: "{{ rh_subs_username }}"
         password: "{{ rh_subs_password }}"
-        autosubscribe: false
         force_register: "{{ force_register }}"
       tags: subs
 
