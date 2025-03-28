@@ -10,7 +10,7 @@
     num_cpus: 2
     num_cpu_cores_per_socket: 1
     template: rhel-9.4-template
-    net_name: coollab-2991
+    net_name: vlan3109
     net_type: dhcp       # dhcp vs. static. If static, fix below values
     # ip: 10.128.1.256
     # netmask: 255.255.255.0
