@@ -1,8 +1,8 @@
 ---
 
-
 - name: Register host to IdM
   hosts: all
+  become: true
   vars:
     ipaclient_mkhomedir: true
     ipaclient_ntp_servers:
@@ -12,6 +12,11 @@
     use_inventory_for_hostname: false
 
   tasks:
+
+    - name: setup hostname
+      hostname:
+        name: "{{ short_name | mandatory }}.{{ ipaserver_domain }}"
+        use: systemd
 
     - name: Get the short hostname from inventory
       # Normally there is dot in fqdn, vmware inventory has _ as separator
@@ -25,9 +30,9 @@
           - "{{ short_name | mandatory }}.{{ ipaserver_domain }}"
         state: present
         ipasssd_enable_dns_updates: true
-        ipaclient_domain: eu.arrow.lab
-        ipaclient_domain: "{{ ipaserver_domain }}"
-        ipaclient_realm: "{{ ipaserver_realm }}"
+        # ipaclient_domain: eu.arrow.lab
+        # ipaclient_domain: "{{ ipaserver_domain }}"
+        # ipaclient_realm: "{{ ipaserver_realm }}"
         ipaclient_force_join: true
       include_role:
         name: redhat.rhel_idm.ipaclient
