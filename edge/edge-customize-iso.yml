@@ -1,0 +1,75 @@
+---
+# Playbook creates post config for the RHEL Edge devices for cool-lab
+# call it with wished VPN IP address for wireguard, eg:
+# -e wg_client_ip=10.254.251.120
+
+- name: create kickstart post install file for edge
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+
+    - name: generate wireguard privkey
+      command: wg genkey
+      register: wg_privkey
+      ignore_errors: true
+
+    - name: instruct installing wireguard
+      fail:
+        msg: >
+          You must have wireguard installed locally in order to generate keys.
+          See this https://www.wireguard.com/install/
+      when: wg_privkey is failed
+
+    - name: generate wireguard pubkey for conveniance printout
+      shell: echo "{{ wg_privkey.stdout }}" | wg genkey
+      register: wg_pubkey
+
+    - name: create kicstart post install conf
+      ansible.builtin.copy:
+        dest: fleet_post
+        content: |
+          %post
+          # create wireguard conf
+          cat > /etc/wireguard/cool-lab.conf<<EOF
+          [Interface]
+          Address = {{ wg_client_ip }}
+          PrivateKey = {{ wg_privkey.stdout }}
+          DNS = {{ ipaserver_master_ip }}
+          [Peer]
+          PublicKey = {{ wireguard_server_pubkey }}
+          AllowedIPs = 10.128.1.0/24, 10.128.2.0/24, 10.128.3.0/24
+          Endpoint = {{ wireguard_server_endpoint }}
+          EOF
+
+          # fix name resolving
+          rm /etc/resolv.conf
+          ln -s /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
+          systemctl enable systemd-resolved
+          systemctl enable wg-quick@cool-lab
+          %end
+
+    # - name: create fleet_rhc_vars file for edge iso
+    #   ansible.builtin.copy:
+    #     dest: fleet_rhc_vars
+    #     content: |
+    #       RHC_ORGID="{{ rhc_org_id }}"
+    #       RHC_ACTIVATION_KEY="{{ rhc_activation_key }}"
+    #       RHC_FIRSTBOOT=true
+
+    # - name: get kickstart template
+    #   ansible.builtin.get_url:
+    #     # yamllint disable-line rule:line-length
+    #     url: https://raw.githubusercontent.com/RedHatInsights/edge-api/main/templates/templateKickstart.ks
+
+    # - name: Add customizations to kickstart
+    #   iansible.builtin.lineinfile:
+
+
+
+    - name: instruct pubkey for wireguard server
+      ansible.builtin.debug:
+        msg:
+          - Info about the client for your wireguard server
+          - public key is "{{ wg_pubkey.stdout }}"
+          - client allowed addresses is "{{ wg_client_ip }}/32"
