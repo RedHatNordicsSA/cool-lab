@@ -93,6 +93,8 @@ hub_collection_remotes:
         version: 2.4.0
       - name: containers.podman
         version: 1.16.3
+      - name: community.vmware
+        version: 5.5.0
 
 hub_collection_repositories:
   - name: rh-certified
