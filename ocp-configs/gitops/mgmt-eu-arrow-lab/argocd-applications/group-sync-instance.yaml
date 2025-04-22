@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/RedHatNordicsSA/cool-lab.git
     targetRevision: arrowlab
-    path: ocp-configs/gitops/mgt-eu-arrow-lab/group-sync/instance/overlays/ldap
+    path: ocp-configs/gitops/mgmt-eu-arrow-lab/group-sync/instance/overlays/ldap
   destination:
     server: https://kubernetes.default.svc
     namespace: group-sync-operator

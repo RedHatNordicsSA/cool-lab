@@ -13,7 +13,7 @@
 # ansible-playbook -i localhost, \
 #   -e ansible_python_interpreter=/usr/bin/python3 \
 #   -e @../private-lab/secrets.yml \
-#   ocp-configs/gitops/mgt-eu-arrow-lab/push-secrets.yaml
+#   ocp-configs/gitops/mgmt-eu-arrow-lab/push-secrets.yaml
 #
 - name: prep ocp for argocd app of apps
   connection: local

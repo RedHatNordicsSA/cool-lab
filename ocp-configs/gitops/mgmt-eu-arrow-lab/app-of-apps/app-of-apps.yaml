@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: mgt-eu-arrow-lab-setup
+  name: mgmt-eu-arrow-lab-setup
   namespace: openshift-gitops
 spec:
   project: default

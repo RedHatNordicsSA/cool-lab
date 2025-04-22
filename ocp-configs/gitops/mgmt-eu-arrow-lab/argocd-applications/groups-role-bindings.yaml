@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/RedHatNordicsSA/cool-lab.git
     targetRevision: arrowlab
-    path: ocp-configs/gitops/mgt-eu-arrow-lab/groups-roles-bindings/base
+    path: ocp-configs/gitops/mgmt-eu-arrow-lab/groups-roles-bindings/base
   destination:
     server: https://kubernetes.default.svc
     namespace: openshift-config
