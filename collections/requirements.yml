@@ -21,6 +21,7 @@ collections:
   - name: dynatrace.oneagent
     # version: 1.0.3
   - name: infra.aap_configuration
+  - name: infra.aap_configuration_extended
   - name: kubernetes.core
     # version: 3.0.0
   - name: microsoft.sql
