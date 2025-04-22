@@ -98,7 +98,7 @@
       kubernetes.core.k8s:
         definition:
           "{{ lookup('kubernetes.core.kustomize',
-              dir='ocp-configs/gitops/mgt-eu-arrow-lab/openshift-gitops-operator/operator/overlays/gitops-latest') }}"
+              dir='ocp-configs/gitops/mgmt-eu-arrow-lab/openshift-gitops-operator/operator/overlays/latest') }}"
 
     - name: Ensure App of Apps
       kubernetes.core.k8s:
