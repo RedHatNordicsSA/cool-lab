@@ -1,0 +1,17 @@
+---
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+
+resources:
+  - ../../base
+
+patches:
+- path: ldap-group-sync-patch.yaml
+  target:
+    group: redhatcop.redhat.io
+    version: v1alpha1
+    kind: GroupSync
+    name: oauth-groupsync
+
+  # - ./ldap-group-sync-patch.yaml
+

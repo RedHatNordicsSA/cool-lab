@@ -1,0 +1,23 @@
+- op: add
+  path: /spec/identityProviders/-
+  value:
+    name: Red Hat IdM
+    mappingMethod: claim
+    type: LDAP
+    ldap:
+      attributes:
+        id:
+          - dn
+        email:
+          - mail
+        name:
+          - cn
+        preferredUsername:
+          - uid
+      bindDN: "uid=openshift,cn=sysaccounts,cn=etc,dc=eu,dc=arrow,dc=lab"
+      bindPassword:
+        name: ldap-secret
+      ca:
+        name: ca-config-map
+      insecure: false
+      url: "ldaps://lab-eu-idm-01.arrowdemo.se/cn=users,cn=accounts,dc=eu,dc=arrow,dc=lab?uid"

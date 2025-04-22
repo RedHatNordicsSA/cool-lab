@@ -1,0 +1,106 @@
+---
+# yamllint disable rule:line-length
+#
+# This playbook connects to given cluster and installs some prerequisites
+# for gitops to work. We set secrets from here as we don't use secrets
+# handlers at this point yet.
+#
+# After prerequisites are in place, OpenShift GitOps is setup and initiated.
+#
+# I run this on my f39 laptop like this:
+# sudo dnf install python3-kubernetes
+# ansible-galaxy collection install  kubernetes.core
+# ansible-playbook -i localhost, \
+#   -e ansible_python_interpreter=/usr/bin/python3 \
+#   -e @../private-lab/secrets.yml \
+#   ocp-configs/gitops/mgt-eu-arrow-lab/push-secrets.yaml
+#
+- name: prep ocp for argocd app of apps
+  connection: local
+  hosts: all
+  vars:
+    host: api.mgmt.eu.arrow.lab:6443
+  tasks:
+
+    - name: Put ldap-secret in place for IdM auth
+      kubernetes.core.k8s:
+        definition:
+          apiVersion: v1
+          kind: Secret
+          data:
+            bindPassword: "{{ vault_ocp_bind_pwd | b64encode }}"
+          metadata:
+            labels:
+              app.kubernetes.io/instance: ldap-sync
+            name: ldap-secret
+            namespace: openshift-config
+          type: Opaque
+
+    - name: Put ldap-CA cert in place for IdM auth
+      kubernetes.core.k8s:
+        definition:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: ca-config-map
+            namespace: openshift-config
+          data:
+            ca.crt: |
+              -----BEGIN CERTIFICATE-----
+              MIIEXDCCAsSgAwIBAgIRANy64GIyGSTlm9civd8PB7YwDQYJKoZIhvcNAQELBQAw
+              NzEVMBMGA1UECgwMRVUuQVJST1cuTEFCMR4wHAYDVQQDDBVDZXJ0aWZpY2F0ZSBB
+              dXRob3JpdHkwHhcNMjUwMTMxMTE1MjU5WhcNNDUwMTMxMTE1MjU5WjA3MRUwEwYD
+              VQQKDAxFVS5BUlJPVy5MQUIxHjAcBgNVBAMMFUNlcnRpZmljYXRlIEF1dGhvcml0
+              eTCCAaIwDQYJKoZIhvcNAQEBBQADggGPADCCAYoCggGBALCJKZzsgPeBtsbSe1xE
+              oFlEk8zO4zNPRrboNWMK0rK4S90AEQne71L+GWlsm+c9oARXhUNSwvOGC+/RXlN3
+              gl8S73u0gwM5DUEQ++4lJQt1NFOubwCP8QlfJBzyQ0qqhgT/DOgzJJOoxb4a0yhp
+              e/oQtfZv2+5aQMLjVNjAIEaWcqgiUDysgoOvsT7uSgkiLDKdQCGWcFpeKsmPPVIe
+              yZ3y0QU6eksXRUvBi+NF4ZviEfCIey7w8nLcM9wKHAgcpyVfSgQOOeEEcN+m7nuO
+              hjP6pW37EeZbhALcFNsqHY/S5bPkEy5mC+22hvOl90y4b/1OaR31VD8n2L4bYOFl
+              GwsVezJx039VOewBxc58+BPyf9n767hbrSBmh7pEfc/q5ynZgYYsfJj3TZDVdqI6
+              FjqAaFYa4eLsL2BNJEiHNWh0DinePuvb2f+Ab3wJqB1TRzb6CFHyqbweowAHyZrl
+              QC/TT2fgazH4aGaPwCZfNjA3lSOC7eZZ+vcDHHdKBa019QIDAQABo2MwYTAdBgNV
+              HQ4EFgQUpgGZvEvPoqh9RyoEKlvMwQ3r1H8wHwYDVR0jBBgwFoAUpgGZvEvPoqh9
+              RyoEKlvMwQ3r1H8wDwYDVR0TAQH/BAUwAwEB/zAOBgNVHQ8BAf8EBAMCAcYwDQYJ
+              KoZIhvcNAQELBQADggGBACKXJq5Xv62TWWrtsILfrQwSmc2n/nq00cJGIl6uhUUo
+              UWn+qjGOMlM4X8SHkoILFkkE2SgmeqPsmqxpmtgNcR3LneqHTU3ml/f95bj2YrlS
+              GLdnAh8yby2Rb0I/YX8T1Xs0brui6JOdXVAaETpQgHlkC0j5TaEERhnnskX/d5T1
+              0TFJrBzN8P/CWACXg6dDqjGOFTa+qp1dz40u1Clvv7F28Sri9M8bi54TWkXuUuYY
+              V13JCkDKFxkT1iah7CxJhDksPw1Zmc461yZkZRJ5sqv+xEOSHq56kyv+lQAOhTpR
+              5KUSamcFRo3plTtDj+/CtUNFKP3gOMioMVCs58/w3tyKxviJA/jD7MPqckzYrDtS
+              17is2oTgPdYwurLrwdV5F1lJPYldiA1hEDvPkaSuq0/dRAWUhjfWp+r7d6kGHSJC
+              tQyrIWgjF8JgEITVl8+IbQWJkuGSZNZtNwqFd9q5oMKtO6m4Q/BV/Dz3Txh29K3Z
+              fFJZUw7Gc5EOrHrDXmrSPA==
+              -----END CERTIFICATE-----
+
+    - name: Create a k8s namespace
+      kubernetes.core.k8s:
+        name: group-sync-operator
+        api_version: v1
+        kind: Namespace
+        state: present
+
+    - name: Put ldap-CA cert in place for IdM auth
+      kubernetes.core.k8s:
+        definition:
+          apiVersion: v1
+          data:
+            username: >
+              dWlkPW9wZW5zaGlmdCxjbj1zeXNhY2NvdW50cyxjbj1ldGMsZGM9ZXUsZGM9YXJyb3csZGM9bGFiCg==
+            password: "{{ vault_ocp_bind_pwd | b64encode }}"
+          kind: Secret
+          metadata:
+            name: ldap-group-sync
+            namespace: group-sync-operator
+          type: Opaque
+
+    - name: Install OpenShift GitOps
+      kubernetes.core.k8s:
+        definition:
+          "{{ lookup('kubernetes.core.kustomize',
+              dir='ocp-configs/gitops/mgt-eu-arrow-lab/openshift-gitops-operator/operator/overlays/gitops-latest') }}"
+
+    - name: Ensure App of Apps
+      kubernetes.core.k8s:
+        state: present
+        src: app-of-apps/app-of-apps.yaml

@@ -1,0 +1,17 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: groups-role-bindings
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/RedHatNordicsSA/cool-lab.git
+    targetRevision: arrowlab
+    path: ocp-configs/gitops/mgt-eu-arrow-lab/groups-roles-bindings/base
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: openshift-config
+  syncPolicy:
+    automated:
+      allowEmpty: true

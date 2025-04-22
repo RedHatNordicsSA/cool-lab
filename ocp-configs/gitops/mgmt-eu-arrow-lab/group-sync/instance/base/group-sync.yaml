@@ -1,0 +1,8 @@
+---
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: GroupSync
+metadata:
+  name: oauth-groupsync
+spec:
+  schedule: "0/15 * * * *"
+  providers: []

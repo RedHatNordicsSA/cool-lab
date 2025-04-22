@@ -1,0 +1,35 @@
+- op: add
+  path: /spec/providers
+  value:
+    - ldap:
+        credentialsSecret:
+          name: ldap-group-sync
+          namespace: group-sync-operator
+        caSecret:
+          name: ca-config-map
+          namespace: openshift-config
+          kind: ConfigMap
+          key: ca.crt
+        insecure: false
+        rfc2307:
+          groupMembershipAttributes:
+            - member
+          groupNameAttributes:
+            - cn
+          groupUIDAttribute: dn
+          groupsQuery:
+            baseDN: 'cn=groups,cn=accounts,dc=eu,dc=arrow,dc=lab'
+            derefAliases: never
+            filter: (objectClass=ipausergroup)
+            scope: sub
+          tolerateMemberNotFoundErrors: true
+          tolerateMemberOutOfScopeErrors: true
+          userUIDAttribute: dn
+          userNameAttributes:
+            - uid
+          usersQuery:
+            baseDN: 'cn=users,cn=accounts,dc=eu,dc=arrow,dc=lab'
+            derefAliases: never
+            scope: sub
+        url: ldaps://lab-eu-idm-01.arrowdemo.se
+      name: ldap

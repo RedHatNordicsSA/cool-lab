@@ -1,0 +1,17 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: oauth-ldap
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/RedHatNordicsSA/cool-lab.git
+    targetRevision: arrowlab
+    path: ocp-configs/gitops/mgt-eu-arrow-lab/oauth/overlays/ldap
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: openshift-cnv
+  syncPolicy:
+    automated:
+      allowEmpty: true
