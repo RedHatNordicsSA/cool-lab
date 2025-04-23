@@ -21,13 +21,23 @@
           };
       register: nets
 
+
     - name: Make sure the allowed networks are in read by options
-      ansible.builtin.lineinfile:
+      ansible.builtin.copy:
         path: /etc/named/ipa-options-ext.conf
-        line: "{{ item }}"
-      with_items:
-        - allow-recursion { trusted_network; };
-        - allow-query-cache { trusted_network; };
+        owner: root
+        group: named
+        mode: '0640'
+        content: |
+          /* turns on IPv6 for port 53, IPv4 is on by default for all ifaces */
+          listen-on-v6 { any; };
+
+          /* dnssec-enable is obsolete and 'yes' by default */
+          dnssec-validation no;
+
+          /* Allow trusted networks to query external DNS */
+          allow-recursion { trusted_network; };
+          allow-query-cache { trusted_network; };
       register: options
 
     - name: Restart service ipa
