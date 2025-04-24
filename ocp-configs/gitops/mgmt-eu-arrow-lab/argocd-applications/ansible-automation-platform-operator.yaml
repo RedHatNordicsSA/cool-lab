@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: ansible-automation-platform
+  name: ansible-automation-platform-operator
 spec:
   project: default
   source:
