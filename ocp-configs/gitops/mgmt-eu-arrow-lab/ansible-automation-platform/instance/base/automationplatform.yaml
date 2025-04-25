@@ -14,4 +14,5 @@ spec:
     replicas: 1
   database:
     postgres_data_volume_init: false
+  ingress_type: Route
 
