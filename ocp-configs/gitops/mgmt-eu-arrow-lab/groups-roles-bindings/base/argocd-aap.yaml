@@ -5,7 +5,7 @@ metadata:
   namespace: ansible-automation-platform
 subjects:
   - kind: ServiceAccount
-    name: openshift-gitops-argocd-application-platform
+    name: openshift-gitops-argocd-application-controller
     namespace: openshift-gitops
 roleRef:
   apiGroup: rbac.authorization.k8s.io
