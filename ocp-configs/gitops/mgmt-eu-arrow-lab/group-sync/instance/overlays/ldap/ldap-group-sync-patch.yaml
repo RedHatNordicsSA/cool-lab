@@ -11,6 +11,7 @@
           kind: ConfigMap
           key: ca.crt
         insecure: false
+        prune: true
         rfc2307:
           groupMembershipAttributes:
             - member
@@ -20,7 +21,7 @@
           groupsQuery:
             baseDN: 'cn=groups,cn=accounts,dc=eu,dc=arrow,dc=lab'
             derefAliases: never
-            filter: (objectClass=ipausergroup)
+            filter: (&(objectClass=ipausergroup)(|(cn=arrow-lab-eu-ocp-*-global)(cn=arrow-lab-eu-ocp-*-mgmt)))
             scope: sub
           tolerateMemberNotFoundErrors: true
           tolerateMemberOutOfScopeErrors: true
