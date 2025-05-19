@@ -31,7 +31,7 @@ hub_collection_remotes:
     rate_limit: 8
     signed_only: true
     policy: immediate
-    sync_dependencies: true
+    sync_dependencies: false
     requirements:
       - name: ansible.controller
       - name: ansible.eda
@@ -64,7 +64,7 @@ hub_collection_remotes:
     rate_limit: 8
     signed_only: true
     policy: immediate
-    sync_dependencies: true
+    sync_dependencies: false
     requirements:
       - name: infra.aap_configuration
       - name: infra.aap_utilities
