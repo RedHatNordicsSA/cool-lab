@@ -2,7 +2,7 @@ apiVersion: aap.ansible.com/v1alpha1
 kind: AnsibleAutomationPlatform
 metadata:
   name: aap
-  namespace: aap
+  namespace: ansible-automation-platform
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
