@@ -30,8 +30,6 @@ collections:
     # version: 1.23.0
   - name: redhat.rhel_idm
     # version: 1.14.2
-  - name: vmware.vmware_rest
-    # version: 3.0.0
   - name: myllynen.ansible_packer
     source: https://github.com/myllynen/ansible-packer
     # version: master
@@ -47,3 +45,7 @@ collections:
     # version: 4.0.0
   - name: redhat.satellite_operations
     # version: 2.1.0
+  - name: vmware.vmware
+    # version: 4.1.0
+  - name: vmware.vmware_rest
+    # version: 3.0.0
