@@ -131,6 +131,32 @@ controller_credentials:
       token: "{{ vault_aap_automationhub_token }}"
       url: https://console.redhat.com/api/automation-hub/content/validated/
 
+  # Note that you need to manually create API token and add it to vault
+  # before the follwoing pah repo secrets work
+  - name: private automationhub validated
+    organization: Red Hat
+    credential_type: Ansible Galaxy/Automation Hub API Token
+    description: token for private automation hub validated repo
+    inputs:
+      token: "{{ vault_aap_private_automationhub_token }}"
+      url: "https://{{ aap_hostname }}/api/galaxy/content/validated/"
+
+  - name: private automationhub published
+    organization: Red Hat
+    credential_type: Ansible Galaxy/Automation Hub API Token
+    description: token for private automation hub published repo
+    inputs:
+      token: "{{ vault_aap_private_automationhub_token }}"
+      url: "https://{{ aap_hostname }}/api/galaxy/content/published/"
+
+  - name: private automationhub certified
+    organization: Red Hat
+    credential_type: Ansible Galaxy/Automation Hub API Token
+    description: token for private automation hub certified repo
+    inputs:
+      token: "{{ vault_aap_private_automationhub_token }}"
+      url: "https://{{ aap_hostname }}/api/galaxy/content/certified/"
+
   - name: ocp-virt-mgt
     organization: Red Hat
     credential_type: OpenShift or Kubernetes API Bearer Token
