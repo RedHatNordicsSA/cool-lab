@@ -43,6 +43,7 @@ hub_collection_remotes:
       - name: ansible.windows
       - name: azure.azcollection
       - name: chocolatey.chocolatey
+      - name: cloud.common
       - name: dynatrace.oneagent
       - name: kubernetes.core
       - name: microsoft.ad
