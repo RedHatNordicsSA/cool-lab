@@ -11,3 +11,9 @@ aap_organizations:
     description: Arrow internal automations
   - name: Red Hat
     description: Red Hat demo automations
+    assign_galaxy_credentials_to_org:
+      # - cool-lab automationhub published
+      # - cool-lab automationhub validated
+      - private automationhub validated
+      - private automationhub published
+      - private automationhub certified
