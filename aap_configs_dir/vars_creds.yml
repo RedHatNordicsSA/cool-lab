@@ -157,6 +157,14 @@ controller_credentials:
       token: "{{ vault_aap_private_automationhub_token }}"
       url: "https://{{ aap_hostname }}/api/galaxy/content/certified/"
 
+  - name: private automationhub community
+    organization: Red Hat
+    credential_type: Ansible Galaxy/Automation Hub API Token
+    description: token for private automation hub community repo
+    inputs:
+      token: "{{ vault_aap_private_automationhub_token }}"
+      url: "https://{{ aap_hostname }}/api/galaxy/content/community/"
+
   - name: ocp-virt-mgt
     organization: Red Hat
     credential_type: OpenShift or Kubernetes API Bearer Token
