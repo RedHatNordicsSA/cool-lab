@@ -155,7 +155,7 @@ controller_credentials:
     description: token for private automation hub certified repo
     inputs:
       token: "{{ vault_aap_private_automationhub_token }}"
-      url: "https://{{ aap_hostname }}/api/galaxy/content/certified/"
+      url: "https://{{ aap_hostname }}/api/galaxy/content/rh-certified/"
 
   - name: private automationhub community
     organization: Red Hat
