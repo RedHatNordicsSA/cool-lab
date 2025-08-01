@@ -50,6 +50,8 @@ hub_collection_remotes:
       - name: microsoft.sql
       - name: redhat.rhel_idm
       - name: redhat.rhel_system_roles
+      - name: redhat.openshift
+      - name: redhat.openshift_virtualization
       - name: redhat.satellite
       - name: redhat.satellite_operations
       - name: vmware.vmware

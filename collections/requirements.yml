@@ -41,6 +41,8 @@ collections:
   - name: myllynen.rhel_image
     source: https://github.com/myllynen/rhel-image
     type: git
+  - name: redhat.openshift
+  - name: redhat.openshift_virtualization
   - name: redhat.satellite
     # version: 4.0.0
   - name: redhat.satellite_operations
