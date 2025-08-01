@@ -1,0 +1,70 @@
+# Ansible Automation Platform execution environments build definitions
+
+ah_host: "{{ aap_hostname }}"
+ee_ah_host: "{{ aap_hostname }}"
+
+ee_base_registry_username: "{{ vault_rh_subs_username }}"
+ee_base_registry_password: "{{ vault_rh_subs_password }}"
+ee_registry_username: "{{ ah_username }}"
+ee_registry_password: "{{ vault_aap_admin_password }}"
+ah_token: "{{ pah_oauthtoken }}"
+
+ee_validate_certs: false
+
+# https://ansible.readthedocs.io/projects/builder/en/stable/definition/
+ee_version: 3
+ee_build_arg_defaults:
+  ANSIBLE_GALAXY_CLI_COLLECTION_OPTS: --no-deps -vvvv
+  #ANSIBLE_GALAXY_CLI_COLLECTION_OPTS: --upgrade -vvvv
+ee_build_options:
+  container_init:
+    entrypoint: '["/opt/builder/bin/entrypoint"]'
+    package_pip: ""
+  package_manager_path: /usr/bin/microdnf
+
+ee_aap_version: 2.5
+ee_image_push: true
+ee_prune_images: true
+ee_create_ansible_config: true
+ee_registry_dest: "{{ ah_host }}/custom"
+
+ee_list:
+  - name: custom-openshift-9
+    # base_image: "{{ ee_ah_host }}/ansible-automation-platform/ee-minimal-rhel9:latest"
+    base_image: "registry.redhat.io/ansible-automation-platform-25/ee-minimal-rhel9:latest"
+    dependencies:
+      system:
+        - findutils [platform:rpm]
+        - iputils [platform:rpm]
+        - python3-pip [platform:rpm]
+        - systemd-devel [platform:rpm]
+        - python3.11-devel [platform:rpm]
+        - gcc [platform:rpm]
+      #python:
+      #  - dnspython
+      #  - netaddr
+      #  - psutil
+      #  - pyjwt
+      #  - selinux
+      galaxy:
+        collections:
+          - redhat.openshift
+          - redhat.openshift_virtualization
+    build_items:
+      - aap_configs_dir/
+    build_files:
+      # - src: "{{ lookup('env', 'PWD') + 'aap_configs_dir/pip.conf' }}"
+      - src: aap_configs_dir/pip.conf
+        dest: configs
+      # - src: "{{ lookup('env', 'PWD') + 'aap_configs_dir/ansible-ee.cfg' }}"
+      - src: aap_configs_dir/ansible-ee.cfg
+        dest: configs
+    build_steps:
+      prepend_base:
+        - ADD _build/configs/pip.conf /etc/pip.conf
+      prepend_final:
+        - ADD _build/configs/ansible-ee.cfg /etc/ansible/ansible.cfg
+      append_final:
+        - RUN rm -rf /etc/yum.repos.d/* /etc/pip.conf
+    tag: latest
+
