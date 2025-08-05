@@ -49,9 +49,12 @@ ee_list:
       #  - selinux
       galaxy:
         collections:
-          - kubernetes.core
-          - redhat.openshift
-          - redhat.openshift_virtualization
+          - name: kubernetes.core
+            version: 6.0.0
+          - name: redhat.openshift
+            version: 5.0.0
+          - name: redhat.openshift_virtualization
+            version: 2.2.3
     build_items:
       - aap_configs_dir/
     build_files:
