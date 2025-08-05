@@ -29,9 +29,10 @@ ee_create_ansible_config: true
 ee_registry_dest: "{{ ah_host }}/custom"
 
 ee_list:
-  - name: custom-openshift-9
+  - name: custom-openshift-8
     # base_image: "{{ ee_ah_host }}/ansible-automation-platform/ee-minimal-rhel9:latest"
-    base_image: "registry.redhat.io/ansible-automation-platform-25/ee-minimal-rhel9:latest"
+    # base_image: "registry.redhat.io/ansible-automation-platform-25/ee-minimal-rhel9:latest"
+    base_image: "registry.redhat.io/ansible-automation-platform-25/ee-supported-rhel8:latest"
     dependencies:
       system:
         - findutils [platform:rpm]
@@ -48,6 +49,7 @@ ee_list:
       #  - selinux
       galaxy:
         collections:
+          - kubernetes.core
           - redhat.openshift
           - redhat.openshift_virtualization
     build_items:
@@ -62,6 +64,7 @@ ee_list:
     build_steps:
       prepend_base:
         - ADD _build/configs/pip.conf /etc/pip.conf
+        - RUN rm -rf /usr/share/ansible/collections/ansible_collections/kubernetes
       prepend_final:
         - ADD _build/configs/ansible-ee.cfg /etc/ansible/ansible.cfg
       append_final:
