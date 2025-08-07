@@ -1,0 +1,181 @@
+---
+
+- name: "Ensure VM state"
+  hosts: all
+  tasks:
+
+    - name: "Create Namespace {{ namespace }}"
+      kubernetes.core.k8s:
+        api_version: v1
+        kind: Namespace
+        state: present
+        name: "{{ namespace }}"
+      when: state == "present"
+
+    - name: Ensure VM is {{ state }}
+      redhat.openshift_virtualization.kubevirt_vm:
+        state: "{{ state | default('present')}}"
+        name: "{{ name }}"
+        namespace: "{{ namespace }}"
+        labels:
+          rh-infra: satellite
+        instancetype:
+          name: "{{ instancetype | default('u1.small')}}"
+        preference:
+          name: "{{ preference | default('fedora')}}"
+        run_strategy: RerunOnFailure
+        data_volume_templates:
+          - metadata:
+              name: "{{ name }}-volume"
+            spec:
+              sourceRef:
+                kind: DataSource
+                name: rhel9
+                name: "{{ rhel9 | default('rhel9')}}"
+                namespace: openshift-virtualization-os-images
+              storage:
+                resources:
+                  requests:
+                    storage: "{{ disk_gb | default('32')}}Gi"
+        spec:
+          domain:
+            devices:
+              interfaces:
+                # - name: default
+                #   masquerade: {}
+                - name: bridge-network
+                  bridge: {}
+          networks:
+            # - name: default
+            #   pod: {}
+            - name: bridge-network
+              multus:
+                networkName: vlan3103-rh-infra
+                name: nic-3103
+          volumes:
+            - dataVolume:
+                name: "{{ name }}-volume"
+              name: rootdisk
+            - cloudInitNoCloud:
+                userData: |-
+                  #cloud-config
+                  users:
+                    - default
+                    - name: ansible
+                      groups: wheel
+                      sudo: ALL=(ALL) NOPASSWD:ALL
+                      ssh_authorized_keys: 
+                        - "{{ lab_admin_ssh_pubkey }}"
+                    - name: root
+                      ssh_authorized_keys: 
+                        - "{{ lab_admin_ssh_pubkey }}"
+                  password: "{{ cloud_user_password }}"
+                  chpasswd:
+                    expire: false
+                  ssh_authorized_keys: 
+                    - "{{ lab_admin_ssh_pubkey }}"
+                #   rh_subscription:
+                #     username: "{{ vault_rh_subs_username }}"
+                #     password: "{{ vault_rh_subs_password }}"
+                #     auto-attach: True
+                #    package_upgrade: true
+                # networkData: |-
+                #   #network-config
+                #   network:
+                #     version: 2
+                #     ethernets:
+                #       eth0:
+                #         addresses:
+                #           - 10.3.103.12/24
+                #         gateway: 10.3.103.1
+                #         nameservers:
+                #           addresses:
+                #             - "{{ ipaserver_master_ip }}"
+                #             - "{{ ipaserver_replica_ip }}"
+                #         routes:
+                #           - to: 0.0.0.0/0
+                #             via: 10.3.103.1
+              name: cloudinit
+        wait: true
+
+    - name: Wait for VM IP to be populated
+      kubernetes.core.k8s_info:
+        api_version: kubevirt.io/v1
+        kind: VirtualMachineInstance
+        name: "{{ name }}"
+        namespace: "{{ namespace }}"
+      register: deploy_collection_vmi
+      retries: 60
+      delay: 10
+      until: (deploy_collection_vmi.resources[0].status.interfaces[0]['ipAddress'] | default('')) | length > 0
+      when: state == "present"
+
+    - name: VM address
+      debug:
+        msg: "VM {{ name }} IP address is {{ deploy_collection_vmi.resources[0].status.interfaces[0]['ipAddress'] }}"
+      when: state == "present"
+
+    # - name: "Create Service"
+    #   tags:
+    #     - svc
+    #   kubernetes.core.k8s:
+    #     state: "{{ state | default('present')}}"
+    #     definition:
+    #       kind: Service
+    #       apiVersion: v1
+    #       metadata:
+    #         name: "{{ name }}"
+    #         namespace: "{{ namespace }}"
+    #       spec:
+    #         ports:
+    #           - protocol: TCP
+    #             port: 9090
+    #             targetPort: 9090
+    #             name: cockpit
+    #           - protocol: TCP
+    #             port: 443
+    #             targetPort: 443
+    #             name: https
+    #         type: ClusterIP
+    #         selector:
+    #           kubevirt.io/domain: "{{ name }}"
+    #
+    # - name: "Create Route for https"
+    #   tags:
+    #     - routes
+    #   kubernetes.core.k8s:
+    #     state: "{{ state | default('present')}}"
+    #     definition:
+    #       kind: Route
+    #       apiVersion: route.openshift.io/v1
+    #       metadata:
+    #         name: "{{ name }}"
+    #         namespace: "{{ namespace }}"
+    #       spec:
+    #         to:
+    #           kind: Service
+    #           name: "{{ name }}"
+    #           weight: 100
+    #         port:
+    #           targetPort: 443
+    #         wildcardPolicy: None
+    #
+    # - name: "Create Route for cockpit"
+    #   tags:
+    #     - routes
+    #   kubernetes.core.k8s:
+    #     state: "{{ state | default('present')}}"
+    #     definition:
+    #       kind: Route
+    #       apiVersion: route.openshift.io/v1
+    #       metadata:
+    #         name: "{{ name }}-cockpit"
+    #         namespace: "{{ namespace }}"
+    #       spec:
+    #         to:
+    #           kind: Service
+    #           name: "{{ name }}"
+    #           weight: 100
+    #         port:
+    #           targetPort: 9090
+    #         wildcardPolicy: None
