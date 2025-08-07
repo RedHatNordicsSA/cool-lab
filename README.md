@@ -171,17 +171,17 @@ ansible-playbook  -u root -e "rh_subs_username=$subs_username rh_subs_password=$
 
 ## Create / Delete / power off / power on VM
 
-There is [generic playbook](ensure-vm-state.yml) to create VMs from given
+There is [generic playbook](ensure-vm-state-vmware.yml) to create VMs from given
 template. If you want RHEL you run this:
 
 ```
-ansible-playbook -i localhost, -c local -e short_name=rh-test-net ensure-vm-state.yml
+ansible-playbook -i localhost, -c local -e short_name=rh-test-net ensure-vm-state-vmware.yml
 ```
 
 For power state commands:
 
 ```
-ansible-playbook -i localhost, -c local -e vm_state=poweredoff -e short_name=rh-test-net ensure-vm-state.yml
+ansible-playbook -i localhost, -c local -e vm_state=poweredoff -e short_name=rh-test-net ensure-vm-state-vmware.yml
 ```
 
 And to delete it nicely, unregistering from all places like subs and idm:
@@ -193,7 +193,7 @@ ansible-playbook  -u root -e "short_name=rh-test-01" -l rh-idm-01.cool.lab  nuke
 And bluntly just delete VM, leave subscriptions, insights and idm think it still exists:
 
 ```
-ansible-playbook -i localhost, -c local -e vm_state=absent -e short_name=rh-test-net ensure-vm-state.yml
+ansible-playbook -i localhost, -c local -e vm_state=absent -e short_name=rh-test-net ensure-vm-state-vmware.yml
 ```
 
 There are different values in vars, check them out. Like mem, cpu, network etc tunings.

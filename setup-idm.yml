@@ -1,6 +1,6 @@
 ---
 
-- import_playbook: ensure-vm-state.yml
+- import_playbook: ensure-vm-state-vmware.yml
   vars:
     memory_mb: 4096
     num_cpus: 2
@@ -17,7 +17,7 @@
       - "{{ dns_forwarder2_ip }}"
   tags: server
 
-- import_playbook: ensure-vm-state.yml
+- import_playbook: ensure-vm-state-vmware.yml
   vars:
     memory_mb: 4096
     num_cpus: 2

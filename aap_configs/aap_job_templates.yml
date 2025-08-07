@@ -16,7 +16,7 @@ controller_templates:
     job_slice_count: 1
     job_type: run
     limit: localhost
-    playbook: ensure-vm-state.yml
+    playbook: ensure-vm-state-vmware.yml
     project:
       name: Cool-Lab
       organization:

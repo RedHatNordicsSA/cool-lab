@@ -2,7 +2,7 @@
 # building VM based on requirements here
 # https://access.redhat.com/documentation/en-us/red_hat_satellite/6.11/html/installing_satellite_server_in_a_connected_network_environment/preparing_your_environment_for_installation_satellite
 #
-- import_playbook: ensure-vm-state.yml
+- import_playbook: ensure-vm-state-vmware.yml
   vars:
     template: rhel_8_5_image
     memory_mb: 20480
