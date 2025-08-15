@@ -21,7 +21,7 @@
         name: "{{ short_name }}"
         namespace: "{{ namespace }}"
         labels:
-          rh-infra: true
+          rh-infra: "aap-generated"
         instancetype:
           name: "{{ instancetype | default('u1.small')}}"
         preference:
