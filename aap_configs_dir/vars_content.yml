@@ -113,6 +113,16 @@ controller_templates:
             required: true
             type: multiplechoice
             variable: net_name
+          - choices: "rhel8\nrhel9\nrhel10\nfedora\ncentos-stream9\ncentos-stream10\nwin10\nwin11\nwin2k22\nwin2k25\n"
+            default: 'rhel10'
+            max: 2
+            min: 1
+            new_question: true
+            question_description: Select VM template disk image
+            question_name: VM Data Source
+            required: true
+            type: multiplechoice
+            variable: vm_data_source
           - choices: "u1.nano\nu1.micro\nu1.small\nu1.medium\nu1.2xmedium\nu1.large\nu1.xlarge\nu1.2xlarge\nu1.4xlarge\nu1.8xlarge\n"
             default: 'u1.small'
             max: 2
@@ -123,6 +133,16 @@ controller_templates:
             required: true
             type: multiplechoice
             variable: instance_type
+          - choices: "32\n64\n128\n"
+            default: '32'
+            max: 128
+            min: 0
+            new_question: true
+            question_description: VM Disk size in GB
+            question_name: Disk Size
+            required: true
+            type: multiplechoice
+            variable: vm_disk_gb
           - choices: "present\nabsent"
             default: present
             max: 1024

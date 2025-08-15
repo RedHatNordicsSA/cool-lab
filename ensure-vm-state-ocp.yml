@@ -21,11 +21,11 @@
         name: "{{ short_name }}"
         namespace: "{{ namespace }}"
         labels:
-          rh-infra: satellite
+          rh-infra: true
         instancetype:
           name: "{{ instancetype | default('u1.small')}}"
         preference:
-          name: "{{ preference | default('fedora')}}"
+          name: "{{ vm_preference | default('fedora')}}"
         run_strategy: RerunOnFailure
         data_volume_templates:
           - metadata:
@@ -33,13 +33,12 @@
             spec:
               sourceRef:
                 kind: DataSource
-                name: rhel9
-                name: "{{ rhel9 | default('rhel9')}}"
+                name: "{{ vm_data_source | default('rhel9')}}"
                 namespace: openshift-virtualization-os-images
               storage:
                 resources:
                   requests:
-                    storage: "{{ disk_gb | default('32')}}Gi"
+                    storage: "{{ vm_disk_gb | default('32')}}Gi"
         spec:
           domain:
             devices:
