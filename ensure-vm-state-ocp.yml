@@ -2,6 +2,9 @@
 
 - name: "Ensure VM state"
   hosts: all
+  vars:
+    namespace: rh-infra
+    net_name: vlan3103-rh-infra
   tasks:
 
     - name: "Create Namespace {{ namespace }}"
@@ -10,12 +13,12 @@
         kind: Namespace
         state: present
         name: "{{ namespace }}"
-      when: state == "present"
+      when: vm_state == "present"
 
-    - name: Ensure VM is {{ state }}
+    - name: Ensure VM is {{ vm_state }}
       redhat.openshift_virtualization.kubevirt_vm:
-        state: "{{ state | default('present')}}"
-        name: "{{ name }}"
+        state: "{{ vm_state | default('present')}}"
+        name: "{{ short_name }}"
         namespace: "{{ namespace }}"
         labels:
           rh-infra: satellite
@@ -26,7 +29,7 @@
         run_strategy: RerunOnFailure
         data_volume_templates:
           - metadata:
-              name: "{{ name }}-volume"
+              name: "{{ short_name }}-volume"
             spec:
               sourceRef:
                 kind: DataSource
@@ -50,11 +53,11 @@
             #   pod: {}
             - name: bridge-network
               multus:
-                networkName: vlan3103-rh-infra
-                name: nic-3103
+                networkName: "{{ net_name }}"
+                name: "{{ net_name }}"
           volumes:
             - dataVolume:
-                name: "{{ name }}-volume"
+                name: "{{ short_name }}-volume"
               name: rootdisk
             - cloudInitNoCloud:
                 userData: |-
@@ -102,29 +105,29 @@
       kubernetes.core.k8s_info:
         api_version: kubevirt.io/v1
         kind: VirtualMachineInstance
-        name: "{{ name }}"
+        name: "{{ short_name }}"
         namespace: "{{ namespace }}"
       register: deploy_collection_vmi
       retries: 60
       delay: 10
       until: (deploy_collection_vmi.resources[0].status.interfaces[0]['ipAddress'] | default('')) | length > 0
-      when: state == "present"
+      when: vm_state == "present"
 
     - name: VM address
       debug:
-        msg: "VM {{ name }} IP address is {{ deploy_collection_vmi.resources[0].status.interfaces[0]['ipAddress'] }}"
-      when: state == "present"
+        msg: "VM {{ short_name }} IP address is {{ deploy_collection_vmi.resources[0].status.interfaces[0]['ipAddress'] }}"
+      when: vm_state == "present"
 
     # - name: "Create Service"
     #   tags:
     #     - svc
     #   kubernetes.core.k8s:
-    #     state: "{{ state | default('present')}}"
+    #     state: "{{ vm_state | default('present')}}"
     #     definition:
     #       kind: Service
     #       apiVersion: v1
     #       metadata:
-    #         name: "{{ name }}"
+    #         name: "{{ short_name }}"
     #         namespace: "{{ namespace }}"
     #       spec:
     #         ports:
@@ -138,23 +141,23 @@
     #             name: https
     #         type: ClusterIP
     #         selector:
-    #           kubevirt.io/domain: "{{ name }}"
+    #           kubevirt.io/domain: "{{ short_name }}"
     #
     # - name: "Create Route for https"
     #   tags:
     #     - routes
     #   kubernetes.core.k8s:
-    #     state: "{{ state | default('present')}}"
+    #     state: "{{ vm_state | default('present')}}"
     #     definition:
     #       kind: Route
     #       apiVersion: route.openshift.io/v1
     #       metadata:
-    #         name: "{{ name }}"
+    #         name: "{{ short_name }}"
     #         namespace: "{{ namespace }}"
     #       spec:
     #         to:
     #           kind: Service
-    #           name: "{{ name }}"
+    #           name: "{{ short_name }}"
     #           weight: 100
     #         port:
     #           targetPort: 443
@@ -164,17 +167,17 @@
     #   tags:
     #     - routes
     #   kubernetes.core.k8s:
-    #     state: "{{ state | default('present')}}"
+    #     state: "{{ vm_state | default('present')}}"
     #     definition:
     #       kind: Route
     #       apiVersion: route.openshift.io/v1
     #       metadata:
-    #         name: "{{ name }}-cockpit"
+    #         name: "{{ short_name }}-cockpit"
     #         namespace: "{{ namespace }}"
     #       spec:
     #         to:
     #           kind: Service
-    #           name: "{{ name }}"
+    #           name: "{{ short_name }}"
     #           weight: 100
     #         port:
     #           targetPort: 9090
