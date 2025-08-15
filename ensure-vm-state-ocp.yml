@@ -15,7 +15,7 @@
         name: "{{ namespace }}"
       when: vm_state == "present"
 
-    - name: Ensure VM is {{ vm_state }}
+    - name: Ensure VM is "{{ vm_state }}"
       redhat.openshift_virtualization.kubevirt_vm:
         state: "{{ vm_state | default('present')}}"
         name: "{{ short_name }}"
@@ -72,7 +72,6 @@
                     - name: root
                       ssh_authorized_keys: 
                         - "{{ lab_admin_ssh_pubkey }}"
-                  password: "{{ cloud_user_password }}"
                   chpasswd:
                     expire: false
                   ssh_authorized_keys: 
