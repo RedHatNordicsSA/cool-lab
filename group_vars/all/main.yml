@@ -21,6 +21,9 @@ enabled_repos_rhel:
     - rhel-9-for-x86_64-appstream-rpms
     - rhel-9-for-x86_64-baseos-rpms
     - ansible-automation-platform-2.5-for-rhel-9-x86_64-rpms
+  '10':
+    - rhel-10-for-x86_64-appstream-rpms
+    - rhel-10-for-x86_64-baseos-rpms
 
 # see guide here: https://galaxy.ansible.com/freeipa/ansible_freeipa
 dns_forwarder1_ip: 10.1.102.5
