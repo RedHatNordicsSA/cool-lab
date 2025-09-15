@@ -62,6 +62,13 @@ enabled_users:
     # yamllint disable-line rule:line-length
     sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDJ2cHjhSVd4KNUYVultbOUtUNqYsdEd+FGW90vbAXdAPt5DJ6+11NWIvSY8BHs0U84zh5MLsGzZYqmpgdYmPUuD0BCvUhoNdaZBxtn1upVl5ep+8qBWnNiSevxmBoK1xnuSexNOiCeV4JBHzBgLRCy92R8kzc8eE6XmsVZn+aFDwC/ZUa3LVvVTwreM1LWYxDMPPla25iq0R8Q0+aerpXX+/8aujevat+EOp9EuJ3J87T1KnBl1yV0s3mbLvwQHtCnBUNDSpCMbRJZmj1JpX4Hf1Qh60lMT0mFiV3d1WUDLGdQB6JciTo/I/J5nUdTxGZ+IQvOaud9/+562mD26z43 tsohlber@MacBook-Pro
 
+  - name: jmetso
+    first: Janne
+    last: Metso
+    password: "coolpw"
+    # yamllint disable-line rule:line-length
+    sshpubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDtl0x0jWPjA+pfHOr+kjMn8KNudxrWOfqlKisUaZVWhJSmkaKPfWMWJcLJSCL7QWdow5iTKoYx48VfmFjQ3F7amUvnNBZLv0BNEFGd1+lrm7h1xr4S/Ukj7JYmL6vbhFsNhDf2Yx6U+iBBKTWrFslTOCoLhf9msbaOpjlinI2eqInKMNtSKA+yCsSA24uHMhWD28jRo+mGjjG1QDo365f+60spTy/Dy1vzxEsVsLvnPFd2JU4JobmQuhfmD0CZEgCYE7KyXQJ1QncFtyJu+XqZ3enSrG/mR/Mvs+CSs2SvjaFrEmgbimMG5GoLueDtZ16xODV+9lFNYf09q0TeuN5h8nc15OtUrMmmUVxBZvX4c/G+jKX170k3gf+9zEJW7gGyDCW9XNFsy9gVRMY8RBdGfFZEQLOE/r3OzQ/sxjV3YWl/doRjSDAOeTsFTPRMabhk+V54+4Yf6pSUPyF/cB2YHi1PmBGpxNhbhu8dgCEAkOFRFwbrJq/pRpxEj+1tR8d0qqKQhygXxGRfM4L2P9P7CPCbvYeUJ14WT98NzDAOiS4ACTAd6451iSF4wjiY/QxkPAc4IkZwjFLc+G+Gtsmowt/AyZi/jlJZiI4XAgZ2WcF7eq4I8dVOf1shZ3cK2QoMc0+SYAS6ruPf0V5PjRkp3fLmx+i6HCOoA+qHq3cuYw== jmetso@jmetso.remote.csb
+
   #
   # Arrow users
   #
@@ -95,6 +102,7 @@ rh_ops:
   - ikke
   - myllynen
   - tsohlber
+  - jmetso
 
 arrow:
   - teli
@@ -109,6 +117,7 @@ odh_admins:
   - teli
   - thomar
   - sara
+  - jmetso
 
 developers:
   - earvonen
@@ -116,3 +125,4 @@ developers:
   - sara
   - teli
   - thomar
+  - jmetso
