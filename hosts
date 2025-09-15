@@ -9,3 +9,6 @@ arw-eu-idm-02.eu.arrow.lab ansible_ssh_host=10.0.109.25
 
 [ipaclients]
 arw-eu-bastion-01.eu.arrow.lab ansible_ssh_host=10.3.109.20
+
+[satellite]
+rh-satellite-01.eu.arrow.lab

@@ -1,32 +1,44 @@
 ---
 - hosts: all
   vars:
-    repository_setup_rhsm_configure: true
-    repository_setup_install_katello_rpm: true
-    repository_setup_rhsm_subscribe: true
-    repository_setup_rhsm_parameters:
-      activationkey: "{{ activation_key | default('RHEL9') }}"
-      server_insecure: true
-      rhsm_baseurl: https://rh-satellite-01.cool.lab
-      org_id: Red_Hat_Cool_Lab
+    satellite: rh-satellite-01.eu.arrow.lab
+    org: Red_Hat
+    rhc_state: reconnect
+    rhc_organization: "{{ org }}"
   tasks:
 
-    - name: Get the short hostname from inventory
-      # Normally there is dot in fqdn, vmware inventory has _ as separator
-      set_fact:
-        short_name: "{{ inventory_hostname | regex_search('^[^_.]*') }}"
-      when: use_inventory_for_hostname
+    - name: Install dependency package python requests
+      package:
+        name: python3-requests
 
-    - name: clean all previous subscriptions
-      include_role:
-        name: myllynen.rhel_ansible_roles.system_unregister
+    - name: unregister insights
+      command: insights-client --unregister
+      args:
+        creates: /etc/insights-client/.unregistered
 
-    - name: subscribe to satellite
-      include_role:
-        name: myllynen.rhel_ansible_roles.repository_setup
+    - name: unsubscribe from Red Hat
+      redhat_subscription:
+        state: absent
 
-    - name: drop foreman ssh-key
-      ansible.posix.authorized_key:
-        user: root
-        state: present
-        key: "{{ satellite_foreman_pubkey }}"
+    - name: Clean subsriptions
+      ansible.builtin.shell:
+        cmd: "subscription-manager clean"
+
+    - name: Generate satellite registration command for client
+      redhat.satellite.registration_command:
+        username: "{{ satellite_username }}"
+        password: "{{ satellite_password }}"
+        server_url: "https://{{ satellite }}"
+        validate_certs: false
+        insecure: true
+        force: true
+        activation_keys:
+          - "RHEL{{ ansible_facts['distribution_major_version'] }}"
+      register: command
+
+    - debug:
+        var: command.registration_command
+
+    - name: Perform registration
+      ansible.builtin.shell:
+        cmd: "{{ command.registration_command }}"

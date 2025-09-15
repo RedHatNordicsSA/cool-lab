@@ -1,259 +1,85 @@
 ---
-
 - name: Install Red Hat Satellite
-  hosts: rh-satellite-01.cool.lab
-  vars:
-    satellite_server_url: https://rh-satellite-01.cool.lab
-    satellite_organization: Red Hat Cool Lab
-    satellite_location: Cool Lab Infra
-    satellite_validate_certs: true
-    satellite_firewall_zone: public
-    satellite_products:
-      - name: Red Hat Enterprise Linux for x86_64
-        repository_sets:
-          - name: Red Hat Enterprise Linux 8 for x86_64 - BaseOS (RPMs)
-            releasever: 8
-          - name: Red Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)
-            releasever: 8
-          - name: Red Hat Enterprise Linux 8 for x86_64 - BaseOS (Kickstart)
-            releasever: 8.6
-          - name: Red Hat Satellite Client 6 for RHEL 8 x86_64 (RPMs)
-          - name: Red Hat Satellite Client 6 for RHEL 9 x86_64 (RPMs)
-
-          - name: Red Hat Enterprise Linux 9 for x86_64 - BaseOS (RPMs)
-            releasever: 9
-          - name: Red Hat Enterprise Linux 9 for x86_64 - AppStream (RPMs)
-            releasever: 9
-
-      - name: Red Hat Ansible Automation Platform
-        repository_sets:
-          - name:
-              "Red Hat Ansible Automation Platform 2.2 for RHEL 9 x86_64 (RPMs)"
-
-    satellite_sync_plans:
-      - name: Weekly Red Hat repository sync
-        interval: weekly
-        sync_date: 2022-01-01 02:02:00 UTC
-        enabled: true
-        products:
-          - Red Hat Enterprise Linux for x86_64
-          - Red Hat Ansible Automation Platform
-
-    satellite_lifecycle_environments:
-      - name: Development
-        prior: Library
-
-      - name: Testing
-        prior: Development
-
-      - name: Production
-        prior: Testing
-
-    satellite_content_views:
-      - name: RHEL8
-        repositories:
-          - name: 'Red Hat Enterprise Linux 8 for x86_64 - BaseOS RPMs 8'
-            product: 'Red Hat Enterprise Linux for x86_64'
-          - name: 'Red Hat Enterprise Linux 8 for x86_64 - AppStream RPMs 8'
-            product: 'Red Hat Enterprise Linux for x86_64'
-      - name: RHEL9
-        repositories:
-          - name: 'Red Hat Enterprise Linux 9 for x86_64 - BaseOS RPMs 9'
-            product: 'Red Hat Enterprise Linux for x86_64'
-          - name: 'Red Hat Enterprise Linux 9 for x86_64 - AppStream RPMs 9'
-            product: 'Red Hat Enterprise Linux for x86_64'
-
-    satellite_activation_keys:
-      - name: RHEL8
-        lifecycle_environment: "Library"
-        content_view: RHEL8
-        release_version: 8
-      - name: RHEL9
-        lifecycle_environment: "Library"
-        content_view: RHEL9
-        release_version: 9
-
-    satellite_rhsm_username: "{{ vault_rh_subs_username }}"
-    satellite_rhsm_password: "{{ vault_rh_subs_password }}"
-    satellite_installer_custom_parameters: >
-      --foreman-proxy-dhcp false
-      --foreman-proxy-dns false
-      --foreman-proxy-tftp false
-      --register-with-insights
-    satellite_manifest_download: true
-    satellite_manifest_file: /root/satellite_manifest.zip
-    satellite_manifest_refresh: false
-
+  hosts: satellite
+  become: true
+  gather_facts: true
   tasks:
-
-    - name: Check manifest file on Satellite server
-      stat:
-        path: "{{ satellite_manifest_file }}"
-      register: manifest_file
-      when: satellite_manifest_download | bool
-
-    - name: Attach subs to manifest
-      redhat.satellite.redhat_manifest:
-        name: "rh-satellite-01.cool.lab"
-        username: "{{ vault_rh_subs_username }}"
-        password: "{{ vault_rh_subs_password }}"
-        validate_certs: "{{ satellite_validate_certs }}"
-        state: present
-        pool_state: present
-        pool_id: "{{ item }}"
-        quantity: 1
-        path: "{{ satellite_manifest_file }}"
-      with_items:
-        - 8a82c49480862395018097e532dd5f8c
-        - 8a82c49480862395018097e5b4be5fda
-        - 8a82c49480862395018097e5b5365fdc
-        - 8a82c58b80862385018097e5e58a2bf9
-        - 8a82c58b80862385018097e5e5c02bfb
-        - 8a82c65580863028018097e76c09027d
-        - 8a82c68d80862c73018097e643521cad
-      register: manifest
+    - name: Fail if invalid Satellite URL defined
+      ansible.builtin.fail:
+        msg: "Satellite URL must start with http:// or https://."
       when:
-        - satellite_manifest_download | bool
-        - not manifest_file.stat.exists
+        - not satellite_server_url | default(true) or
+          (not satellite_server_url.startswith("http://") and
+           not satellite_server_url.startswith("https://"))
 
-    - debug:
-        var: manifest
+    - name: Install helpful packages
+      ansible.builtin.dnf:
+        name:
+          - firewalld
+          - insights-client
+          - rhc
+          - satellite-installer
+          - sos
+        state: present
 
-    - name: install satellite
-      include_role:
-        name: myllynen.satellite_automation.satellite_install
-      vars:
-        satellite_manifest_uuid: "{{ manifest.uuid }}"
+    - name: Enable firewalld service
+      ansible.builtin.service:
+        name: firewalld
+        enabled: true
 
-    - name: decide if we want to upload fresh manifest
-      set_fact:
-        manifest_state: present
-      when: not satellite_manifest_refresh | bool
+    - name: Start firewalld service
+      ansible.builtin.service:
+        name: firewalld
+        state: started
 
-    - name: decide if we want to refresh the manifest
-      set_fact:
-        manifest_state: refreshed
-      when: satellite_manifest_refresh | bool
+    - name: Configure Satellite firewall
+      ansible.posix.firewalld:
+        service: RH-Satellite-6
+        zone: "{{ satellite_firewall_zone }}"
+        state: enabled
+        immediate: true
+        permanent: true
 
-    # Update to use "manifest_download is changed" in when once working
-    # https://github.com/theforeman/foreman-ansible-modules/issues/1473
-    - name: Upload Satellite manifest
-      redhat.satellite.subscription_manifest:
+    - name: Check Satellite status
+      redhat.satellite.status_info:
         server_url: "{{ satellite_server_url }}"
         username: "{{ satellite_username }}"
         password: "{{ satellite_password }}"
-        organization: "{{ satellite_organization }}"
+        validate_certs: false
+      register: satellite_info
+      failed_when:
+        - satellite_info.msg is defined
+        - "'Unauthorized' in satellite_info.msg"
+
+    - name: Enable satellite repositories
+      rhsm_repository:
+        name:
+          - rhel-9-for-x86_64-baseos-rpms
+          - rhel-9-for-x86_64-appstream-rpms
+          - satellite-6.17-for-rhel-9-x86_64-rpms
+          - satellite-maintenance-6.17-for-rhel-9-x86_64-rpms
+        state: enabled
+
+    - name: Install Satellite
+      ansible.builtin.include_role:
+        name: redhat.satellite_operations.installer
+      register: satellite_install
+      # when: >
+      #   (satellite_info.msg is defined and 'Connection refused' in satellite_info.msg) or
+      #   (satellite_info.status.result is defined and satellite_info.status.result != 'ok')
+
+    - name: Verify Satellite status
+      redhat.satellite.status_info:
+        server_url: "{{ satellite_server_url }}"
+        username: "{{ satellite_username }}"
+        password: "{{ satellite_password }}"
         validate_certs: "{{ satellite_validate_certs }}"
-        manifest_path: "{{ satellite_manifest_file }}"
-        state: "{{ manifest_state }}"
+      register: satellite_info
+
+    - name: Connect Satellite to Red Hat Insights
+      ansible.builtin.command: satellite-installer --register-with-insights
+      changed_when: true
       when:
-        - satellite_manifest_download | bool
-        - not manifest_file.stat.exists
-
-    - name: FreeIPA with automatic registration
-      tags: users
-      redhat.satellite.auth_source_ldap:
-        name: "Red Hat IdM"
-        host: "{{ ipaservers | first }}"
-        onthefly_register: true
-        account: uid=aap_ldap,cn=sysaccounts,cn=etc,dc=cool,dc=lab
-        account_password: "{{ aap_ldap_password }}"
-        base_dn: dc=cool,dc=lab
-        groups_base: cn=groups,cn=accounts,dc=cool,dc=lab
-        server_type: free_ipa
-        attr_login: uid
-        attr_firstname: givenName
-        attr_lastname: sn
-        attr_mail: mail
-        attr_photo: jpegPhoto
-        server_url: "{{ satellite_server_url }}"
-        username: "{{ satellite_username }}"
-        password: "{{ satellite_password }}"
-        state: present
-
-    - name: Create Red Hat Ops user group
-      tags: users
-      redhat.satellite.usergroup:
-        server_url: "{{ satellite_server_url }}"
-        username: "{{ satellite_username }}"
-        password: "{{ satellite_password }}"
-        name: "Red Hat Ops"
-        admin: true
-        state: present
-
-    - name: Link rhops from FreeIPA
-      tags: users
-      redhat.satellite.external_usergroup:
-        server_url: "{{ satellite_server_url }}"
-        username: "{{ satellite_username }}"
-        password: "{{ satellite_password }}"
-        name: rhops
-        auth_source: "Red Hat IdM"
-        usergroup: "Red Hat Ops"
-        state: present
-
-    - name: Link rhops group from FreeIPA
-      tags: users
-      redhat.satellite.external_usergroup:
-        server_url: "{{ satellite_server_url }}"
-        username: "{{ satellite_username }}"
-        password: "{{ satellite_password }}"
-        auth_source: "Red Hat IdM"
-        name: rhops
-        usergroup: "Red Hat Ops"
-        state: present
-
-    - name: Create Arrow user group
-      tags: users
-      redhat.satellite.usergroup:
-        server_url: "{{ satellite_server_url }}"
-        username: "{{ satellite_username }}"
-        password: "{{ satellite_password }}"
-        name: "Arrow users"
-        admin: false
-        roles:
-          - Viewer
-        state: present
-
-    - name: Link arrow group from FreeIPA
-      tags: users
-      redhat.satellite.external_usergroup:
-        server_url: "{{ satellite_server_url }}"
-        username: "{{ satellite_username }}"
-        password: "{{ satellite_password }}"
-        auth_source: "Red Hat IdM"
-        name: arrow
-        usergroup: "Arrow users"
-        state: present
-
-    - name: setup repos
-      include_role:
-        name: redhat.satellite.repositories
-      tags: repos
-
-    - name: setup sync plans
-      include_role:
-        name: redhat.satellite.sync_plans
-
-    - name: setup lifecycle environments
-      include_role:
-        name: redhat.satellite.lifecycle_environments
-
-    - name: setup content views
-      tags: contentviews
-      include_role:
-        name: redhat.satellite.content_views
-
-    - name: publish content views
-      tags: contentviews
-      include_role:
-        name: redhat.satellite.content_view_publish
-      vars:
-        satellite_content_views:
-          - RHEL8
-          - RHEL9
-
-    - name: create activation keys
-      tags: keys
-      include_role:
-        name: redhat.satellite.activation_keys
+        - satellite_register_insights | bool
+        - satellite_install is not skipped
+        - ('status' in satellite_info and 'result' in satellite_info.status and satellite_info.status.result == 'ok')
