@@ -86,6 +86,17 @@ enabled_users:
     # yamllint disable-line rule:line-length
     sshpubkey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID9iOvCQWkwvRR4vZu7OFN7jtaBg/+gp9yt8PwA3eQPf
 
+    #
+    # HIQ users
+    #
+  - name: juuso
+    first: Juuso
+    last: Niemensyrjä
+    password: "coolpw"
+    # yamllint disable-line rule:line-length
+    sshpubkey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFiSTRoqGzSkY1YiOcxpv3/hv7ZfNYvDumOfilnv4pZd
+
+
 idm_admins:
   - ikke
   - teli
@@ -126,3 +137,6 @@ developers:
   - teli
   - thomar
   - jmetso
+
+hiq:
+  - juuso

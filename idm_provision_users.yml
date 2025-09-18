@@ -94,6 +94,12 @@
         # gidnumber: 2104
       tags: groups
 
+    - name: Ensure group HIQ
+      redhat.rhel_idm.ipagroup:
+        ipaadmin_password: "{{ vault_ipaadmin_password }}"
+        name: hiq
+      tags: groups
+
     - name: Ensure members in group developers
       redhat.rhel_idm.ipagroup:
         ipaadmin_password: "{{ vault_ipaadmin_password }}"
