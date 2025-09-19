@@ -1,0 +1,166 @@
+#
+# Satellite Settings
+#
+satellite_settings:
+  - name: login_text
+    value: Welcome to Satellite!
+  - name: entries_per_page
+    value: 100
+
+  - name: default_download_policy
+    value: on_demand
+  - name: default_proxy_download_policy
+    value: ion_demand
+  - name: default_redhat_download_policy
+    value: on_demand
+
+  - name: template_sync_associate
+    value: never
+  - name: template_sync_branch
+    value: master
+  - name: template_sync_repo
+    value: "{{ satellite_templates_repo_url | default('') }}"
+  - name: template_sync_force
+    value: true
+  - name: template_sync_lock
+    value: "lock"
+
+  - name: errata_status_installable
+    value: true
+  - name: unregister_delete_host
+    value: true
+
+
+#
+# Satellite Lifecycle Environments
+#
+satellite_lifecycle_environments:
+  - name: Development
+    prior: Library
+
+  - name: Testing
+    prior: Development
+
+  - name: Production
+    prior: Testing
+
+
+#
+# Satellite Products
+#
+satellite_products:
+  #
+  # Red Hat repositories
+  #
+  # RHEL repositories
+  - name: Red Hat Enterprise Linux for x86_64
+    repository_sets:
+      - name: Red Hat Enterprise Linux 8 for x86_64 - BaseOS (RPMs)
+        releasever: 8
+      - name: Red Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)
+        releasever: 8
+      - name: Red Hat Enterprise Linux 8 for x86_64 - BaseOS (Kickstart)
+        releasever: 8.6
+      - name: Red Hat Satellite Client 6 for RHEL 8 x86_64 (RPMs)
+
+      - name: Red Hat Enterprise Linux 9 for x86_64 - BaseOS (RPMs)
+        releasever: 9
+      - name: Red Hat Enterprise Linux 9 for x86_64 - AppStream (RPMs)
+        releasever: 9
+      - name: Red Hat Enterprise Linux 9 for x86_64 - BaseOS (Kickstart)
+        releasever: 9.6
+      - name: Red Hat Satellite Client 6 for RHEL 9 x86_64 (RPMs)
+
+      - name: Red Hat Enterprise Linux 10 for x86_64 - BaseOS (RPMs)
+        releasever: 10
+      - name: Red Hat Enterprise Linux 10 for x86_64 - BaseOS (Kickstart)
+        releasever: 10.0
+      - name: Red Hat Enterprise Linux 10 for x86_64 - AppStream (RPMs)
+        releasever: 10
+      - name: Red Hat Satellite Client 6 for RHEL 10 x86_64 (RPMs)
+
+  - name: Red Hat Ansible Automation Platform
+    repository_sets:
+      - name:
+          "Red Hat Ansible Automation Platform 2.5 for RHEL 9 x86_64 (RPMs)"
+
+  # Satellite Capsule repositories
+  - name: Red Hat Satellite Capsule
+    repository_sets:
+      - name: Red Hat Satellite Capsule 6.17 for RHEL 9 x86_64 (RPMs)
+
+
+#
+# Satellite Sync Plans
+#
+satellite_sync_plans:
+  - name: Weekly Red Hat repository sync
+    interval: weekly
+    sync_date: 2025-09-10 02:02:00 +0000
+    enabled: true
+    products:
+      - Red Hat Satellite Capsule
+      - Red Hat Enterprise Linux for x86_64
+
+satellite_content_views:
+  - name: RHEL8
+    repositories:
+      - name: 'Red Hat Enterprise Linux 8 for x86_64 - BaseOS RPMs 8'
+        product: 'Red Hat Enterprise Linux for x86_64'
+      - name: 'Red Hat Enterprise Linux 8 for x86_64 - AppStream RPMs 8'
+        product: 'Red Hat Enterprise Linux for x86_64'
+  - name: RHEL9
+    repositories:
+      - name: 'Red Hat Enterprise Linux 9 for x86_64 - BaseOS RPMs 9'
+        product: 'Red Hat Enterprise Linux for x86_64'
+      - name: 'Red Hat Enterprise Linux 9 for x86_64 - AppStream RPMs 9'
+        product: 'Red Hat Enterprise Linux for x86_64'
+  - name: RHEL10
+    repositories:
+      - name: 'Red Hat Enterprise Linux 10 for x86_64 - BaseOS RPMs 10'
+        product: 'Red Hat Enterprise Linux for x86_64'
+      - name: 'Red Hat Enterprise Linux 10 for x86_64 - AppStream RPMs 10'
+        product: 'Red Hat Enterprise Linux for x86_64'
+
+
+satellite_activation_keys:
+  - name: RHEL8
+    lifecycle_environment: "Library"
+    content_view: RHEL8
+    release_version: 8
+  - name: RHEL9
+    lifecycle_environment: "Library"
+    content_view: RHEL9
+    release_version: 9
+  - name: RHEL10
+    lifecycle_environment: "Library"
+    content_view: RHEL10
+    release_version: 10
+
+satellite_locations:
+  - name: Arrow Lab
+    organisations: 
+      - Red Hat
+  - name: Finland Edge
+    organisations: 
+      - Red Hat
+
+satellite_auth_sources_ldap:
+  - name: "Red Hat IdM"
+    host: "{{ ipaserver_master_fqdn }}"
+    onthefly_register: true
+    account: uid=aap_ldap,cn=sysaccounts,cn=etc,dc=eu,dc=arrow,dc=lab
+    account_password: "{{ vault_aap_ldap_password }}"
+    base_dn: dc=eu,dc=arrow,dc=lab
+    groups_base: cn=groups,cn=accounts,dc=eu,dc=arrow,dc=lab
+    server_type: free_ipa
+    attr_login: uid
+    attr_firstname: givenName
+    attr_lastname: sn
+    attr_mail: mail
+    attr_photo: jpegPhoto
+    # server_url: "{{ satellite_server_url }}"
+    # username: "{{ satellite_username }}"
+    # password: "{{ satellite_password }}"
+    state: present
+    no_log: false

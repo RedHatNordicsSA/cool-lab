@@ -1,0 +1,29 @@
+# Either use a manifest file from the local system
+# or download one from Red Hat Customer Portal
+# Downloading will be done from the Satellite host
+satellite_manifest_download: true
+
+# Skip manifest file upload, only refresh
+# previously uploaded manifest in Satellite
+satellite_manifest_refresh: false
+
+# Manifest file path to use on the Satellite host
+# This is used both when copying or downloading
+satellite_manifest_file_remote: "{{ ansible_facts.env.HOME + '/satellite_manifest.zip' }}"
+
+#
+# Required when copying manifest
+#
+# Manifest local file path to copy to the Satellite host
+satellite_manifest_file_local: "{{ lookup('env', 'HOME') + '/satellite_manifest.zip' }}"
+
+#
+# Required when downloading manifest
+#
+# Manifest UUID to download
+satellite_manifest_uuid: 3a3383d6-a0d0-494e-9d25-50c0180bae24
+
+# Red Hat Customer Portal credentials for downloading
+# These should come from vault
+satellite_rhsm_username: "{{ vault_rh_subs_username }}"
+satellite_rhsm_password: "{{ vault_rh_subs_password }}"

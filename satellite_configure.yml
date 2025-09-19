@@ -1,0 +1,17 @@
+---
+- name: Configure Red Hat Satellite
+  hosts: satellite
+  become: true
+  gather_facts: true
+  roles:
+    # - redhat.satellite.settings
+    # - redhat.satellite.locations
+    # - redhat.satellite.lifecycle_environments
+    # - redhat.satellite.repositories
+    # - redhat.satellite.sync_plans
+    # - redhat.satellite.content_views
+    # do content publish only at the time you want to publish new stuff (e.g. first run)
+    # - redhat.satellite.content_view_publish
+    # - redhat.satellite.activation_keys
+    - redhat.satellite.auth_sources_ldap
+

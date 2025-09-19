@@ -1,0 +1,45 @@
+#
+# Satellite install configuration
+#
+satellite_installer_scenario: satellite
+satellite_installer_locale: C.UTF-8
+satellite_installer_no_colors: true
+satellite_installer_verbose: true
+satellite_installer_timeout: 1800
+
+satellite_server_url: https://rh-satellite-01.eu.arrow.lab
+
+satellite_organization: Red Hat
+satellite_location: Arrow Lab
+
+satellite_validate_certs: false
+
+satellite_firewall_zone: public
+
+satellite_register_insights: true
+
+satellite_installer_options:
+  - --foreman-initial-admin-username "{{ satellite_username }}"
+  - --foreman-initial-admin-password '{{ satellite_password }}'
+  - --foreman-initial-admin-email root@example.com
+  - --foreman-initial-admin-first-name Satellite
+  - --foreman-initial-admin-last-name Administrator
+  - --foreman-initial-organization "{{ satellite_organization }}"
+  - --foreman-initial-location "{{ satellite_location }}"
+  - --tuning development
+  - --skip-checks-i-know-better
+  - --enable-foreman-plugin-ansible
+  - --enable-foreman-plugin-rh-cloud
+  - --enable-foreman-plugin-remote-execution
+  - --enable-foreman-plugin-openscap
+  - --enable-foreman-plugin-webhooks
+  - --enable-foreman-proxy-plugin-ansible
+  - --enable-foreman-proxy-plugin-openscap
+  - --no-enable-foreman-plugin-discovery
+  - --no-enable-foreman-proxy-plugin-discovery
+  - --foreman-proxy-content-enable-ansible true
+  - --foreman-proxy-content-enable-docker true
+  - --foreman-proxy-content-enable-ostree false # Not supported by satellite
+  - --foreman-plugin-tasks-automatic-cleanup true
+  - --foreman-plugin-rh-cloud-enable-iop-advisor-engine true
+  - --foreman-proxy-plugin-openscap-ansible-module true

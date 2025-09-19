@@ -1,0 +1,68 @@
+---
+- name: Upload Satellite manifest
+  hosts: satellite
+  become: true
+  gather_facts: true
+  tasks:
+    - name: Fail if required parameters are not set
+      ansible.builtin.assert:
+        that:
+          - satellite_manifest_uuid is defined
+          - satellite_manifest_uuid is not none
+          - satellite_rhsm_username is defined
+          - satellite_rhsm_username is not none
+          - satellite_rhsm_password is defined
+          - satellite_rhsm_password is not none
+        fail_msg: "Required variables for manifest download are not set."
+        quiet: true
+      when: satellite_manifest_download | bool
+
+    - name: Copy local manifest to Satellite server
+      ansible.builtin.copy:
+        src: "{{ satellite_manifest_file_local }}"
+        dest: "{{ satellite_manifest_file_remote }}"
+        mode: '0600'
+      when: not satellite_manifest_download | bool
+
+    - name: Check manifest file on Satellite server
+      ansible.builtin.stat:
+        path: "{{ satellite_manifest_file_remote }}"
+      register: manifest_file
+      when: satellite_manifest_download | bool
+
+    - name: Download manifest from Red Hat Customer Portal
+      redhat.satellite.redhat_manifest:
+        uuid: "{{ satellite_manifest_uuid }}"
+        username: "{{ satellite_rhsm_username }}"
+        password: "{{ satellite_rhsm_password }}"
+        path: "{{ satellite_manifest_file_remote }}"
+        state: present
+      when:
+        - satellite_manifest_download | bool
+        - not manifest_file.stat.exists
+
+    - name: Change manifest file permissions
+      ansible.builtin.file:
+        path: "{{ satellite_manifest_file_remote }}"
+        mode: '0600'
+
+    - name: Upload manifest to Satellite
+      redhat.satellite.subscription_manifest:
+        server_url: "{{ satellite_server_url }}"
+        username: "{{ satellite_username }}"
+        password: "{{ satellite_password }}"
+        validate_certs: "{{ satellite_validate_certs }}"
+        organization: "{{ satellite_organization }}"
+        manifest_path: "{{ satellite_manifest_file_remote }}"
+        state: present
+      when: not satellite_manifest_refresh | bool
+
+    - name: Refresh Satellite manifest
+      redhat.satellite.subscription_manifest:
+        server_url: "{{ satellite_server_url }}"
+        username: "{{ satellite_username }}"
+        password: "{{ satellite_password }}"
+        validate_certs: "{{ satellite_validate_certs }}"
+        organization: "{{ satellite_organization }}"
+        state: refreshed
+      when: satellite_manifest_refresh | bool
