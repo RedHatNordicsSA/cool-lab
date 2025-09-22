@@ -15,6 +15,7 @@ spec:
   database:
     postgres_data_volume_init: false
   ingress_type: Route
-  # hub:
-  #   file_storage_storage_class: ocs-storagecluster-cephfs
+  hub:
+    file_storage_storage_class: ocs-storagecluster-cephfs
+    disabled: true
 
