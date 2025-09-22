@@ -17,5 +17,5 @@ spec:
   ingress_type: Route
   hub:
     file_storage_storage_class: ocs-storagecluster-cephfs
-    disabled: true
+    disabled: false
 
