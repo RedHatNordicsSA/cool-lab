@@ -2,7 +2,7 @@ apiVersion: aap.ansible.com/v1alpha1
 kind: AnsibleAutomationPlatform
 metadata:
   name: aap
-  namespace: ansible-automation-platform
+  namespace: aap
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
@@ -17,5 +17,6 @@ spec:
   ingress_type: Route
   hub:
     file_storage_storage_class: ocs-storagecluster-cephfs
+    file_storage_size: 200Gi
     enabled: true
 
