@@ -8,6 +8,7 @@
       - vim
       - insights-client
       - python3-requests
+      - zsh
     register_insights: true
     epel: false
     # https://access.redhat.com/articles/simple-content-access
