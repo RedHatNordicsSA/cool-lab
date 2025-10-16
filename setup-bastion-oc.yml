@@ -1,0 +1,84 @@
+---
+- name: Configure Bastion with useful tools
+  hosts: all
+  tasks:
+
+    - name: Enable EPEL Repository
+      dnf:
+        name: epel-release
+        state: latest
+
+    - name: update packages
+      dnf:
+        name: '*'
+        state: latest
+
+    - name: install handy packages
+      dnf:
+        name: 
+          - ansible-core
+          - bind-utils
+          - btop
+          - git-core
+          - neovim
+          - netcat
+          - nmstate
+          - podman
+          - tmux
+          - yum-utils
+        state: latest
+
+    - name: Create install directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+      with_items:
+        - /opt/openshift-client
+        - /opt/openshift-install
+
+    - name: Download oc client
+      unarchive:
+        src: https://mirror.openshift.com/pub/openshift-v4/amd64/clients/ocp/stable/openshift-client-linux.tar.gz
+        dest: /opt/openshift-client/
+        remote_src: yes
+        creates: /opt/openshift-client/oc
+
+    - name: Download oc installer
+      unarchive:
+        src: https://mirror.openshift.com/pub/openshift-v4/amd64/clients/ocp/stable/openshift-install-linux.tar.gz
+        dest: /opt/openshift-install/
+        remote_src: yes
+        creates: /opt/openshift-install/openshift-install
+
+    - name: Copy binaries into /usr/local/bin
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        remote_src: true
+        dest: /usr/local/bin/
+        mode: 0755
+      with_items:
+        - /opt/openshift-client/oc
+        - /opt/openshift-client/kubectl
+        - /opt/openshift-install/openshift-install
+
+    - name: Reboot required
+      command: "/usr/bin/needs-restarting -r"
+      register: reboot_required
+      ignore_errors: True
+      changed_when: False
+      failed_when: reboot_required.rc == 2
+
+    - name: Rebooting
+      reboot:
+        post_reboot_delay: 20
+      throttle: 1
+      when: reboot_required.rc == 1
+
+    - name: wait bastion
+      wait_for:
+        host: "{{ ansible_eth0.ipv4.address }}"
+        port: 22
+        delay: 2
+      delegate_to: localhost
+      when: reboot_required.rc == 1
+
