@@ -10,7 +10,7 @@ satellite_settings:
   - name: default_download_policy
     value: on_demand
   - name: default_proxy_download_policy
-    value: ion_demand
+    value: on_demand
   - name: default_redhat_download_policy
     value: on_demand
 
