@@ -22,25 +22,26 @@ ee_build_options:
     package_pip: ""
   package_manager_path: /usr/bin/microdnf
 
-ee_aap_version: 2.5
+ee_aap_version: 2.6
 ee_image_push: true
 ee_prune_images: true
 ee_create_ansible_config: true
 ee_registry_dest: "{{ ah_host }}/custom"
 
 ee_list:
-  - name: custom-openshift-8
+  - name: custom-openshift-9
     # base_image: "{{ ee_ah_host }}/ansible-automation-platform/ee-minimal-rhel9:latest"
     # base_image: "registry.redhat.io/ansible-automation-platform-25/ee-minimal-rhel9:latest"
-    base_image: "registry.redhat.io/ansible-automation-platform-25/ee-supported-rhel8:latest"
+    base_image: "registry.redhat.io/ansible-automation-platform-26/ee-supported-rhel9:latest"
     dependencies:
       system:
         - findutils [platform:rpm]
         - iputils [platform:rpm]
         - python3-pip [platform:rpm]
-        - systemd-devel [platform:rpm]
-        - python3.11-devel [platform:rpm]
+        - python3.12-devel [platform:rpm]
+        - python-devel [platform:rpm]
         - gcc [platform:rpm]
+        - systemd-devel [platform:rpm]
       #python:
       #  - dnspython
       #  - netaddr
@@ -50,11 +51,11 @@ ee_list:
       galaxy:
         collections:
           - name: kubernetes.core
-            version: 6.0.0
+            version: 6.4.0
           - name: redhat.openshift
             version: 5.0.0
           - name: redhat.openshift_virtualization
-            version: 2.2.3
+            version: 2.2.4
     build_items:
       - aap_configs_dir/
     build_files:
