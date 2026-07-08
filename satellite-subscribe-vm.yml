@@ -15,6 +15,7 @@
       command: insights-client --unregister
       args:
         creates: /etc/insights-client/.unregistered
+      ignore_errors: true
 
     - name: unsubscribe from Red Hat
       redhat_subscription:
