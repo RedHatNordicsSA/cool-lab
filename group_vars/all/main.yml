@@ -62,17 +62,18 @@ hostgroups:
       - arw-eu-idm-01.arrowdemo.eu
       - arw-eu-idm-02.eu.arrow.lab
 
+aap_username: admin
 aap_ldap_bind_username: aap_ldap
-aap_hostname: aap-ansible-automation-platform.apps.mgmt.eu.arrow.lab
+aap_hostname: aap.eu.arrow.lab
 
-ah_hostname: rh-automation-hub-01.cool.lab
+ah_hostname: aap.eu.arrow.lab
 ah_username: "admin"
 ah_password: "{{ aap_admin_password }}"
 # redhat automatin hub
 ah_oauthtoken: "{{ vault_aap_automationhub_token }}"
 # local private aap automatin hub
-pah_oauthtoken: "{{ vault_aap_private_automationhub_token }}"
+# pah_oauthtoken: "{{ vault_aap_private_automationhub_token }}"
 ah_validate_certs: false
 
 satellite_ip: 10.3.103.12
-satellite_foreman_pubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCkJbSQEpMRqMTEM+gSRdl9tTT+zXJgJmyApjEj1gQQoPeNLRDaLlUW7p8ChuKId13ilfdfc2o0EGVctyJQY2k6Tma7VyhTkvOWrBjA8GVXxV8OK+I1UpByw7ySIvBvGEeI/Bnq8XagRphotOwywMkubestVd6ZNW7ZC1MRJz7cU6+V0kLLtkCDd1fm+LScbLpusTZYrUvSlDzbJSzzng3of88cP2aPO2xm/vaZ1pyG+TmWtKvekqmTr/56XL3dcVKUeRLd+uE4hezfHBvb+33VgdWLqDv1aVYH4gZeYKMpF2rvdW96Ccea6k2YKdz4zMHMyzRyQ8EFBL+KrujJScgSwutkSSx7eX1V3boewT+k2y1w1s6vezhmkP5s9st5UaahOsaFJZrgqdLMfznzCtJgFUKOxVTbyU17vddgNwi75C7s2HmaDSWDU9HwYjIX/zUoEEy2+75tnoGZPrGWR7JWyj4NSjqVzFxml2PWHWyYWYau/mgGhLscB18tQvT3+kc= foreman-proxy@rh-satellite-01.cool.lab
+satellite_foreman_pubkey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC9PZeSxGk7VRoZOiTtTku5zZcvHM+vyHQ/4BnmrI4K4kWBEXXK+y+PtbpXH/9phNro+jyM5uP1qdGdAoZbYVDaFuCZ3iaHCOStzkfeXyJuq9GaNzFT5Gcq6lc0EPMqb8Nz8ntCMdPncMnWMmjGUU+oAgnp/TW6738LgK4C7QjzT9UZ2Sai2MERh9zxOAZ78tDeaZYvu2qTRZT0H9DCihq0BzTiRraT5DqdLkN9/hVtyC55M5IT1UzJQrRtxmp8kxGKwYnNcdKNDSSxkkW5M2M9fQ21oIVrJHYuweytW+zeyt76ritB6qsfVZZF8i4lkbp74pMace8Kai4s/9hYtwlTsBFoM3cOMr9rxOLZNwdVHwJaYQoSZYC9sb3ZueM9+Ti3jmBm1pOaP5fJtZzKpn3IbeudrMvSLtYO/kP/bp+bszKFLuVwBLqkOWXStI23IB7efDWkJXXcQQhi3iLtDdIHOes50fz46XnHDwKfuftbF08sKOLtwlCKIAwODxHhk7M= foreman-proxy@rh-satellite-01.eu.arrow.lab
