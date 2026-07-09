@@ -19,20 +19,23 @@ controller_inventories:
   - name: vmware-rh
     organization: Red Hat
     description: Red Hat VMs sourced from vmware
+  - name: ocp-isf
+    organization: Red Hat
+    description: Red Hat VMs sourced from OCP ISF
 
 
 controller_inventory_sources:
-  - name: RH-IdM
-    source: scm
-    source_project: Cool-Lab
-    source_path: aap_ldap.py
-    inventory: RH-IdM
-    organization: Red Hat
-    credential: aap-idm-ldap
-    overwrite: true
-    update_on_launch: true
-    update_cache_timeout: 0
-    wait: true
+  # - name: RH-IdM
+  #   source: scm
+  #   source_project: Cool-Lab
+  #   source_path: aap_ldap.py
+  #   inventory: RH-IdM
+  #   organization: Red Hat
+  #   credential: aap-idm-ldap
+  #   overwrite: true
+  #   update_on_launch: true
+  #   update_cache_timeout: 0
+  #   wait: true
 
   - name: VMware-RH
     description: Pull all rh- vms from VMware
@@ -49,6 +52,22 @@ controller_inventory_sources:
       hostnames:
         - config.name
 
+  - name: ISF OpenShift
+    description: Pull all rh- vms from OpenShift ISF
+    source: openshift_virtualization
+    inventory: ocp-isf
+    organization: Red Hat
+    credential: ocp-virt-isf
+    host_filter: ^rh-
+    overwrite: true
+    update_on_launch: true
+    update_cache_timeout: 0
+    execution_environment: Default execution environment
+    # wait: true
+    # source_vars:
+    #   hostnames:
+    #     - config.name
+
 controller_projects:
   - name: Cool-Lab
     description: Red Hat Nordics SA Cool Lab project
@@ -64,7 +83,7 @@ controller_projects:
 controller_templates:
   - name: Ensure VM State - OpenShift Virtualization
     description: Creates of deletes a VM on OpenShift
-    execution_environment: custom-8-ocpv
+    execution_environment: Default execution environment
     ask_variables_on_launch: true
     use_fact_cache: true
     extra_vars:
@@ -87,7 +106,7 @@ controller_templates:
       type: project
     related:
       credentials:
-        - name: ocp-virt-isf-rh-infra
+        - name: ocp-virt-isf
       survey_spec:
         description: ''
         name: ''

@@ -165,13 +165,13 @@ controller_credentials:
       token: "{{ vault_aap_private_automationhub_token }}"
       url: "https://{{ aap_hostname }}/api/galaxy/content/community/"
 
-  - name: ocp-virt-mgt
+  - name: ocp-virt-isf
     organization: Red Hat
     credential_type: OpenShift or Kubernetes API Bearer Token
-    description: OCPv MGT
+    description: OCPv ISF
     inputs:
-      host: https://api.acm.eu.arrow.lab:6443
-      bearer_token: 
+      host: https://api.isf.eu.arrow.lab:6443
+      bearer_token: "{{ vault_ocp_virt_bearer_token_isf }}"
       verify_ssl: false
       ssl_ca_cert:
 
