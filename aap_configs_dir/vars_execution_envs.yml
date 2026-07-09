@@ -1,0 +1,6 @@
+---
+
+controller_execution_environments:
+  - name: custom-openshift-9
+    image: "{{ ah_hostname }}/custom/custom-openshift-9:latest"
+    pull: missing
