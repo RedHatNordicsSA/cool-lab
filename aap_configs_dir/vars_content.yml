@@ -460,19 +460,6 @@ controller_templates:
     related:
       credentials:
         - name: machine-creds-rhops-admin
-      survey_spec:
-        description: Select the activation key for subscribing the host
-        name: activation key
-        spec:
-          - choices: "RHEL9\nRHEL8"
-            default: RHEL9
-            new_question: true
-            question_description: Select activation key for the subscriptions
-            question_name: Activation key
-            required: true
-            type: multiplechoice
-            variable: activation_key
-    survey_enabled: true
 
   - name: Add new hosts to Satellite
     description: >
