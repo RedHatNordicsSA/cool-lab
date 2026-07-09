@@ -9,34 +9,46 @@
     aap_password: "{{ vault_aap_admin_password }}"
     aap_validate_certs: false
   vars_files:
+    - aap_configs_dir/vars_license.yml
     - aap_configs_dir/vars_content.yml
     - aap_configs_dir/vars_creds.yml
     - aap_configs_dir/vars_gw.yml
     - aap_configs_dir/vars_hub.yml
     - aap_configs_dir/vars_organizations.yml
+    - aap_configs_dir/vars_execution_envs.yml
 
   roles:
-    # Sync selected collections from an external hub
+    # inventories
+    # - infra.aap_configuration.controller_settings
+    # - infra.aap_configuration.controller_license
+    # - infra.aap_configuration.gateway_authenticators
+    # - infra.aap_configuration.gateway_authenticator_maps
+    # - infra.aap_configuration.controller_credential_types
+    # - infra.aap_configuration.controller_organizations
+    # - infra.aap_configuration.controller_credentials
+    # # Sync selected collections from an external hub
     # - infra.aap_configuration.hub_collection_remote
     # - infra.aap_configuration.hub_collection_repository
     # - infra.aap_configuration.hub_collection_repository_sync
+    # Sync selected EE images from external registries
+    # - infra.aap_configuration.hub_ee_registry
+    # - infra.aap_configuration.hub_ee_registry_index
+    # - infra.aap_configuration.hub_ee_registry_sync
+    # - infra.aap_configuration.hub_ee_repository
+    # - infra.aap_configuration.hub_ee_repository_sync
+    # - infra.aap_configuration.controller_execution_environments
+    # inventories
+    # - infra.aap_configuration.controller_inventories
+    # - infra.aap_configuration.controller_inventory_sources
+    # # Templates
+    # - infra.aap_configuration.controller_projects
+    - infra.aap_configuration.controller_job_templates
+    - infra.aap_configuration.controller_workflow_job_templates
 
     # Make collections in git repos available in this hub
     # - infra.aap_configuration.hub_namespace
     # https://github.com/ansible/galaxy_collection/issues/397
     # - infra.aap_configuration.hub_publish
 
-    # Sync selected EE images from external registries
-    # - infra.aap_configuration.hub_ee_registry
-    #- infra.aap_configuration.hub_ee_registry_index
-    #- infra.aap_configuration.hub_ee_registry_sync
-    # - infra.aap_configuration.hub_ee_repository
-    # - infra.aap_configuration.hub_ee_repository_sync
 
-    # inventories
-    # - infra.aap_configuration.controller_inventories
-    # - infra.aap_configuration.controller_inventory_sources
 
-    # Templates
-    - infra.aap_configuration.controller_job_templates
-    - infra.aap_configuration.controller_workflow_job_templates
