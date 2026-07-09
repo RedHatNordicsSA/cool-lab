@@ -1,7 +1,7 @@
 ---
 
 - name: "Ensure VM state"
-  hosts: all
+  hosts: localhost
   vars:
     ns: rh-infra
     net_name: vlan3103-rh-infra
