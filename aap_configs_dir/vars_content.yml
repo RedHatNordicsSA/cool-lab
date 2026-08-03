@@ -441,7 +441,7 @@ controller_templates:
       use_inventory_for_hostname: true
     forks: 15
     inventory:
-      name: vmware-rh
+      name: ocp-isf
       organization:
         name: Default
         type: organization
