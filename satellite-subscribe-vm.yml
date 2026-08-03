@@ -18,7 +18,7 @@
       ignore_errors: true
 
     - name: unsubscribe from Red Hat
-      redhat_subscription:
+      community.general.redhat_subscription:
         state: absent
 
     - name: Clean subsriptions
