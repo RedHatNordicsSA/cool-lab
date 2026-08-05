@@ -63,10 +63,8 @@ controller_inventory_sources:
     update_on_launch: true
     update_cache_timeout: 0
     execution_environment: Default execution environment
+    host_format: '{name}'
     # wait: true
-    # source_vars:
-    #   hostnames:
-    #     - config.name
 
 controller_projects:
   - name: Cool-Lab
