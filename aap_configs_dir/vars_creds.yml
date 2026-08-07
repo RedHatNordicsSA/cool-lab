@@ -70,7 +70,7 @@ controller_credentials:
     credential_type: Machine
     description: This credential can be used with any vm.
     inputs:
-      username: root
+      username: admin
       ssh_key_data: "{{ admin_ssh_private_key }}"
 
   - name: aap-idm-ldap
