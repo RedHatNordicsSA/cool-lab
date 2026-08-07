@@ -16,6 +16,7 @@
     - aap_configs_dir/vars_hub.yml
     - aap_configs_dir/vars_organizations.yml
     - aap_configs_dir/vars_execution_envs.yml
+    - aap_configs_dir/vars_workflows.yml
 
   roles:
     # inventories
@@ -25,7 +26,7 @@
     # - infra.aap_configuration.gateway_authenticator_maps
     # - infra.aap_configuration.controller_credential_types
     # - infra.aap_configuration.controller_organizations
-    # - infra.aap_configuration.controller_credentials
+    - infra.aap_configuration.controller_credentials
     # # Sync selected collections from an external hub
     # - infra.aap_configuration.hub_collection_remote
     # - infra.aap_configuration.hub_collection_repository
@@ -43,7 +44,7 @@
     # # Templates
     # - infra.aap_configuration.controller_projects
     - infra.aap_configuration.controller_job_templates
-    - infra.aap_configuration.controller_workflow_job_templates
+    # - infra.aap_configuration.controller_workflow_job_templates
 
     # Make collections in git repos available in this hub
     # - infra.aap_configuration.hub_namespace
