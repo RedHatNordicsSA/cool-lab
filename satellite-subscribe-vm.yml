@@ -1,10 +1,12 @@
 ---
 - hosts: all
   vars:
-    satellite: rh-satellite-01.eu.arrow.lab
+    satellite: "{{ host | default(rh-satellite-01.eu.arrow.lab)}}"
     org: Red_Hat
     rhc_state: reconnect
     rhc_organization: "{{ org }}"
+    username: "{{ username | default(vault_satellite_username) }}"
+    password: "{{ password | default(vault_satellite_password) }}"
   tasks:
 
     - name: Install dependency package python requests
