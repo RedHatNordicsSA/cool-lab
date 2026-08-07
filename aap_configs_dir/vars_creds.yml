@@ -113,6 +113,15 @@ controller_credentials:
       username: "{{ vcenter_credentials.vcenter_username }}"
       password: "{{ vcenter_credentials.vcenter_password }}"
 
+  - name: satellite
+    organization: Red Hat
+    credential_type: Red Hat Satellite 6
+    description: Used for lab satellite
+    inputs:
+      host: "{{ satellite_server_url }}"
+      username: "{{ vault_satellite_username }}"
+      password: "{{ vault_satellite_password }}"
+
   - name: cool-lab automationhub published
     organization: Red Hat
     credential_type: Ansible Galaxy/Automation Hub API Token

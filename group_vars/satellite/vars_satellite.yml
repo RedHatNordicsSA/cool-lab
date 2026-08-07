@@ -19,8 +19,8 @@ satellite_firewall_zone: public
 satellite_register_insights: true
 
 satellite_installer_options:
-  - --foreman-initial-admin-username "{{ satellite_username }}"
-  - --foreman-initial-admin-password '{{ satellite_password }}'
+  - --foreman-initial-admin-username "{{ vault_satellite_username }}"
+  - --foreman-initial-admin-password '{{ vault_satellite_password }}'
   - --foreman-initial-admin-email root@example.com
   - --foreman-initial-admin-first-name Satellite
   - --foreman-initial-admin-last-name Administrator

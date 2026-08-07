@@ -160,7 +160,7 @@ satellite_auth_sources_ldap:
     attr_mail: mail
     attr_photo: jpegPhoto
     # server_url: "{{ satellite_server_url }}"
-    # username: "{{ satellite_username }}"
-    # password: "{{ satellite_password }}"
+    # username: "{{ vault_satellite_username }}"
+    # password: "{{ vault_satellite_password }}"
     state: present
     no_log: false

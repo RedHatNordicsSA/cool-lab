@@ -27,8 +27,8 @@
 
     - name: Generate satellite registration command for client
       redhat.satellite.registration_command:
-        username: "{{ satellite_username }}"
-        password: "{{ satellite_password }}"
+        username: "{{ vault_satellite_username }}"
+        password: "{{ vault_satellite_password }}"
         server_url: "https://{{ satellite }}"
         validate_certs: false
         insecure: true

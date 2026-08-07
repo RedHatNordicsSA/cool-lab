@@ -22,8 +22,8 @@
   tasks:
     - name: "Search for possible repository sets of [{{ product }}]"
       redhat.satellite.resource_info:
-        username: '{{ satellite_username }}'
-        password: '{{ satellite_password }}'
+        username: '{{ vault_satellite_username }}'
+        password: '{{ vault_satellite_password }}'
         server_url: '{{ satellite_server_url }}'
         validate_certs: '{{ satellite_validate_certs }}'
         organization: '{{ satellite_organization }}'
