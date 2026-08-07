@@ -64,7 +64,6 @@ controller_inventory_sources:
     update_cache_timeout: 0
     execution_environment: Default execution environment
     host_format: '{name}'
-    # wait: true
 
 controller_projects:
   - name: Cool-Lab
@@ -448,6 +447,7 @@ controller_templates:
     job_type: run
     limit: make_sure_to_name_hosts
     ask_limit_on_launch: true
+    become_enabled: true
     playbook: satellite-subscribe-vm.yml
     project:
       name: Cool-Lab
@@ -458,6 +458,7 @@ controller_templates:
     related:
       credentials:
         - name: machine-creds-rhops-admin
+        - name: satellite
 
   - name: Add new hosts to Satellite
     description: >
@@ -477,6 +478,7 @@ controller_templates:
     limit: new_vms
     job_slice_count: 1
     job_type: run
+    become_enabled: true
     playbook: satellite-subscribe-vm.yml
     project:
       name: Cool-Lab
@@ -487,6 +489,7 @@ controller_templates:
     related:
       credentials:
         - name: machine-creds-rhops-admin
+        - name: satellite
 
   - name: Remove host from temp inventory
     description: Removes host from temporary inventory
