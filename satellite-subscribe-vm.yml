@@ -1,13 +1,30 @@
 ---
 - hosts: all
   vars:
-    satellite: "{{ host | default(rh-satellite-01.eu.arrow.lab)}}"
     org: Red_Hat
     rhc_state: reconnect
     rhc_organization: "{{ org }}"
-    username: "{{ username | default(vault_satellite_username) }}"
-    password: "{{ password | default(vault_satellite_password) }}"
+    ini_path: "{{ lookup('env', 'FOREMAN_INI_PATH') }}"
   tasks:
+
+
+    - name: Use satellite credentials from from vault
+      set_fact:
+        host: "{{ satellite_server_url }}"
+        username: "{{ vault_satellite_username }}"
+        password: "{{ vault_satellite_password }}"
+      when:
+        - satellite_server_url is defined
+        - vault_satellite_username is defined
+        - vault_satellite_password is defined
+
+    - name: Use satellite credentials from AAP
+      set_fact:
+        host: "{{ lookup('ini', 'url section=sat type=ini file=' + ini_path) }}"
+        username: "{{ lookup('ini', 'user section=sat type=ini file=' + ini_path) }}"
+        password: "{{ lookup('ini', 'password section=sat type=ini file=' + ini_path)"
+      when:
+        ini_path | length > 0 # there is something in env variable...
 
     - name: Install dependency package python requests
       package:
@@ -29,9 +46,9 @@
 
     - name: Generate satellite registration command for client
       redhat.satellite.registration_command:
-        username: "{{ vault_satellite_username }}"
-        password: "{{ vault_satellite_password }}"
-        server_url: "https://{{ satellite }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        server_url: "{{ host }}"
         validate_certs: false
         insecure: true
         force: true
