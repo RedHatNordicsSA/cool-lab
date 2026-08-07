@@ -7,8 +7,6 @@ satellite_installer_no_colors: true
 satellite_installer_verbose: true
 satellite_installer_timeout: 1800
 
-satellite_server_url: https://rh-satellite-01.eu.arrow.lab
-
 satellite_organization: Red Hat
 satellite_location: Arrow Lab
 
