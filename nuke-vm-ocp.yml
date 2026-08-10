@@ -1,0 +1,13 @@
+---
+
+- name: "Delete VM OCPv"
+  hosts: localhost
+  vars:
+    ns: rh-infra
+  tasks:
+
+    - name: Delete VM
+      redhat.openshift_virtualization.kubevirt_vm:
+        state: absent
+        name: "{{ short_name }}"
+        namespace: "{{ ns }}"
