@@ -4,30 +4,17 @@
     org: Red_Hat
     rhc_state: reconnect
     rhc_organization: "{{ org }}"
-    # ini_path: "{{ lookup('env', 'FOREMAN_INI_PATH') }}"
-    host: "{{ lookup('env', 'FOREMAN_URL') }}"
+    host: "{{ satellite_server_url }}"
   tasks:
 
 
     - name: Use satellite credentials from from vault
       set_fact:
-        host: "{{ satellite_server_url }}"
         username: "{{ vault_satellite_username }}"
         password: "{{ vault_satellite_password }}"
       when:
-        - satellite_server_url is defined
         - vault_satellite_username is defined
         - vault_satellite_password is defined
-
-    - name: Use satellite credentials from AAP
-      set_fact:
-        # host: "{{ lookup('ini', 'url section=sat type=ini file=' + ini_path) }}"
-        # username: "{{ lookup('ini', 'user section=sat type=ini file=' + ini_path) }}"
-        # password: "{{ lookup('ini', 'password section=sat type=ini file=' + ini_path) }}"
-        username: "{{ lookup('env', 'FOREMAN_USER') }}"
-        password: "{{ lookup('env', 'FOREMAN_PASSWORD') }}"
-      when:
-        host | length > 0 # there is something in env variable...
 
     - name: Install dependency package python requests
       package:
