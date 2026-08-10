@@ -28,7 +28,7 @@
       vars:
         ipaclients:
           - "{{ short_name | mandatory }}.{{ ipaserver_domain }}"
-        state: "{{ state | default('present') }}"
+        state: "{{ client_state | default('present') }}"
         ipasssd_enable_dns_updates: true
         # ipaclient_domain: eu.arrow.lab
         # ipaclient_domain: "{{ ipaserver_domain }}"
