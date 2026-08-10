@@ -9,7 +9,7 @@
       vars:
         state: absent
       include_role:
-        name: freeipa.ansible_freeipa.ipaclient
+        name: redhat.rhel_idm.ipaclient
       tags: idm
       ignore_errors: true
 
