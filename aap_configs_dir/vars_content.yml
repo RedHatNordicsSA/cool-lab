@@ -536,6 +536,33 @@ controller_templates:
             variable: short_name
     survey_enabled: true
 
+  - name: Delete VM from OCPv
+    description: Deletes the host from OpenShift
+    limit: localhost
+    job_type: run
+    playbook: nuke-vm-ocp.yml
+    project:
+      name: Cool-Lab
+      organization:
+        name: Red Hat
+    inventory: ocp-isf
+    execution_environment: Default execution environment
+    credential: ocp-virt-isf
+    related:
+      survey_spec:
+        description: ''
+        name: ''
+        spec:
+          - choices: ''
+            default: I forgot to set hostname in nuke vm
+            new_question: true
+            question_description: First part of hostname
+            question_name: Short hostname
+            required: true
+            type: text
+            variable: short_name
+    survey_enabled: true
+
   - name: Delete VM from VMware
     description: Deletes the host from VMware
     limit: localhost
@@ -545,8 +572,7 @@ controller_templates:
       name: Cool-Lab
       organization:
         name: Red Hat
-    inventory:
-      name: Temporary Inventory
+    inventory: Temporary Inventory
     execution_environment: Default execution environment
     related:
       credentials:
@@ -575,8 +601,7 @@ controller_templates:
       name: Cool-Lab
       organization:
         name: Red Hat
-    inventory:
-      name: vmware-rh
+    inventory: ocp-isf
     execution_environment: Default execution environment
     related:
       credentials:
@@ -761,7 +786,7 @@ controller_templates:
     use_fact_cache: true
     ask_variables_on_launch: true
     inventory:
-      name: vmware-rh
+      name: ocp-isf
       organization:
         name: Default
         type: organization
