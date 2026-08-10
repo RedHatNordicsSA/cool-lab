@@ -5,7 +5,7 @@
 
   tasks:
   # Ensure host is absent
-  - freeipa.ansible_freeipa.ipahost:
+  - redhat.rhel_idm.ipahost:
       ipaadmin_password: "{{ ipaadmin_password }}"
       name: "{{ short_name | mandatory }}.{{ ipaserver_domain }}"
       update_dns: true
