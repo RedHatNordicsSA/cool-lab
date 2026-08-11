@@ -106,7 +106,7 @@
                 #             via: 10.3.103.1
               name: cloudinit
         wait: true
-        register: vm
+      register: vm
 
     - name: Wait for VM IP to be populated
       kubernetes.core.k8s_info:
