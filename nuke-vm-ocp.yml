@@ -2,6 +2,7 @@
 
 - name: "Delete VM OCPv"
   hosts: localhost
+  connection: local
   vars:
     ns: rh-infra
   tasks:
