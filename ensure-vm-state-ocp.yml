@@ -122,7 +122,7 @@
 
     - name: VM address
       debug:
-        msg: "VM {{ short_name }} IP address is {{ deploy_collection_vmi.resources[0].status.interfaces[0]['ipAddress'] }}"
+        # msg: "VM {{ short_name }} IP address is {{ deploy_collection_vmi.resources[0].status.interfaces[0]['ipAddress'] }}"
         var: vm
       when: vm_state == "present"
 
