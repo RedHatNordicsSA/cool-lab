@@ -167,7 +167,7 @@
     - name: Wait for Virtual Machine to boot up and become responsive to SSH
       wait_for:
         port: 22
-        host: "{{ vm.instance.ipv4 }}"
+        host: "{{ deploy_collection_vmi.resources[0].status.interfaces[0]['ipAddress'] }}"
         search_regex: OpenSSH
         delay: 10
         timeout: 600
