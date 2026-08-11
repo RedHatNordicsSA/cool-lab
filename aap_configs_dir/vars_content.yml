@@ -597,6 +597,7 @@ controller_templates:
     limit:
     job_type: run
     playbook: unsubscribe-vm.yml
+    become_enabled: true
     project:
       name: Cool-Lab
       organization:
