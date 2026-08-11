@@ -11,7 +11,7 @@
   hosts: localhost
   connection: local
   collections:
-    - awx.awx
+    - ansible.controller
   environment:
     CONTROLLER_HOST: "{{ aap_controller }}"
     CONTROLLER_USERNAME: admin

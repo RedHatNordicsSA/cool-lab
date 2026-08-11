@@ -127,7 +127,7 @@
       when: vm_state == "present"
 
     - name: Create tower inventory
-      awx.awx.inventory:
+      ansible.controller.inventory:
         name: "Temporary Inventory"
         description: "Temporary inventory for hosts to be created"
         organization: "Default"
@@ -138,7 +138,7 @@
         - vm is succeeded
 
     - name: Add tower host
-      awx.awx.host:
+      ansible.controller.host:
         name: "{{ short_name }}"
         inventory: "Temporary Inventory"
         state: present
@@ -151,7 +151,7 @@
         - vm is succeeded
 
     - name: Add host to temporary group for new vms
-      awx.awx.group:
+      ansible.controller.group:
         name: new_vms
         inventory: "Temporary Inventory"
         hosts:

@@ -10,7 +10,7 @@
     controller_username: admin
     controller_password: "{{ aap_admin_password }}"
   collections:
-    - awx.awx
+    - ansible.controller
     - redhat_cop.controller_configuration
   pre_tasks:
 

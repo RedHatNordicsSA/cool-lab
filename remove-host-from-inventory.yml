@@ -9,7 +9,7 @@
   tasks:
 
     - name: delete vm from AAP temporary inventory
-      awx.awx.host:
+      ansible.controller.host:
         name: "{{ short_name | mandatory }}"
         inventory: "{{ inventory_name }}"
         state: absent
