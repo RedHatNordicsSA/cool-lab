@@ -106,6 +106,7 @@
                 #             via: 10.3.103.1
               name: cloudinit
         wait: true
+        register: vm
 
     - name: Wait for VM IP to be populated
       kubernetes.core.k8s_info:
@@ -122,7 +123,53 @@
     - name: VM address
       debug:
         msg: "VM {{ short_name }} IP address is {{ deploy_collection_vmi.resources[0].status.interfaces[0]['ipAddress'] }}"
+        var: vm
       when: vm_state == "present"
+
+    - name: Create tower inventory
+      awx.awx.inventory:
+        name: "Temporary Inventory"
+        description: "Temporary inventory for hosts to be created"
+        organization: "Default"
+        state: present
+        validate_certs: false
+      when:
+        - use_aap_inventory
+        - vm is succeeded
+
+    - name: Add tower host
+      awx.awx.host:
+        name: "{{ short_name }}"
+        inventory: "Temporary Inventory"
+        state: present
+        validate_certs: false
+        variables:
+          # ansible_host: "{{ vm.instance.ipv4 }}"
+          ansible_host: "{{ deploy_collection_vmi.resources[0].status.interfaces[0]['ipAddress'] }}"
+      when:
+        - use_aap_inventory
+        - vm is succeeded
+
+    - name: Add host to temporary group for new vms
+      awx.awx.group:
+        name: new_vms
+        inventory: "Temporary Inventory"
+        hosts:
+          - "{{ short_name }}"
+        validate_certs: false
+        preserve_existing_hosts: true
+      when:
+        - use_aap_inventory
+        - vm is succeeded
+
+    - name: Wait for Virtual Machine to boot up and become responsive to SSH
+      wait_for:
+        port: 22
+        host: "{{ vm.instance.ipv4 }}"
+        search_regex: OpenSSH
+        delay: 10
+        timeout: 600
+      when: vm is succeeded
 
     # - name: "Create Service"
     #   tags:
