@@ -46,8 +46,8 @@
           - "RHEL{{ ansible_facts['distribution_major_version'] }}"
       register: command
 
-    - debug:
-        var: command.registration_command
+    # - debug:
+    #     var: command.registration_command
 
     - name: Perform registration
       ansible.builtin.shell:
