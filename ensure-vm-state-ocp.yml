@@ -2,6 +2,8 @@
 
 - name: "Ensure VM state"
   hosts: localhost
+  gather_facts: false
+  connection: local
   vars:
     ns: rh-infra
     net_name: vlan3103-rh-infra
@@ -18,15 +20,15 @@
 
     - name: Ensure VM is "{{ vm_state }}"
       redhat.openshift_virtualization.kubevirt_vm:
-        state: "{{ vm_state | default('present')}}"
+        state: "{{ vm_state | default('present') }}"
         name: "{{ short_name }}"
         namespace: "{{ ns }}"
         labels:
           rh-infra: "aap-generated"
         instancetype:
-          name: "{{ instancetype | default('u1.small')}}"
+          name: "{{ instancetype | default('u1.small') }}"
         preference:
-          name: "{{ vm_preference | default('fedora')}}"
+          name: "{{ vm_preference | default('fedora') }}"
         run_strategy: Always
         data_volume_templates:
           - metadata:
@@ -34,20 +36,20 @@
             spec:
               sourceRef:
                 kind: DataSource
-                name: "{{ vm_data_source | default('rhel9')}}"
+                name: "{{ vm_data_source | default('rhel9') }}"
                 namespace: openshift-virtualization-os-images
               storage:
                 resources:
                   requests:
-                    storage: "{{ vm_disk_gb | default('32')}}Gi"
+                    storage: "{{ vm_disk_gb | default('32') }}Gi"
                 storageClassName: ocs-storagecluster-ceph-rbd-virtualization
         spec:
           domain:
             devices:
               autoattachPodInterface: false
               disks:
-              - bootOrder: 1
-                name: rootdisk
+                - bootOrder: 1
+                  name: rootdisk
               interfaces:
                 # - name: default
                 #   masquerade: {}
@@ -74,14 +76,14 @@
                     - name: admin
                       groups: wheel
                       sudo: ALL=(ALL) NOPASSWD:ALL
-                      ssh_authorized_keys: 
+                      ssh_authorized_keys:
                         - "{{ lab_admin_ssh_pubkey }}"
                     - name: root
-                      ssh_authorized_keys: 
+                      ssh_authorized_keys:
                         - "{{ lab_admin_ssh_pubkey }}"
                   chpasswd:
                     expire: false
-                  ssh_authorized_keys: 
+                  ssh_authorized_keys:
                     - "{{ lab_admin_ssh_pubkey }}"
                 #   rh_subscription:
                 #     username: "{{ vault_rh_subs_username }}"
@@ -121,7 +123,7 @@
       when: vm_state == "present"
 
     - name: VM address
-      debug:
+      ansible.builtin.debug:
         msg: "VM {{ short_name }} IP address is {{ deploy_collection_vmi.resources[0].status.interfaces[0]['ipAddress'] }}"
       when: vm_state == "present"
 
@@ -165,7 +167,7 @@
         - vm is succeeded
 
     - name: Wait for Virtual Machine to boot up and become responsive to SSH
-      wait_for:
+      ansible.builtin.wait_for:
         port: 22
         host: "{{ deploy_collection_vmi.resources[0].status.interfaces[0]['ipAddress'] }}"
         search_regex: OpenSSH
