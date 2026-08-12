@@ -1,0 +1,19 @@
+---
+
+- name: Update AAP inventory
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    inventory_name: ocp-isf
+    source_name: ISF OpenShift
+
+  tasks:
+
+    - name: Update AAP inventory source "{{ inventory_name }}"
+      ansible.controller.inventory_source_update:
+        name: "{{ source_name }}"
+        inventory: "{{ inventory_name }}"
+        request_timeout: 20
+        organization: Red Hat
+        validate_certs: false
