@@ -510,17 +510,9 @@ controller_templates:
         name: Red Hat
         type: organization
       type: project
+    credentials:
+      - name: aap-admin
     related:
-      # credentials:
-      #   - credential_type:
-      #       kind: cloud
-      #       name: Red Hat Ansible Automation Platform
-      #       type: credential_type
-      #     name: aap-creds-rhops-admin
-      #     organization:
-      #       name: Red Hat
-      #       type: organization
-      #     type: credential
       survey_spec:
         description: Host to be removed from inventory
         name: Removed host
