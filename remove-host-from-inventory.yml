@@ -13,5 +13,6 @@
       ansible.controller.host:
         name: "{{ short_name | mandatory }}"
         inventory: "{{ inventory_name }}"
+        request_timeout: 20
         state: absent
         validate_certs: false
