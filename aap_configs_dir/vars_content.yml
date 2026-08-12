@@ -104,6 +104,7 @@ controller_templates:
     related:
       credentials:
         - name: ocp-virt-isf
+        - name: aap-admin
       survey_spec:
         description: ''
         name: ''
