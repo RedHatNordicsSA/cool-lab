@@ -2,4 +2,4 @@ ansible.cfg
 .vault-password
 ansible-navigator.yml
 .dccache
-private-lab
+secrets
