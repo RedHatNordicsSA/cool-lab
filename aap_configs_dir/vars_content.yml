@@ -101,10 +101,13 @@ controller_templates:
         name: Red Hat
         type: organization
       type: project
+    credentials:
+      - ocp-virt-isf
+      - aap-admin
     related:
-      credentials:
-        - name: ocp-virt-isf
-        - name: aap-admin
+      # credentials:
+      #   - name: ocp-virt-isf
+      #   - name: aap-admin
       survey_spec:
         description: ''
         name: ''
@@ -511,7 +514,7 @@ controller_templates:
         type: organization
       type: project
     credentials:
-      - name: aap-admin
+      - aap-admin
     related:
       survey_spec:
         description: Host to be removed from inventory
@@ -529,6 +532,24 @@ controller_templates:
             variable: short_name
     survey_enabled: true
 
+  - name: Update inventory source
+    description: Updates hosts from dynamic inventory
+    execution_environment: Default execution environment
+    inventory:
+      name: Temporary Inventory
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_type: run
+    limit: localhost
+    playbook: inventory-update.yml
+    project:
+      name: Cool-Lab
+      organization: Red Hat
+    credentials:
+      - aap-admin
+
   - name: Delete VM from OCPv
     description: Deletes the host from OpenShift
     limit: localhost
@@ -540,7 +561,8 @@ controller_templates:
         name: Red Hat
     inventory: ocp-isf
     execution_environment: Default execution environment
-    credential: ocp-virt-isf
+    credentials:
+      - ocp-virt-isf
     related:
       survey_spec:
         description: ''
@@ -839,4 +861,3 @@ controller_templates:
       credentials:
         - name: machine-creds-rhops-admin
     survey_enabled: false
-
