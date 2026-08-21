@@ -4,10 +4,7 @@ collections:
   - name: ansible.eda
   - name: ansible.posix
     # version: 1.5.4
-  - name: awx.awx
-    # version: 23.8.0
   - name: ansible.controller
-  - name: ansible.eda
   - name: ansible.hub
   - name: ansible.platform
   - name: community.crypto
@@ -16,6 +13,7 @@ collections:
     # version: 8.3.0
   - name: community.vmware
     # version: 4.1.0
+  - name: community.zabbix
   - name: containers.podman
     # version: 1.12.0
   - name: dynatrace.oneagent

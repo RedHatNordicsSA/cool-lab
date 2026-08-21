@@ -1,0 +1,84 @@
+---
+- name: Install zabbix client
+  hosts: all
+  become: true
+  tasks:
+
+    - name: Install Zabbix repo
+      ansible.builtin.dnf:
+        # yamllint disable-line rule:line-length
+        name: "https://repo.zabbix.com/zabbix/7.4/release/rhel/{{ ansible_facts['distribution_major_version'] }}/noarch/zabbix-release-latest.el{{ ansible_facts['distribution_major_version'] }}.noarch.rpm"
+        state: present
+        disable_gpg_check: true
+
+    - name: Install zabbix-agent2
+      ansible.builtin.dnf:
+        name: zabbix-agent2
+        state: present
+
+    - name: Configure Zabbix Agent
+      ansible.builtin.lineinfile:
+        path: /etc/zabbix/zabbix_agent2.conf
+        regexp: "^{{ item.key }}="
+        line: "{{ item.key }}={{ item.value }}"
+      loop:
+        - { key: 'Server', value: "{{ zabbix_server }}" }
+        - { key: 'ServerActive', value: "{{ zabbix_server }}" }
+        - { key: 'Hostname', value: "{{ ansible_facts['hostname'] }}.{{ ipaserver_domain }}" }
+      notify: restart zabbix-agent2
+
+    # - name: Open Firewall for Zabbix Agent
+    #   ansible.posix.firewalld:
+    #     port: 10050/tcp
+    #     permanent: true
+    #     state: enabled
+    #     immediate: true
+
+    - name: Allow Zabbix Agent SELinux outbound (Active)
+      ansible.posix.seboolean:
+        name: httpd_can_connect_zabbix
+        state: true
+        persistent: true
+
+    - name: Enable and start zabbix-agent2
+      ansible.builtin.service:
+        name: zabbix-agent2
+        enabled: true
+        state: started
+
+    - name: Register Host in Zabbix Server via API
+      delegate_to: localhost
+      become: false
+      tags: zab
+      vars:
+        ansible_host: "{{ zabbix_server }}"
+        ansible_zabbix_auth_key: "{{ vault_zabbix_api_token }}"
+        ansible_network_os: community.zabbix.zabbix
+        ansible_connection: httpapi
+        # ansible_httpapi_port: 80
+        ansible_httpapi_use_ssl: false
+        # ansible_httpapi_validate_certs: false
+        ansible_zabbix_url_path: ""
+      community.zabbix.zabbix_host:
+        # server_url: "{{ zabbix_server }}"
+        host_name: "{{ ansible_facts['hostname'] }}.{{ ipaserver_domain }}"
+        visible_name: "{{ ansible_facts['hostname'] }}.{{ ipaserver_domain }}"
+        host_groups:
+          - Linux servers
+        link_templates:
+          - Linux by Zabbix agent
+        status: enabled
+        state: present
+        interfaces:
+          - type: 1
+            main: 1
+            useip: 0
+            # ip: "{{ ansible_host | default(ansible_default_ipv4.address) }}"
+            dns: "10.0.103.25"
+            port: "10050"
+
+  handlers:
+    - name: Restart zabbix-agent2
+      ansible.builtin.service:
+        name: zabbix-agent2
+        state: restarted
