@@ -14,6 +14,7 @@ collections:
   - name: community.vmware
     # version: 4.1.0
   - name: community.zabbix
+    version: ">=4.2.0"
   - name: containers.podman
     # version: 1.12.0
   - name: dynatrace.oneagent
