@@ -2,6 +2,8 @@
 - name: Install zabbix client
   hosts: all
   become: true
+  vars:
+    ansible_zabbix_auth_key: "{{ vault_zabbix_api_token }}"
   tasks:
 
     - name: Install Zabbix repo
@@ -52,7 +54,6 @@
       tags: zab
       vars:
         ansible_host: "{{ zabbix_server }}"
-        ansible_zabbix_auth_key: "{{ vault_zabbix_api_token }}"
         ansible_network_os: community.zabbix.zabbix
         ansible_connection: httpapi
         # ansible_httpapi_port: 80
@@ -72,7 +73,7 @@
           - type: 1
             main: 1
             useip: 1
-            ip: "{{ ansible_default_ipv4.address }}"
+            ip: "{{ ansible_facts['default_ipv4']['address'] }}"
             # dns: "{{ ansible_facts['hostname'] }}.{{ ipaserver_domain }}"
             port: "10050"
 
