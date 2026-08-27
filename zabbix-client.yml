@@ -3,7 +3,8 @@
   hosts: all
   become: true
   vars:
-    ansible_zabbix_auth_key: "{{ vault_zabbix_api_token }}"
+    # password is used from AAP credential, command line uses vault
+    ansible_zabbix_auth_key: "{{ password, default( vault_zabbix_api_token ) }}"
   tasks:
 
     - name: Install Zabbix repo
@@ -60,7 +61,7 @@
         ansible_httpapi_use_ssl: false
         # ansible_httpapi_validate_certs: false
         ansible_zabbix_url_path: ""
-      community.zabbix.zabbix_host:
+      zabbix.zabbix.zabbix_host:
         host_name: "{{ ansible_facts['hostname'] }}.{{ ipaserver_domain }}"
         visible_name: "{{ ansible_facts['hostname'] }}.{{ ipaserver_domain }}"
         host_groups:
