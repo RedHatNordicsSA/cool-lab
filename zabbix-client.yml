@@ -55,7 +55,7 @@
       tags: zab
       vars:
         ansible_host: "{{ zabbix_server }}"
-        ansible_network_os: community.zabbix.zabbix
+        ansible_network_os: zabbix.zabbix.zabbix
         ansible_connection: httpapi
         # ansible_httpapi_port: 80
         ansible_httpapi_use_ssl: false
