@@ -6,15 +6,16 @@ collections:
     # version: 1.5.4
   - name: ansible.controller
   - name: ansible.hub
+  - name: ansible.netcommon
   - name: ansible.platform
   - name: community.crypto
     #  version: 2.17.1
   - name: community.general
+  # - name: community.mysql
+  # - name: community.postgresql
     # version: 8.3.0
   - name: community.vmware
     # version: 4.1.0
-  - name: community.zabbix
-    version: ">=4.2.0"
   - name: containers.podman
     # version: 1.12.0
   - name: dynatrace.oneagent
@@ -51,3 +52,4 @@ collections:
     # version: 4.1.0
   - name: vmware.vmware_rest
     # version: 3.0.0
+  - name: zabbix.zabbix
