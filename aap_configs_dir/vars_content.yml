@@ -495,6 +495,95 @@ controller_templates:
         - name: machine-creds-rhops-admin
         - name: satellite
 
+  - name: Add hosts to Zabbix
+    description: >
+      Add host to zabbix monitoring.
+    execution_environment: Default execution environment
+    use_fact_cache: true
+    forks: 15
+    inventory:
+      name: ocp-isf
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_slice_count: 1
+    job_type: run
+    limit: make_sure_to_name_hosts
+    ask_limit_on_launch: true
+    become_enabled: true
+    playbook: zabbix-client.yml
+    project:
+      name: Cool-Lab
+      organization:
+        name: Red Hat
+        type: organization
+      type: project
+    related:
+      credentials:
+        - name: machine-creds-rhops-admin
+        - name: zabbix
+
+  - name: Add new hosts to Zabbix
+    description: >
+      Add all new host to zabbix monitoring.
+    execution_environment: Default execution environment
+    use_fact_cache: true
+    forks: 15
+    inventory:
+      name: Temporary Inventory
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    limit: new_vms
+    job_slice_count: 1
+    job_type: run
+    ask_limit_on_launch: true
+    become_enabled: true
+    playbook: zabbix-client.yml
+    project:
+      name: Cool-Lab
+      organization:
+        name: Red Hat
+        type: organization
+      type: project
+    related:
+      credentials:
+        - name: machine-creds-rhops-admin
+        - name: zabbix
+
+  - name: Remove hosts from Zabbix
+    description: >
+      Add host to zabbix monitoring.
+    execution_environment: Default execution environment
+    extra_vars:
+      zabbix_state: "absent"
+    use_fact_cache: true
+    forks: 15
+    inventory:
+      name: ocp-isf
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_slice_count: 1
+    job_type: run
+    limit: make_sure_to_name_hosts
+    ask_limit_on_launch: true
+    become_enabled: true
+    playbook: zabbix-client.yml
+    project:
+      name: Cool-Lab
+      organization:
+        name: Red Hat
+        type: organization
+      type: project
+    related:
+      credentials:
+        - name: machine-creds-rhops-admin
+        - name: zabbix
+
   - name: Remove host from temp inventory
     description: Removes host from temporary inventory
     execution_environment: Default execution environment

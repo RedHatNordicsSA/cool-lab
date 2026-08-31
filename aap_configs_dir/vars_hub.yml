@@ -35,8 +35,9 @@ hub_collection_remotes:
     requirements:
       - name: ansible.controller
       - name: ansible.eda
-      - name: ansible.eda
       - name: ansible.hub
+      - name: ansible.mysql
+      - name: ansible.netcommon
       - name: ansible.platform
       - name: ansible.posix
       - name: ansible.utils
@@ -56,6 +57,7 @@ hub_collection_remotes:
       - name: redhat.satellite_operations
       - name: vmware.vmware
       - name: vmware.vmware_rest
+      - name: zabbix.zabbix
 
   - name: validated
     url: https://console.redhat.com/api/automation-hub/content/validated/
@@ -87,18 +89,18 @@ hub_collection_remotes:
     requirements:
       - name: amazon.aws
         version: 9.3.0
-      - name: awx.awx
-        version: 9.1.0
       - name: community.crypto
-        version: 2.26.0
+        version: 3.3.0
       - name: community.general
-        version: 10.4.0
+        version: 13.3.0
       - name: community.windows
-        version: 2.4.0
-      - name: containers.podman
-        version: 1.16.3
+        version: 3.3.0
+      - name: community.postgresql
+        version: 4.2.0
       - name: community.vmware
-        version: 5.5.0
+        version: 6.2.1
+      - name: containers.podman
+        version: 1.20.2
 
 hub_collection_repositories:
   - name: rh-certified

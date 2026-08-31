@@ -141,6 +141,14 @@ controller_credentials:
       username: "{{ vault_satellite_username }}"
       password: "{{ vault_satellite_password }}"
 
+  - name: zabbix
+    organization: Red Hat
+    credential_type: Generic Credentials
+    description: Used for zabbix registration
+    inputs:
+      username: Admin
+      password: "{{ vault_zabbix_admin_pwd }}"
+
   - name: cool-lab automationhub published
     organization: Red Hat
     credential_type: Ansible Galaxy/Automation Hub API Token
@@ -202,4 +210,3 @@ controller_credentials:
       bearer_token: "{{ vault_ocp_virt_bearer_token_isf }}"
       verify_ssl: false
       ssl_ca_cert:
-

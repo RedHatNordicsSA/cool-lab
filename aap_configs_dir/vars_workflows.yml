@@ -74,6 +74,7 @@ controller_workflows:
         unified_job_template: Add new hosts to Satellite
         success_nodes:
           - 301-add-vm-to-idm
+          - 302-add-vm-to-monitoring
 
       # - identifier: 201-prep-rhel
       #   unified_job_template: Prepare new RHEL hosts
@@ -82,6 +83,11 @@ controller_workflows:
 
       - identifier: 301-add-vm-to-idm
         unified_job_template: Add new hosts to IdM
+        success_nodes:
+          - 401-update-inventory
+
+      - identifier: 302-add-vm-to-monitoring
+        unified_job_template: Add new hosts to Zabbix
         success_nodes:
           - 401-update-inventory
 
@@ -263,15 +269,21 @@ controller_workflows:
         unified_job_template: Unsubscribe host
         success_nodes:
           - 201-delete-from-ocpv
-          - 202-delete-from-idm
+
+      - identifier: 102-delete-from-zabbix
+        unified_job_template: Remove hosts from Zabbix
+        success_nodes:
+          - 201-delete-from-ocpv
+
+      - identifier: 103-delete-from-idm
+        unified_job_template: Remove host from IdM
+        success_nodes:
+          - 201-delete-from-ocpv
 
       - identifier: 201-delete-from-ocpv
         unified_job_template: Delete VM from OCPv
         success_nodes:
           - 301-update-inventory
-
-      - identifier: 202-delete-from-idm
-        unified_job_template: Remove host from IdM
 
       - identifier: 301-update-inventory
         unified_job_template: Update inventory source
