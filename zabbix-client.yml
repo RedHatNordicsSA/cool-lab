@@ -6,7 +6,7 @@
 
     - name: Set state fact
       ansible.builtin.set_fact:
-        _zabbix_state: "{{ lookup('vars', 'zabbix_state') | default('present') }}"
+        _zabbix_state: "{{ lookup('vars', 'zabbix_state', default='present') }}"
 
     - name: Install Zabbix repo
       ansible.builtin.dnf:
