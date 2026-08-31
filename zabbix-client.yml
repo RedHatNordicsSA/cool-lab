@@ -71,9 +71,8 @@
         status: enabled
         state: present
         interfaces:
-          - type: 1
-            main: 1
-            useip: 1
+          - type: agent
+            useip: true
             ip: "{{ ansible_facts['default_ipv4']['address'] }}"
             # dns: "{{ ansible_facts['hostname'] }}.{{ ipaserver_domain }}"
             port: "10050"
