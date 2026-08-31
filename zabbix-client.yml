@@ -4,7 +4,7 @@
   become: true
   vars:
     # password is used from AAP credential, command line uses vault
-    ansible_zabbix_auth_key: "{{ password, default( vault_zabbix_api_token ) }}"
+    # ansible_zabbix_auth_key: "{{ password, default( vault_zabbix_api_token ) }}"
   tasks:
 
     - name: Install Zabbix repo
@@ -55,6 +55,8 @@
       tags: zab
       vars:
         ansible_host: "{{ zabbix_server }}"
+        ansible_user: "{{ username }}"
+        ansible_httpapi_pass: "{{ password }}"
         ansible_network_os: zabbix.zabbix.zabbix
         ansible_connection: httpapi
         # ansible_httpapi_port: 80
