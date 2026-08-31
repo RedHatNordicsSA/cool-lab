@@ -2,10 +2,11 @@
 - name: Install zabbix client
   hosts: all
   become: true
-  vars:
-    # password is used from AAP credential, command line uses vault
-    # ansible_zabbix_auth_key: "{{ password, default( vault_zabbix_api_token ) }}"
   tasks:
+
+    - name: Set state fact
+      ansible.builtin.set_fact:
+        _zabbix_state: "{{ lookup('vars', 'zabbix_state') | default('present') }}"
 
     - name: Install Zabbix repo
       ansible.builtin.dnf:
@@ -13,11 +14,12 @@
         name: "https://repo.zabbix.com/zabbix/7.4/release/rhel/{{ ansible_facts['distribution_major_version'] }}/noarch/zabbix-release-latest.el{{ ansible_facts['distribution_major_version'] }}.noarch.rpm"
         state: present
         disable_gpg_check: true
+      when: _zabbix_state != "absent"
 
     - name: Install zabbix-agent2
       ansible.builtin.dnf:
         name: zabbix-agent2
-        state: present
+        state: "{{ _zabbix_state }}"
 
     - name: Configure Zabbix Agent
       ansible.builtin.lineinfile:
@@ -28,6 +30,7 @@
         - { key: 'Server', value: "{{ zabbix_server }}" }
         - { key: 'ServerActive', value: "{{ zabbix_server }}" }
         - { key: 'Hostname', value: "{{ ansible_facts['hostname'] }}.{{ ipaserver_domain }}" }
+      when: _zabbix_state != "absent"
       notify: Restart zabbix-agent2
 
     # - name: Open Firewall for Zabbix Agent
@@ -42,12 +45,21 @@
         name: httpd_can_connect_zabbix
         state: true
         persistent: true
+      when: _zabbix_state != "absent"
+
+    - name: Disable Zabbix Agent SELinux outbound (Active)
+      ansible.posix.seboolean:
+        name: httpd_can_connect_zabbix
+        state: false
+        persistent: true
+      when: _zabbix_state == "absent"
 
     - name: Enable and start zabbix-agent2
       ansible.builtin.service:
         name: zabbix-agent2
         enabled: true
         state: started
+      when: _zabbix_state != "absent"
 
     - name: Register Host in Zabbix Server via API
       # delegate_to: localhost
@@ -71,7 +83,7 @@
         link_templates:
           - Linux by Zabbix agent
         status: enabled
-        state: present
+        state: "{{ _zabbix_state | default(present)}}"
         interfaces:
           - type: agent
             useip: true
