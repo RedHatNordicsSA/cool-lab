@@ -28,7 +28,7 @@
         - { key: 'Server', value: "{{ zabbix_server }}" }
         - { key: 'ServerActive', value: "{{ zabbix_server }}" }
         - { key: 'Hostname', value: "{{ ansible_facts['hostname'] }}.{{ ipaserver_domain }}" }
-      notify: restart zabbix-agent2
+      notify: Restart zabbix-agent2
 
     # - name: Open Firewall for Zabbix Agent
     #   ansible.posix.firewalld:
