@@ -1,0 +1,15 @@
+---
+- name: Receive stuff via webhook
+  hosts: all
+  sources:
+    - ansible.eda.webhook:
+        host: 0.0.0.0
+        port: 5000
+  rules:
+    - name: Debug anything
+      action:
+        ansible.builtin.debug:
+          var: event
+        # run_job_template:
+        #   name: "Run Claude to analyse and fix"
+        #   organization: "Default"
