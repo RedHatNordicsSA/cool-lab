@@ -1,0 +1,58 @@
+- name: Installs web server
+  hosts: all
+  become: true
+  tasks:
+
+    - name: Install httpd
+      ansible.builtin.package:
+        name: httpd
+        state: latest
+
+    - name: Enable server stats
+      ansible.builtin.copy:
+        dest: /etc/httpd/conf.d/monitoring-status.conf
+        content: |
+          <Location "/server-status">
+              SetHandler server-status
+              Require local
+              # Uncomment and modify the next line if polling directly from the Zabbix Server
+              # Require ip ZABBIX_SERVER_IP
+          </Location>
+        owner: root
+        group: root
+        mode: '0755'
+      notify: Restart httpd
+
+    - name: Enable webserver
+      ansible.builtin.service:
+        name: httpd
+        enabled: true
+        state: started
+
+    - name: Create hello-world.html
+      ansible.builtin.copy:
+        dest: /var/www/html/hello-world.html
+        content: |
+          hello world!
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: Break it for demo
+      ansible.builtin.copy:
+        dest: /etc/httpd/conf.d/monitoring-status.conf
+        content: |
+          <Location "/server-status">
+              SetHandler server-status
+              Require local
+        owner: root
+        group: root
+        mode: '0755'
+      notify: Restart httpd
+      when: break_it is defined
+
+  handlers:
+    - name: Restart httpd
+      ansible.builtin.service:
+        name: httpd
+        state: restarted
