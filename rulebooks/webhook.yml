@@ -3,7 +3,7 @@
   hosts: all
   sources:
     - name: Listen to any webhooks
-      ansible.builtin.webhook:
+      eda.builtin.webhook:
         host: 0.0.0.0
         port: 5000
   rules:
