@@ -2,12 +2,13 @@
 - name: Receive stuff via webhook
   hosts: all
   sources:
-    - ansible.eda.webhook:
+    - name: Listen to any webhooks
+      ansible.builtin.webhook:
         host: 0.0.0.0
         port: 5000
   rules:
     - name: Debug anything
-      condition: event is defined
+      condition: event.meta is defined
       action:
         ansible.builtin.debug:
           var: event
