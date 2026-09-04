@@ -10,7 +10,7 @@
     - name: Debug anything
       condition: event.meta is defined
       action:
-        ansible.builtin.debug:
+        debug:
           var: event
         # run_job_template:
         #   name: "Run Claude to analyse and fix"
