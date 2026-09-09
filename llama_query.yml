@@ -1,0 +1,107 @@
+- name: Prompt llama stack
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    prompt: "Use the Zabbix tools to list a small sample of monitored hosts (at most 5). Return host names and their status. You must call a Zabbix tool; do not guess."
+    api_base: https://llamastack-glazos.apps.dgx.eu.arrow.lab
+    api_key: "none"
+    model_name: "vllm/MiniMax-M2.7"
+    max_infer_iters: 10
+    validate_certs: false
+    mcp_connectors:
+      - zabbix
+      - linux
+      - satellite
+      - github
+      - openshift
+      - aap-jobs
+      - aap-inventory
+      - aap-monitoring
+      - aap-users
+      - aap-security
+      - aap-platform
+  tasks:
+
+    - name: Build MCP tools list
+      ansible.builtin.set_fact:
+        mcp_tools: "{{ mcp_tools | default([]) + [_tool] }}"
+      loop: "{{ mcp_connectors }}"
+      loop_control:
+        label: "{{ item }}"
+      vars:
+        _tool:
+          type: mcp
+          server_label: "{{ item }}"
+          connector_id: "{{ item }}"
+          require_approval: never
+
+    - name: Send prompt to Llama Stack Responses API
+      ansible.builtin.uri:
+        url: "{{ api_base }}/v1/responses"
+        method: POST
+        body_format: json
+        validate_certs: "{{ validate_certs }}"
+        headers:
+          Authorization: "Bearer {{ api_key }}"
+          Content-Type: "application/json"
+          Accept: "application/json"
+        body:
+          model: "{{ model_name }}"
+          input: "{{ prompt }}"
+          tools: "{{ mcp_tools }}"
+          max_infer_iters: "{{ max_infer_iters | int }}"
+        return_content: true
+        timeout: 120
+      register: llama_response
+
+    - name: Set parsed output facts
+      ansible.builtin.set_fact:
+        llama_output: "{{ llama_response.json.output | default([]) }}"
+        llama_status: "{{ llama_response.json.status | default('unknown') }}"
+
+    - name: Show response status
+      ansible.builtin.debug:
+        msg: "Response status: {{ llama_status }} | Model: {{ llama_response.json.model }}"
+
+    - name: Show MCP tools discovered
+      ansible.builtin.debug:
+        msg: "MCP server '{{ item.server_label }}' provided {{ item.tools | length }} tools"
+      loop: "{{ llama_output | selectattr('type', 'equalto', 'mcp_list_tools') | list }}"
+      loop_control:
+        label: "{{ item.server_label }}"
+
+    - name: Show MCP tool calls
+      ansible.builtin.debug:
+        msg: >-
+          Tool call: {{ item.name }} (server: {{ item.server_label }})
+          {{ '| ERROR: ' + item.error if item.error else '| OK' }}
+      loop: "{{ llama_output | selectattr('type', 'equalto', 'mcp_call') | list }}"
+      loop_control:
+        label: "{{ item.name }}"
+
+    - name: Extract answer text
+      ansible.builtin.set_fact:
+        llama_answer: >-
+          {{ llama_output
+             | selectattr('type', 'equalto', 'message')
+             | map(attribute='content')
+             | flatten
+             | selectattr('type', 'equalto', 'output_text')
+             | map(attribute='text')
+             | join('\n') }}
+
+    - name: Show response error
+      ansible.builtin.debug:
+        msg: "ERROR: {{ llama_response.json.error }}"
+      when: llama_response.json.error is not none
+
+    - name: Print the answer from Llama
+      ansible.builtin.debug:
+        msg: "{{ llama_answer }}"
+      when: llama_answer | length > 0
+
+    - name: Warn if no answer received
+      ansible.builtin.debug:
+        msg: "No answer text in response. Raw output:\n{{ llama_response.json | to_nice_json }}"
+      when: llama_answer | length == 0
