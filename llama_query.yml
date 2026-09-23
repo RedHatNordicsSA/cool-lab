@@ -52,11 +52,13 @@
       ansible.builtin.set_fact:
         prompt: "{{ prompt }} Target must be exactly: {{ target }}"
 
+    - name: Debug target
+      ansible.builtin.debug:
+        var: target
+
     - name: Debug prompt
       ansible.builtin.debug:
-        var:
-          - prompt
-          - target
+        var: prompt
 
     - name: Send prompt to Llama Stack Responses API
       ansible.builtin.uri:
