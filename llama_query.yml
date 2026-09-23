@@ -53,8 +53,10 @@
         prompt: "{{ prompt }} Target must be exactly: {{ target }}"
 
     - name: Debug prompt
-      debug:
-        var: prompt
+      ansible.builtin.debug:
+        var:
+          - prompt
+          - target
 
     - name: Send prompt to Llama Stack Responses API
       ansible.builtin.uri:
