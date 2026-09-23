@@ -1,3 +1,12 @@
+---
+# Manually:
+# curl -sk \
+# -H 'Authorization: Bearer none' \
+# -H 'Content-Type: application/json' \
+# -H 'Accept: application/json' \
+# -X POST 'https://llamastack-glazos.apps.dgx.eu.arrow.lab/v1/responses' \
+# -d '{"model":"vllm/MiniMax-M2.7","input":"Use the Zabbix tools to list a small sample of monitored hosts (at most 5). Return host names and their status. You must call a Zabbix tool; do not guess.","max_infer_iters":10,"tools":[{"type":"mcp","server_label":"zabbix","connector_id":"zabbix","require_approval":"never"}]}'
+# jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text' ans.json
 - name: Prompt llama stack
   hosts: localhost
   connection: local
@@ -6,6 +15,8 @@
     prompt: "Use the Zabbix tools to list a small sample of monitored hosts (at most 5). Return host names and their status. You must call a Zabbix tool; do not guess."
     api_base: https://llamastack-glazos.apps.dgx.eu.arrow.lab
     api_key: "none"
+    token: ""
+    target:
     model_name: "vllm/MiniMax-M2.7"
     max_infer_iters: 10
     validate_certs: false
@@ -35,6 +46,11 @@
           server_label: "{{ item }}"
           connector_id: "{{ item }}"
           require_approval: never
+          authorization: "{{ token }}"
+
+    - name: Add target to prompt if given
+      ansible.builtin.set_fact:
+        prompt: "{{ prompt }} Target must be exactly: {{ target }}"
 
     - name: Send prompt to Llama Stack Responses API
       ansible.builtin.uri:

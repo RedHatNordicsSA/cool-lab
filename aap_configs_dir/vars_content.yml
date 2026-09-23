@@ -584,6 +584,161 @@ controller_templates:
         - name: machine-creds-rhops-admin
         - name: zabbix
 
+  - name: Configure webserver
+    description: >
+      Configures httpd / Apache on virtual machine
+    execution_environment: Default execution environment
+    use_fact_cache: true
+    extra_vars:
+      use_inventory_for_hostname: true
+    forks: 15
+    inventory:
+      name: ocp-isf
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_slice_count: 1
+    job_type: run
+    ask_limit_on_launch: true
+    playbook: configure-web-server.yml
+    project:
+      name: Cool-Lab
+      organization:
+        name: Red Hat
+        type: organization
+      type: project
+    related:
+      credentials:
+        - name: machine-creds-rhops-admin
+
+  - name: Break webserver
+    description: >
+      Misconfigures httpd / Apache on virtual machine
+    execution_environment: Default execution environment
+    use_fact_cache: true
+    extra_vars:
+      use_inventory_for_hostname: true
+      break_it: true
+    forks: 15
+    inventory:
+      name: ocp-isf
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_slice_count: 1
+    job_type: run
+    ask_limit_on_launch: true
+    limit: short_name
+    playbook: configure-web-server.yml
+    project:
+      name: Cool-Lab
+      organization:
+        name: Red Hat
+        type: organization
+      type: project
+    related:
+      credentials:
+        - name: machine-creds-rhops-admin
+
+  - name: AIOps query Zabbix
+    description: >
+      Prompts LLM for querying host data from zabbix
+    execution_environment: Default execution environment
+    use_fact_cache: false
+    ask_variables_on_launch: true
+    extra_vars:
+      mcp_connectors:
+        - zabbix
+      target: I forgot to set hostname in zabbix promt vm
+      prompt: >
+        Use the Zabbix tools to summarize recent problems and alerts on
+        given host (at most 5). Return host name and their
+        status. You must call a Zabbix tool; Do not guess.
+    forks: 1
+    inventory:
+      name: Demo Inventory
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_slice_count: 1
+    job_type: run
+    ask_limit_on_launch: false
+    limit: localhost
+    playbook: llama_query.yml
+    project:
+      name: Cool-Lab
+      organization:
+        name: Red Hat
+        type: organization
+      type: project
+
+  - name: AIOps query RHEL
+    description: >
+      Prompts LLM for querying host data from linux host
+    execution_environment: Default execution environment
+    use_fact_cache: false
+    ask_variables_on_launch: true
+    extra_vars:
+      mcp_connectors:
+        - linux
+      target: I forgot to set hostname in rhel query
+      prompt: >
+        Use the Linux tools to summarize recent problems and alerts on
+        given host (at most 5). Return host name and
+        status. You must call a Linux tool; Do not guess.
+    forks: 1
+    inventory:
+      name: Demo Inventory
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_slice_count: 1
+    job_type: run
+    ask_limit_on_launch: false
+    limit: localhost
+    playbook: llama_query.yml
+    project:
+      name: Cool-Lab
+      organization:
+        name: Red Hat
+        type: organization
+      type: project
+
+  - name: AIOps create github issue
+    description: >
+      Prompts LLM to create github issue
+    execution_environment: Default execution environment
+    use_fact_cache: false
+    ask_variables_on_launch: true
+    extra_vars:
+      mcp_connectors:
+        - github
+      target: I forgot to set hostname in rhel query
+      prompt: >
+        Use the GitHub MCP issue_write tool to create a new issue. Set method to create, owner to ikke-t, repo to aiops-issues, title to test issue, and body to eero did it. Call the tool now; do not describe what you would do.
+    forks: 1
+    inventory:
+      name: Demo Inventory
+      organization:
+        name: Default
+        type: organization
+      type: inventory
+    job_slice_count: 1
+    job_type: run
+    ask_limit_on_launch: false
+    limit: localhost
+    playbook: llama_query.yml
+    project:
+      name: Cool-Lab
+      organization:
+        name: Red Hat
+        type: organization
+      type: project
+
   - name: Remove host from temp inventory
     description: Removes host from temporary inventory
     execution_environment: Default execution environment
