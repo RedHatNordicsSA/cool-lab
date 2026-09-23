@@ -33,12 +33,18 @@ dns_reverse_zones:
    - 109.3.10.in-addr.arpa.
    - 203.3.10.in-addr.arpa.
 ipaservers:
-  - lab-eu-idm-01.arrowdemo.se
+  # - lab-eu-idm-01.arrowdemo.se
   - arw-eu-idm-02.eu.arrow.lab
-ipaserver_master_ip: 10.0.103.25
-ipaserver_master_fqdn: lab-eu-idm-01.arrowdemo.se
-ipaserver_replica_ip: 10.3.109.25
-ipaserver_replica_name: arw-eu-idm-02.eu.arrow.lab
+  - arw-eu-idm-03.eu.arrow.lab
+  - arw-eu-idm-04.eu.arrow.lab
+ipaserver_master_ip: 10.3.103.25
+ipaserver_master_fqdn: arw-eu-idm-02.eu.arrowdemo.se
+# ipaserver_master_ip: 10.0.103.25
+# ipaserver_master_fqdn: lab-eu-idm-01.arrowdemo.se
+# ipaserver_replica_ip: 10.3.109.25
+# ipaserver_replica_name: arw-eu-idm-02.eu.arrow.lab
+ipaserver_replica_ip: 172.26.250.25
+ipaserver_replica_name: arw-eu-idm-03.eu.arrow.lab
 ipaserver_domain: eu.arrow.lab
 ipaserver_realm: EU.ARROW.LAB
 ipaserver_gw: 10.0.103.1
@@ -53,14 +59,16 @@ hostgroups:
   - name: infra
     description: Infrastructure Hosts
     hosts:
-      - lab-eu-idm-01.arrowdemo.se
       - arw-eu-idm-02.eu.arrow.lab
+      - arw-eu-idm-03.eu.arrow.lab
+      - arw-eu-idm-04.eu.arrow.lab
       - arw-eu-bastion-01.eu.arrow.lab
   - name: ipaservers
     description: IdM cluster hosts
     hosts:
-      - arw-eu-idm-01.arrowdemo.eu
       - arw-eu-idm-02.eu.arrow.lab
+      - arw-eu-idm-03.eu.arrow.lab
+      - arw-eu-idm-04.eu.arrow.lab
 
 aap_username: admin
 aap_ldap_bind_username: aap_ldap
