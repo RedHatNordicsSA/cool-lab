@@ -52,6 +52,10 @@
       ansible.builtin.set_fact:
         prompt: "{{ prompt }} Target must be exactly: {{ target }}"
 
+    - name: Debug prompt
+      debug:
+        var: prompt
+
     - name: Send prompt to Llama Stack Responses API
       ansible.builtin.uri:
         url: "{{ api_base }}/v1/responses"
@@ -115,6 +119,12 @@
     - name: Print the answer from Llama
       ansible.builtin.debug:
         msg: "{{ llama_answer }}"
+      when: llama_answer | length > 0
+
+    - name: Save the answer from Llama for possible workflow
+      ansible.builtin.set_stats:
+        data:
+          lama_answer: "{{ llama_answer }}"
       when: llama_answer | length > 0
 
     - name: Warn if no answer received
