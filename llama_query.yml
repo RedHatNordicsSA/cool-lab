@@ -50,15 +50,19 @@
 
     - name: Add target to prompt if given
       ansible.builtin.set_fact:
-        prompt: "{{ prompt }} Target must be exactly: {{ target }}"
-
+        final_prompt: >-
+          {% if target is defined and target | length > 0 %}
+          {{ prompt }} Target must be exactly: {{ target }}
+          {% else %}
+          {{ prompt }}
+          {% endif %}
     - name: Debug target
       ansible.builtin.debug:
         var: target
 
     - name: Debug prompt
       ansible.builtin.debug:
-        var: prompt
+        var: final_prompt
 
     - name: Send prompt to Llama Stack Responses API
       ansible.builtin.uri:
@@ -72,7 +76,7 @@
           Accept: "application/json"
         body:
           model: "{{ model_name }}"
-          input: "{{ prompt }}"
+          input: "{{ final_prompt }}"
           tools: "{{ mcp_tools }}"
           max_infer_iters: "{{ max_infer_iters | int }}"
         return_content: true
