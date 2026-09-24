@@ -17,6 +17,7 @@
     api_key: "none"
     token: ""
     target:
+    problem: ""
     model_name: "vllm/MiniMax-M2.7"
     max_infer_iters: 10
     validate_certs: false
@@ -48,6 +49,15 @@
           require_approval: never
           authorization: "{{ token }}"
 
+    - name: Add problem to prompt if given
+      ansible.builtin.set_fact:
+        final_prompt: >-
+          {% if problem is defined and target | length > 0 %}
+          {{ prompt }} Investigate this problem: {{ problem }}
+          {% else %}
+          {{ prompt }}
+          {% endif %}
+
     - name: Add target to prompt if given
       ansible.builtin.set_fact:
         final_prompt: >-
@@ -56,6 +66,11 @@
           {% else %}
           {{ prompt }}
           {% endif %}
+
+    - name: Debug problem
+      ansible.builtin.debug:
+        var: problem
+
     - name: Debug target
       ansible.builtin.debug:
         var: target

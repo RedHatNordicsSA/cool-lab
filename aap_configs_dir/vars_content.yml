@@ -685,6 +685,7 @@ controller_templates:
       mcp_connectors:
         - linux
       target: I forgot to set hostname in rhel query
+      problem: What errors do you see in recent logs?
       prompt: >
         Use the Linux tools to summarize recent problems and alerts on
         given host (at most 5). Return host name and

@@ -27,3 +27,4 @@
           extra_vars:
             short_name: "{{ short_name }}"
             target: "{{ event.payload.Host }}"
+            problem: "{{ event.payload.trigger_name }}"
