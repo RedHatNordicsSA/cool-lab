@@ -18,6 +18,7 @@
     token: ""
     target:
     problem: ""
+    prompt_workflow override: ""
     model_name: "vllm/MiniMax-M2.7"
     max_infer_iters: 10
     validate_certs: false
@@ -65,6 +66,15 @@
           {{ prompt }} Target must be exactly: {{ target }}
           {% else %}
           {{ prompt }}
+          {% endif %}
+
+    - name: Override prompt in individual workflow task if prompt_workflow override given
+      ansible.builtin.set_fact:
+        final_prompt: >-
+          {% if prompt_workflow override is defined and prompt_workflow override | length > 0 %}
+          {{ prompt_workflow override}}
+          {% else %}
+          {{ final_prompt }}
           {% endif %}
 
     - name: Debug problem
