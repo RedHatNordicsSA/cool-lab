@@ -7,7 +7,7 @@
         host: 0.0.0.0
         port: 5000
   rules:
-    - name: Debug anything
+    - name: debug anything
       condition: event.meta is defined
       action:
         debug:
@@ -15,3 +15,15 @@
         # run_job_template:
         #   name: "Run Claude to analyse and fix"
         #   organization: "Default"
+    - name: Apache probelms
+      condition:
+        - event.meta is defined
+        - event.payload.trigger_name == 'Apache: Process is not running'
+      action:
+        - short_name: "{{ event.payload.Host | regex_search('\\..*') }}" # 'rh-web-01.eu.arrow.lab'
+        - run_job_template:
+          name: "Run Webserver Rescue Workflow"
+          organization: "Red Hat"
+          extra_vars:
+            short_name: "{{ short_name }}"
+            target: "{{ event.payload.Host }}"
