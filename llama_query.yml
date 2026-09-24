@@ -157,7 +157,7 @@
     - name: Save the answer from Llama for possible workflow
       ansible.builtin.set_stats:
         data:
-          lama_answer: "{{ llama_answer }}"
+          llama_answer: "{{ llama_answer }}"
       when: llama_answer | length > 0
 
     - name: Warn if no answer received
