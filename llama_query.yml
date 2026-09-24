@@ -15,10 +15,11 @@
     prompt: "Use the Zabbix tools to list a small sample of monitored hosts (at most 5). Return host names and their status. You must call a Zabbix tool; do not guess."
     api_base: https://llamastack-glazos.apps.dgx.eu.arrow.lab
     api_key: "none"
-    token: ""
+    # on command line use vault, in aap use generic credential's password
+    token: "{{ vault_llama_stack_token | default(password)}}"
     target:
     problem: ""
-    prompt_workflow override: ""
+    prompt_workflow_override: ""
     model_name: "vllm/MiniMax-M2.7"
     max_infer_iters: 10
     validate_certs: false
@@ -68,11 +69,11 @@
           {{ prompt }}
           {% endif %}
 
-    - name: Override prompt in individual workflow task if prompt_workflow override given
+    - name: Override prompt in individual workflow task if prompt_workflow_override given
       ansible.builtin.set_fact:
         final_prompt: >-
-          {% if prompt_workflow override is defined and prompt_workflow override | length > 0 %}
-          {{ prompt_workflow override}}
+          {% if prompt_workflow_override is defined and prompt_workflow_override | length > 0 %}
+          {{ prompt_workflow_override}}
           {% else %}
           {{ final_prompt }}
           {% endif %}
@@ -99,6 +100,7 @@
           Authorization: "Bearer {{ api_key }}"
           Content-Type: "application/json"
           Accept: "application/json"
+          Authorization: "Bearer {{ token }}"
         body:
           model: "{{ model_name }}"
           input: "{{ final_prompt }}"
