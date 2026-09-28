@@ -14,9 +14,8 @@
   vars:
     prompt: "Use the Zabbix tools to list a small sample of monitored hosts (at most 5). Return host names and their status. You must call a Zabbix tool; do not guess."
     api_base: https://llamastack-glazos.apps.dgx.eu.arrow.lab
-    api_key: "none"
     # on command line use vault, in aap use generic credential's password
-    token: "{{ vault_llama_stack_token | default(password)}}"
+    api_key: "{{ vault_llama_stack_token | default(password)}}"
     target:
     problem: ""
     prompt_workflow_override: ""
@@ -100,7 +99,6 @@
           Authorization: "Bearer {{ api_key }}"
           Content-Type: "application/json"
           Accept: "application/json"
-          Authorization: "Bearer {{ token }}"
         body:
           model: "{{ model_name }}"
           input: "{{ final_prompt }}"
@@ -137,7 +135,7 @@
 
     - name: Extract answer text
       ansible.builtin.set_fact:
-        llama_answer: >-
+        _llama_answer: >-
           {{ llama_output
              | selectattr('type', 'equalto', 'message')
              | map(attribute='content')
@@ -153,16 +151,16 @@
 
     - name: Print the answer from Llama
       ansible.builtin.debug:
-        msg: "{{ llama_answer }}"
-      when: llama_answer | length > 0
+        msg: "{{ _llama_answer }}"
+      when: _llama_answer | length > 0
 
     - name: Save the answer from Llama for possible workflow
       ansible.builtin.set_stats:
         data:
-          llama_answer: "{{ llama_answer }}"
-      when: llama_answer | length > 0
+          llama_answer: "{{ _llama_answer }}"
+      when: _llama_answer | length > 0
 
     - name: Warn if no answer received
       ansible.builtin.debug:
         msg: "No answer text in response. Raw output:\n{{ llama_response.json | to_nice_json }}"
-      when: llama_answer | length == 0
+      when: _llama_answer | length == 0
