@@ -11,7 +11,7 @@
       condition:
         all:
           - event.meta is defined
-          - event.payload.event_name is search("Apache.*(not running|is down)", ignorecase=true)
+          - event.payload.event_name is match("Apache.*(not running|is down)", ignorecase=true)
       actions:
         - debug:
             var: event
