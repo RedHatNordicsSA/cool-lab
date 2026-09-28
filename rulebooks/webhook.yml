@@ -15,15 +15,13 @@
         - run_workflow_template:
             name: "AIOps Webserver Rescue Workflow"
             organization: "Red Hat"
-            extra_vars:
-              short_name: "{{ event.payload.host_host.split('.')[0] }}"
-              target: "{{ event.payload.host_host }}"
-              problem: "{{ event.payload.trigger_name }}"
+            job_args:
+              extra_vars:
+                short_name: "{{ event.payload.host_host.split('.')[0] }}"
+                target: "{{ event.payload.host_host }}"
+                problem: "{{ event.payload.trigger_name }}"
     - name: debug anything
       condition: event.meta is defined
       action:
         debug:
           var: event
-        # run_job_template:
-        #   name: "Run Claude to analyse and fix"
-        #   organization: "Default"
