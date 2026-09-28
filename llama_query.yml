@@ -54,7 +54,7 @@
     - name: Add problem to prompt if given
       ansible.builtin.set_fact:
         final_prompt: >-
-          {% if problem is defined and target | length > 0 %}
+          {% if problem is defined and problem | length > 0 %}
           {{ prompt }} Investigate this problem: {{ problem }}
           {% else %}
           {{ prompt }}
@@ -64,9 +64,9 @@
       ansible.builtin.set_fact:
         final_prompt: >-
           {% if target is defined and target | length > 0 %}
-          {{ prompt }} Target must be exactly: {{ target }}
+          {{ final_prompt }} Target must be exactly: {{ target }}
           {% else %}
-          {{ prompt }}
+          {{ final_prompt }}
           {% endif %}
 
     - name: Override prompt in individual workflow task if prompt_workflow_override given
