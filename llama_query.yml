@@ -56,7 +56,7 @@
         _problem_ph: "{% raw %}{{ problem }}{% endraw %}"
         _llama_ph: "{% raw %}{{ llama_answer }}{% endraw %}"
       ansible.builtin.set_fact:
-        prompt: >-
+        resolved_prompt: >-
           {{ prompt
              | replace(_target_ph, target | default(''))
              | replace(_problem_ph, problem | default(''))
@@ -66,9 +66,9 @@
       ansible.builtin.set_fact:
         final_prompt: >-
           {% if problem is defined and problem | length > 0 %}
-          {{ prompt }} Investigate this problem: {{ problem }}
+          {{ resolved_prompt }} Investigate this problem: {{ problem }}
           {% else %}
-          {{ prompt }}
+          {{ resolved_prompt }}
           {% endif %}
 
     - name: Add target to prompt if given
