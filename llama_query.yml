@@ -50,6 +50,18 @@
           require_approval: never
           authorization: "{{ api_key }}"
 
+    - name: Resolve variable placeholders in prompt
+      vars:
+        _target_ph: "{% raw %}{{ target }}{% endraw %}"
+        _problem_ph: "{% raw %}{{ problem }}{% endraw %}"
+        _llama_ph: "{% raw %}{{ llama_answer }}{% endraw %}"
+      ansible.builtin.set_fact:
+        prompt: >-
+          {{ prompt
+             | replace(_target_ph, target | default(''))
+             | replace(_problem_ph, problem | default(''))
+             | replace(_llama_ph, llama_answer | default('')) }}
+
     - name: Add problem to prompt if given
       ansible.builtin.set_fact:
         final_prompt: >-
