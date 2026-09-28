@@ -16,6 +16,7 @@
             name: "AIOps Webserver Rescue Workflow"
             organization: "Red Hat"
             job_args:
+              limit: "{{ event.payload.host_host.split('.')[0] }}"
               extra_vars:
                 short_name: "{{ event.payload.host_host.split('.')[0] }}"
                 target: "{{ event.payload.host_host }}"
