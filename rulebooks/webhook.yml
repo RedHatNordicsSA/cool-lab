@@ -20,11 +20,10 @@
         - event.meta is defined
         - event.payload.trigger_name == 'Apache: Process is not running'
       action:
-        - short_name: "{{ event.payload.Host | regex_search('\\..*') }}" # 'rh-web-01.eu.arrow.lab'
         - run_job_template:
-          name: "Run Webserver Rescue Workflow"
+          name: "AIOps Webserver Rescue Workflow"
           organization: "Red Hat"
           extra_vars:
-            short_name: "{{ short_name }}"
+            short_name: "{{ event.payload.Host | regex_search('\\..*') }}" # 'rh-web-01.eu.arrow.lab'
             target: "{{ event.payload.Host }}"
             problem: "{{ event.payload.trigger_name }}"
