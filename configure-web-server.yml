@@ -48,7 +48,7 @@
         owner: root
         group: root
         mode: '0755'
-      notify: Restart httpd
+      notify: Restart broken httpd
       when: break_it is defined
 
   handlers:
@@ -56,3 +56,9 @@
       ansible.builtin.service:
         name: httpd
         state: restarted
+
+    - name: Restart broken httpd
+      ansible.builtin.service:
+        name: httpd
+        state: restarted
+      ignore_errors: true
