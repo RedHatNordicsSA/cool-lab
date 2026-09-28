@@ -17,8 +17,9 @@
         #   organization: "Default"
     - name: Apache problems
       condition:
-        - event.meta is defined
-        - event.payload.event_name is search("Apache.*(not running|is down)", ignorecase=true)
+        all:
+          - event.meta is defined
+          - event.payload.event_name is search("Apache.*(not running|is down)", ignorecase=true)
       action:
         run_workflow_template:
           name: "AIOps Webserver Rescue Workflow"
