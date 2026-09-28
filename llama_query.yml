@@ -48,7 +48,7 @@
           server_label: "{{ item }}"
           connector_id: "{{ item }}"
           require_approval: never
-          authorization: "{{ token }}"
+          authorization: "{{ api_key }}"
 
     - name: Add problem to prompt if given
       ansible.builtin.set_fact:
