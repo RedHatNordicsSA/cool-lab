@@ -8,7 +8,10 @@
         port: 5000
   rules:
     - name: Apache problems
-      condition: event.meta is defined and event.payload.event_name is match("Apache.*") and (event.payload.event_name is match(".*not running.*") or event.payload.event_name is match(".*is down.*"))
+      # condition: event.meta is defined and event.payload.event_name is match("Apache.*") and (event.payload.event_name is match(".*not running.*") or event.payload.event_name is match(".*is down.*"))
+      conditions:
+        - event.meta is defined
+        - event.payload.event_name is match("Apache.*not running.*")
       actions:
         - debug:
             var: event
