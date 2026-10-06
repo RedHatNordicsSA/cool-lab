@@ -647,6 +647,8 @@ controller_templates:
       Prompts LLM for querying host data from zabbix
     execution_environment: Default execution environment
     use_fact_cache: false
+    credentials:
+      - llamastack
     ask_variables_on_launch: true
     extra_vars:
       mcp_connectors:
@@ -680,6 +682,8 @@ controller_templates:
       Prompts LLM for querying host data from linux host
     execution_environment: Default execution environment
     use_fact_cache: false
+    credentials:
+      - llamastack
     ask_variables_on_launch: true
     extra_vars:
       mcp_connectors:
@@ -715,6 +719,8 @@ controller_templates:
     execution_environment: Default execution environment
     use_fact_cache: false
     ask_variables_on_launch: true
+    credentials:
+      - llamastack
     extra_vars:
       mcp_connectors:
         - github

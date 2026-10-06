@@ -210,3 +210,11 @@ controller_credentials:
       bearer_token: "{{ vault_ocp_virt_bearer_token_isf }}"
       verify_ssl: false
       ssl_ca_cert:
+
+  - name: llamastack
+    organization: Red Hat
+    credential_type: Generic Credentials
+    description: Used for lab LLama Stack API
+    inputs:
+      username: foobar
+      password: "{{ vault_llama_stack_token }}"

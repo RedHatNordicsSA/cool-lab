@@ -288,6 +288,175 @@ controller_workflows:
       - identifier: 301-update-inventory
         unified_job_template: Update inventory source
 
+  - name: AIOps Webserver Rescue Workflow
+    description: Run AIOps demo workflow to rescue broken web server
+    state: present
+    inventory: ocp-isf
+    ask_limit_on_launch: true
+    limit: do not loose all your VMs :)
+    organization: Red Hat
+    ask_variables_on_launch: true
+    extra_vars:
+      target: rh-web-01.eu.arrow.lab
+      short_name: rh-web-01
+      problem: Apache process is not running
+    survey_enabled: true
+    survey_spec:
+      description: ''
+      name: ''
+      spec:
+        - choices: ''
+          default: ''
+          new_question: false
+          question_description: >
+            Full fqdn for the hostname. Use format rh-<whatever>-<number>.eu.arrow.lab
+          question_name: Target Name
+          required: true
+          type: text
+          variable: target
+        - choices: ''
+          default: ''
+          new_question: false
+          question_description: >
+            short name for the hostname. Use format rh-<whatever>-<number>,
+            e.g.  rh-ikketest-10
+          question_name: Host Name
+          required: true
+          type: text
+          variable: short_name
+        - choices: ''
+          default: ''
+          new_question: false
+          question_description: >
+            Describe the problem at hand.
+          question_name: Problem statement
+          required: true
+          type: text
+          variable: problem
+    simplified_workflow_nodes:
+
+      - identifier: 101-llama-github-create
+        description: Prompts LLM to create github issue
+        unified_job_template: AIOps create github issue
+        extra_data:
+          mcp_connectors:
+            - github
+          problem: "{% raw %}{{ problem }}{% endraw %}"
+          target: "{% raw %}{{ target }}{% endraw %}"
+          prompt: >
+            {% raw %}Use the GitHub MCP issue_write tool to create a new issue.
+            Set method to create, owner exactly to ikke-t, repo exactly to
+            aiops-issues, title exactly to following line:
+            {{ target }} - {{ problem }}.
+            Leave issue body empty. Return only issue number. Do not ask questions.{% endraw %}
+        success_nodes:
+          - 201-llama-zabbix
+          - 211-llama-rhel
+
+      - identifier: 201-llama-zabbix
+        unified_job_template: AIOps query Zabbix
+        description: Prompts LLM for querying host data from zabbix
+        extra_data:
+          mcp_connectors:
+            - zabbix
+          prompt: >
+            Use the Zabbix tools to summarize recent problems and alerts on given host (at
+            most 5). Return host name and their status. You must call a Zabbix tool; Do
+            not guess.
+        success_nodes:
+          - 301-llama-update-issue-zabbix
+
+      - identifier: 301-llama-update-issue-zabbix
+        unified_job_template: AIOps create github issue
+        description: Prompts LLM to update github issue with zabbix findings
+        extra_data:
+          mcp_connectors:
+            - github
+          target: "{% raw %}{{ target }}{% endraw %}"
+          problem: "{% raw %}{{ problem }}{% endraw %}"
+          prompt: >
+            {% raw %}Use the GitHub MCP issue_write tool's method update to write
+            a new comment into an existing issue in aiops-issues repo, owner is
+            ikke-t. Do not ask questions, and don't edit the previous comments.
+            Find existing issue by:
+            {{ target }} - {{ problem }}
+            in topic, if several of the same, use the latest one. Add there
+            the following data formatted nicely:
+            {{ llama_answer }}{% endraw %}
+        success_nodes:
+          - 401-configure-webserver
+
+      - identifier: 211-llama-rhel
+        unified_job_template: AIOps query RHEL
+        description: Prompts LLM for querying log data from RHEL
+        extra_data:
+          mcp_connectors:
+            - linux
+          target: "{% raw %}{{ target }}{% endraw %}"
+          prompt: >
+            Use the Zabbix tools to summarize recent problems and alerts on given host (at
+            most 5). Return host name and their status. You must call a Zabbix tool; Do
+            not guess.
+        success_nodes:
+          - 311-llama-update-issue-rhel
+
+      - identifier: 311-llama-update-issue-rhel
+        unified_job_template: AIOps create github issue
+        description: Prompts LLM to update github issue with RHEL findings
+        extra_data:
+          mcp_connectors:
+            - github
+          target: "{% raw %}{{ target }}{% endraw %}"
+          problem: "{% raw %}{{ problem }}{% endraw %}"
+          prompt: >
+            {% raw %}Use the GitHub MCP issue_write tool's method update to
+            write a new comment in an existing issue in aiops-issues repo,
+            owner is ikke-t. Do not ask questions, and don't edit the previous comments.
+            Find existing issue by:
+            {{ target }} - {{ problem }}
+            in topic, if several of the same, use the latest one. Add there
+            the following data formatted nicely:
+            {{ llama_answer }}{% endraw %}
+        success_nodes:
+          - 401-configure-webserver
+
+      - identifier: 401-configure-webserver
+        unified_job_template: Configure webserver
+        description: Reconfigures and starts webserver
+        limit: "{% raw %}{{ short_name }}{% endraw %}"
+        success_nodes:
+          - 501-update-ticket-success
+        failure_nodes:
+          - 511-update-ticket-failure
+
+      - identifier: 501-update-ticket-success
+        unified_job_template: AIOps create github issue
+        description: Prompts LLM to close the github issue
+        extra_data:
+          mcp_connectors:
+            - github
+          target: "{% raw %}{{ target }}{% endraw %}"
+          problem: "{% raw %}{{ problem }}{% endraw %}"
+          prompt: >
+            {% raw %}Use the GitHub MCP issue_write tool to close issue. Call the tool now; do not describe what you
+            would do.  Issue is the most recent one in aiops-issues repo, owner is ikke-t and has these words in topic:
+            {{ target }} - {{ problem }}{% endraw %}
+            Write a comment saying AAP web server rescue workflow fixed the issue and the host is ok now.
+
+      - identifier: 511-update-ticket-failure
+        unified_job_template: AIOps create github issue
+        description: Prompts LLM to leave the github issue open with failure
+        extra_data:
+          mcp_connectors:
+            - github
+          target: "{% raw %}{{ target }}{% endraw %}"
+          problem: "{% raw %}{{ problem }}{% endraw %}"
+          prompt: >
+            {% raw %}Use the GitHub MCP issue_write tool to update the issue. Call the tool now; do not describe what you
+            would do.  Issue is the most recent one in aiops-issues repo, owner is ikke-t and has these words in topic:
+            {{ target }} - {{ problem }}{% endraw %}
+            Write a comment to issue mentioning the automated fix did not restore httpd, it requires manual intervention.
+
   - name: Add Disk to VM - VMware
     description: Adds new disk as LV at given mount point to VM
     state: present
