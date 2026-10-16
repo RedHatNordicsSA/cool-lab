@@ -1,0 +1,90 @@
+---
+- name: Configure OpenShift Virtualization Dynamic Inventory Credentials
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Deploy ServiceAccount and RBAC for rh-infra namespace
+      kubernetes.core.k8s:
+        state: present
+        resource_definition:
+          # 1. Ensure Namespace exists
+          - apiVersion: v1
+            kind: Namespace
+            metadata:
+              name: rh-infra
+
+          # 2. Create ServiceAccount
+          - apiVersion: v1
+            kind: ServiceAccount
+            metadata:
+              name: ansible-inventory-sa
+              namespace: rh-infra
+
+          # 3. Create Role for kubevirt access
+          - apiVersion: rbac.authorization.k8s.io/v1
+            kind: Role
+            metadata:
+              name: ansible-kubevirt-inventory-viewer
+              namespace: rh-infra
+            rules:
+              - apiGroups:
+                  - kubevirt.io
+                resources:
+                  - virtualmachines
+                  - virtualmachineinstances
+                verbs:
+                  - get
+                  - list
+                  - watch
+              - apiGroups:
+                  - ""
+                resources:
+                  - services
+                verbs:
+                  - get
+                  - list
+                  - watch
+
+          # 4. Bind Role to ServiceAccount
+          - apiVersion: rbac.authorization.k8s.io/v1
+            kind: RoleBinding
+            metadata:
+              name: ansible-kubevirt-inventory-viewer-binding
+              namespace: rh-infra
+            subjects:
+              - kind: ServiceAccount
+                name: ansible-inventory-sa
+                namespace: rh-infra
+            roleRef:
+              kind: Role
+              name: ansible-kubevirt-inventory-viewer
+              apiGroup: rbac.authorization.k8s.io
+
+          # 5. Create long-lived Token Secret
+          - apiVersion: v1
+            kind: Secret
+            metadata:
+              name: ansible-inventory-sa-token
+              namespace: rh-infra
+              annotations:
+                kubernetes.io/service-account.name: ansible-inventory-sa
+            type: kubernetes.io/service-account-token
+
+    - name: Retrieve the generated ServiceAccount token secret
+      tags: token
+      kubernetes.core.k8s_info:
+        api_version: v1
+        kind: Secret
+        name: ansible-inventory-sa-token
+        namespace: rh-infra
+      register: sa_secret_info
+      # The token generation by the K8s controller can take a moment, so we retry
+      retries: 5
+      delay: 2
+      until: sa_secret_info.resources | length > 0 and sa_secret_info.resources[0].data.token is defined
+
+    - name: Display the decoded token for AAP
+      tags: token
+      ansible.builtin.debug:
+        msg: "Your AAP Bearer Token is: {{ sa_secret_info.resources[0].data.token | b64decode }}"

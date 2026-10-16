@@ -64,6 +64,27 @@ controller_inventory_sources:
     update_cache_timeout: 0
     execution_environment: Default execution environment
     host_format: '{name}'
+    source_vars:
+      connections:
+        - namespaces:
+            - rh-infra
+
+  - name: ove01 OpenShift
+    description: Pull all rh- vms from OpenShift ove01
+    source: openshift_virtualization
+    inventory: ocp-isf
+    organization: Red Hat
+    credential: ocp-virt-ove01
+    host_filter: ^rh-
+    overwrite: true
+    update_on_launch: true
+    update_cache_timeout: 0
+    execution_environment: Default execution environment
+    host_format: '{name}'
+    source_vars:
+      connections:
+        - namespaces:
+            - rh-infra
 
 controller_projects:
   - name: Cool-Lab

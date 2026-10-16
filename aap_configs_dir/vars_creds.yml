@@ -211,6 +211,16 @@ controller_credentials:
       verify_ssl: false
       ssl_ca_cert:
 
+  - name: ocp-virt-ove01
+    organization: Red Hat
+    credential_type: OpenShift or Kubernetes API Bearer Token
+    description: OCPv OVE01
+    inputs:
+      host: https://api.ove01.eu.arrow.lab:6443
+      bearer_token: "{{ vault_ocp_virt_bearer_token_ove01 }}"
+      verify_ssl: false
+      ssl_ca_cert:
+
   - name: llamastack
     organization: Red Hat
     credential_type: Generic Credentials
